@@ -12,11 +12,13 @@ class userController extends Controller
     {
         $request->validate([
             'email' => 'required|string|max:50',
-            'password' => 'required|string|max:50'
+            'password' => 'required|string|max:50',
+            'account_type' => 'required|string|'
         ]);
         User::create([
             'email' => $request->email ,
-            'password' => $request->password
+            'password' => $request->password,
+            'account_type' => $request->account_type,
             ]
         );
         return redirect()->route('login')->with('success', 'User Registered! Please login.');
