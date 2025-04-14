@@ -1,6 +1,14 @@
+<script setup>
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+const user = page.props.user
+</script>
+
 <template>
-    <div class="home">
-        <h1>Welcome to NextCareer</h1>
-        <p>This is a simple Vue.js application.</p>
-    </div>
+  <div>
+    <h1>Welcome back, {{ user.email }}</h1>
+    <p>User ID: {{ user.id }}</p>
+    <p>Role: {{ user.role }}</p>
+  </div>
 </template>

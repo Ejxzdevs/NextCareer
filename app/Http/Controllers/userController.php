@@ -17,10 +17,32 @@ class userController extends Controller
         ]);
         User::create([
             'email' => $request->email ,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'account_type' => $request->account_type,
             ]
         );
-        return redirect()->route('login')->with('success', 'User Registered! Please login.');
+        return redirect()->back()->with('success', 'Successfully registered!');
+    }
+
+    public function authenticate(Request $request){
+        
+    // Validate the request data
+    $validatedData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    // Attempt authentication with validated data
+    if (Auth::attempt($validatedData)) {
+
+        Session::put('user_email', Auth::user()->email);
+        Session::put('user_id', Auth::id());
+        Session::put('user_role', Auth::user()->account_type);
+
+        return redirect()->route('home');
+    } else {
+        return redirect()->back()->with('error', 'Invalid credentials!');
+    }
+
     }
 }
