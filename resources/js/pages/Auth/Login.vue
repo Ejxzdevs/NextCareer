@@ -12,7 +12,7 @@ function submit() {
 </script>
 
 <template>
-    <div class="h-[100vh] w-[100vw] flex justify-center items-center px-2 bg-[#FEF4F1]">
+    <div class="h-[100vh] w-[100vw] flex justify-center items-center px-2 ">
         <div 
         class="border border-gray-300 rounded-lg p-5 shadow-md bg-white 
         w-[clamp(350px,50vw,400px)]
@@ -52,7 +52,7 @@ function submit() {
                 </div>
             </div>
             <div class="flex justify-center">
-                <button type="submit" class="w-full py-2 bg-[#0b1215] hover:bg-[#2b2b2c] text-white font-semibold rounded-md  hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer transition-all duration-200 ease-in-out">Submit</button>
+                <button type="submit" class="w-full py-2 bg-[#334EAC] hover:bg-[#334dace6] text-white font-semibold rounded-md  hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer transition-all duration-200 ease-in-out">Submit</button>
             </div>
             <Link class="text-blue-700 ms-1 underline pointer" :href="route('register')">Create an account?</Link>
         </form>

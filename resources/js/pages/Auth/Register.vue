@@ -6,7 +6,7 @@ const form = useForm({
   email: null,
   password: null,
   password_confirmation: null,
-  account_type: 'job_seeker',
+  account_type: 'freelance',
 });
 
 const confirmPasswordTouched = ref(false);
@@ -31,7 +31,7 @@ function touchConfirmPassword() {
 </script>
 
 <template>
-  <div class="h-[100vh] w-[100vw] flex justify-center items-center px-2 bg-[#FEF4F1]">
+  <div class="h-[100vh] w-[100vw] flex justify-center items-center px-2 ">
     <div
       class="border border-gray-300 rounded-lg p-5 shadow-md bg-white
       w-[clamp(350px,50vw,400px)]
@@ -55,6 +55,7 @@ function touchConfirmPassword() {
               type="email"
               name="email"
               id="email"
+              autocomplete="username"
               class="text-sm p-2 w-full border-none focus:outline-none focus:ring-1 focus:ring-blue-300 pl-2"
               placeholder="Enter Email:"
               required
@@ -71,6 +72,7 @@ function touchConfirmPassword() {
               type="password"
               name="password"
               id="password"
+              autocomplete="new-password" 
               class="text-sm p-2 w-full border-none focus:outline-none focus:ring-1 focus:ring-blue-300 pl-2"
               placeholder="Enter Password:"
               required
@@ -90,6 +92,7 @@ function touchConfirmPassword() {
               placeholder="Re-Enter Password:"
               required
               @focus="touchConfirmPassword"
+              autocomplete="new-password"
             >
           </div>
           <p v-if="passwordMismatch" class="text-red-500 text-sm">
@@ -107,16 +110,16 @@ function touchConfirmPassword() {
             required
           >
             <option value="employer">Employer</option>
-            <option value="job_seeker">Job Seeker</option>
+            <option value="freelance">freelancer</option>
           </select>
         </div>
         <div class="flex justify-center">
           <button
             type="submit"
-            class="w-full py-2 bg-[#0b1215] hover:bg-[#2b2b2c] text-white font-semibold rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer transition-all duration-200 ease-in-out"
+            class="w-full py-2 bg-[#334EAC] hover:bg-[#334dace6] text-white font-semibold rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer transition-all duration-200 ease-in-out"
             :disabled="passwordMismatch"
           >
-            Register
+            Submit
           </button>
         </div>
         <Link class="text-blue-700 ms-1 underline pointer" :href="route('login')">Go to Login</Link>
