@@ -1,5 +1,15 @@
 <template>
-    <div>
+    <SeekerLayout>
         <h1>Welcome Employer</h1>
-    </div>
+    </SeekerLayout>
 </template>
+<script>
+import SeekerLayout from '../Layouts/SeekerLayout.vue';
+  
+  export default {
+    components: {
+      SeekerLayout
+    }
+  };
+</script>
+  
