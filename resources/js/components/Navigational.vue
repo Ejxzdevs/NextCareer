@@ -4,7 +4,7 @@
       <!-- Desktop Menu -->
       <div class="flex justify-between items-center">
         <div class="hidden md:flex text-white text-lg font-semibold">Next Career</div>
-        <ul class="hidden md:flex space-x-8 text-white items-center">
+        <ul class="hidden md:flex space-x-6 text-white items-center">
           <li><a href="/jobs" class="hover:text-gray-300">
             <i class="fas fa-bell"></i>
           </a></li>
@@ -27,8 +27,11 @@
               </li>
             </ul>
           </li>
-          <li>|</li>
-          <li><a href="/" class="hover:text-gray-300 mr-[20px]">Job Search</a></li>
+          <li class="cursor-pointer" >|</li>
+          <li><a href="/" class="hover:text-gray-300">Home</a></li>
+          <li class="cursor-pointer" >|</li>
+          <li v-if="$page.props.user?.role == 'freelance'" ><a href="/" class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
+          <li v-if="$page.props.user?.role == 'employer'"><a href="/" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
         </ul>
       </div>
 
@@ -73,16 +76,17 @@
       <!-- Mobile Dropdown -->
       <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#7789C7] p-4 space-y-2">
         <li><a href="/" class="hover:text-gray-300">Home</a></li>
-        <li><a href="/jobs" class="hover:text-gray-300">Job Search</a></li>
-        <li><a href="/profile" class="hover:text-gray-300">Profile</a></li>
-        <li><button @click="logout" class="hover:text-gray-300 cursor-pointer">Sign out</button></li>
+        <li v-if="$page.props.user?.role == 'freelance'" ><a href="/" class="hover:text-gray-300">Browse Project</a></li>
+        <li v-if="$page.props.user?.role == 'employer'"><a href="/" class="hover:text-gray-300">Hire a Freelancer</a></li>
       </ul>
     </nav>
   </div>
 </template>
 
+
 <script>
 import { Inertia } from '@inertiajs/inertia';
+
 
 export default {
   name: 'Navigational',
