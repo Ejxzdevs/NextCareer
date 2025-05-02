@@ -28,10 +28,10 @@
             </ul>
           </li>
           <li class="cursor-pointer" >|</li>
-          <li><a href="/" class="hover:text-gray-300">Home</a></li>
+          <li><a :href="route('employer.dashboard')" class="hover:text-gray-300">Home</a></li>
           <li class="cursor-pointer" >|</li>
-          <li v-if="$page.props.user?.role == 'freelance'" ><a href="/" class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
-          <li v-if="$page.props.user?.role == 'employer'"><a href="/" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
+          <li v-if="$page.props.user?.role == 'freelance'" ><a class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
+          <li v-if="$page.props.user?.role == 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
         </ul>
       </div>
 
@@ -75,9 +75,9 @@
 
       <!-- Mobile Dropdown -->
       <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#7789C7] p-4 space-y-2">
-        <li><a href="/" class="hover:text-gray-300">Home</a></li>
-        <li v-if="$page.props.user?.role == 'freelance'" ><a href="/" class="hover:text-gray-300">Browse Project</a></li>
-        <li v-if="$page.props.user?.role == 'employer'"><a href="/" class="hover:text-gray-300">Hire a Freelancer</a></li>
+        <li><a :href="route('employer.dashboard')" class="hover:text-gray-300">Home</a></li>
+        <li v-if="$page.props.user?.role == 'freelance'" ><a class="hover:text-gray-300">Browse Project</a></li>
+        <li v-if="$page.props.user?.role == 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300">Hire a Freelancer</a></li>
       </ul>
     </nav>
   </div>
