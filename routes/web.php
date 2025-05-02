@@ -11,7 +11,9 @@ Route::inertia('/register', 'Auth/Register')->name('register');
 Route::post('/users/authenticate', [UserController::class, 'authenticate'])->name('users.authenticate');
 Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 
+
 Route::inertia('employer/dahsboard', 'Employer/Dashboard')->name('employer.dashboard');
+Route::inertia('employer/project', 'Employer/PostProject')->name('employer.project');
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
 
 
