@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjectController;
 
 
 Route::inertia('/', 'Auth/Login')->name('login');
@@ -14,6 +15,8 @@ Route::post('/users/create', [UserController::class, 'store'])->name('users.stor
 
 Route::inertia('employer/dahsboard', 'Employer/Dashboard')->name('employer.dashboard');
 Route::inertia('employer/project', 'Employer/PostProject')->name('employer.project');
+Route::post('/employer/create', [ProjectController::class, 'store'])->name('employer.store');
+
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
 
 
