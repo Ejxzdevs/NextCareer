@@ -39,7 +39,7 @@
         <form @submit.prevent="submitForm" class="space-y-6">
 
           <!-- Hidden User ID Input -->
-          <input type="text" v-model="form.id" />
+          <input type="hidden" v-model="form.id" />
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
