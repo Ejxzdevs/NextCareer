@@ -3,7 +3,7 @@ import { createApp , h} from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/vue3'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import '@fortawesome/fontawesome-free/css/all.css';
-import SeekerLayout from './Pages/Layouts/SeekerLayout.vue';
+import MainLayout from './Pages/Layouts/MainLayout.vue';
 
 createInertiaApp({
   resolve: name => {
@@ -16,7 +16,7 @@ createInertiaApp({
       .use(ZiggyVue)
       .component('Link', Link)
       .component('Head', Head)
-      .component('SeekerLayout', SeekerLayout)
+      .component('MainLayout', MainLayout)
       .mount(el)
   },
 })

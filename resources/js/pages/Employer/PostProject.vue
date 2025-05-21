@@ -1,5 +1,5 @@
 <template>
-    <SeekerLayout>
+    <MainLayout>
   
       <div class="text-right mt-3 me-3">
         <button
@@ -120,7 +120,7 @@
           </form>
         </div>
       </div>
-    </SeekerLayout>
+    </MainLayout>
   </template>
   
   <script>

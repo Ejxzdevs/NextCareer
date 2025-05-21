@@ -1,7 +1,7 @@
 <template>
-    <SeekerLayout>
+    <MainLayout>
         <h1>Welcome Employer</h1>
-    </SeekerLayout>
+    </MainLayout>
 </template>
 
   
