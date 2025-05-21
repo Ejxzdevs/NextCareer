@@ -30,8 +30,8 @@
           <li class="cursor-pointer" >|</li>
           <li><a :href="route('employer.dashboard')" class="hover:text-gray-300">Home</a></li>
           <li class="cursor-pointer" >|</li>
-          <li v-if="$page.props.user?.role == 'freelance'" ><a class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
-          <li v-if="$page.props.user?.role == 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
+          <li v-if="userRole === 'freelance'" ><a class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
+          <li v-if="userRole === 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
         </ul>
       </div>
 
@@ -64,7 +64,6 @@
           </li>
         </ul>
         
-
         <button @click="toggleMenu" class="text-white">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -76,37 +75,31 @@
       <!-- Mobile Dropdown -->
       <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#7789C7] p-4 space-y-2">
         <li><a :href="route('employer.dashboard')" class="hover:text-gray-300">Home</a></li>
-        <li v-if="$page.props.user?.role == 'freelance'" ><a class="hover:text-gray-300">Browse Project</a></li>
-        <li v-if="$page.props.user?.role == 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300">Hire a Freelancer</a></li>
+        <li v-if="userRole === 'freelance'" ><a class="hover:text-gray-300">Browse Project</a></li>
+        <li v-if="userRole === 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300">Hire a Freelancer</a></li>
       </ul>
     </nav>
   </div>
 </template>
 
+<script setup>
+import { ref } from 'vue'
 
-<script>
-import { Inertia } from '@inertiajs/inertia';
+// Reactive variables
+const isMenuOpen = ref(false)
+const isDropdownOpen = ref(false)
 
+const userRole = ref('freelance')
 
-export default {
-  name: 'Navigational',
-  data() {
-    return {
-      isMenuOpen: false,
-      isDropdownOpen: false,
-    };
-  },
-  methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
-    },
-    toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
-    },
-    logout() {
-      Inertia.post(route('logout'));
-    },
-  },
-};
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value
+}
+
+const logout = () => {
+  Inertia.post(route('logout'))
+}
 </script>
-
