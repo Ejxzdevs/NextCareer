@@ -84,12 +84,24 @@
 
 <script setup>
 import { ref } from 'vue'
+import { Inertia } from '@inertiajs/inertia';
+import { usePage } from '@inertiajs/vue3'
 
+const page = usePage()
 // Reactive variables
 const isMenuOpen = ref(false)
 const isDropdownOpen = ref(false)
+const userRole = ref('guest')
 
-const userRole = ref('freelance')
+const checkRole = page.props.user?.role
+if (checkRole === 'freelance') {
+  userRole.value = 'freelance'
+} else if (checkRole === 'employer') {
+  userRole.value = 'employer'
+} else {
+  userRole.value = 'guest'
+}
+
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
