@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
     {
+    public function index()
+        {
+            $projects = Project::where('user_id', Auth::id())->get();
+
+            return Inertia::render('Employer/PostProject', [
+                'projects' => $projects,
+            ]);
+    }
     public function store(Request $request)
     {
         // Check if the user is logged in
