@@ -14,9 +14,8 @@ Route::post('/users/create', [UserController::class, 'store'])->name('users.stor
 
 
 Route::inertia('employer/dahsboard', 'Employer/Dashboard')->name('employer.dashboard');
-Route::inertia('employer/project', 'Employer/PostProject')->name('employer.project');
+Route::get('/employer/project', [ProjectController::class, 'index'])->name('employer.project');
 Route::post('/employer/create', [ProjectController::class, 'store'])->name('employer.store');
-
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
 
 
