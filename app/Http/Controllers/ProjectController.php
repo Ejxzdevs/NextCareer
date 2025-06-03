@@ -79,6 +79,19 @@ class ProjectController extends Controller
         ]);
 
         return redirect()->route('employer.project')->with('success', 'Project updated successfully!');
-        }
-
     }
+
+    public function destroy($id)
+    {
+    
+        $project = Project::findOrFail($id);
+
+        // Check if the authenticated user owns the project
+        if ($project->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        $project->delete();
+
+        return redirect()->route('employer.project')->with('success', 'Project deleted successfully!');
+    }
+}

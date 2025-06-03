@@ -187,7 +187,7 @@
               type="submit"
               class="py-[5px] px-16 border-1 border-gray-300 text-blue-500 hover:text-blue-700 cursor-pointer shadow-md rounded-sm"
             >
-              {{ form.id ? 'Update Project' : 'Post Project' }}
+              {{ form.id ? 'Update' : 'Post' }}
             </button>
           </div>
         </form>
@@ -282,7 +282,6 @@ function submitForm() {
       onSuccess: () => {
         form.reset()
         showModal.value = false
-        // Reload the page to fetch the newly added project from the server
         window.location.reload()
       },
       onError: (errors) => {
@@ -301,7 +300,8 @@ function deleteProject(projectId) {
   if (confirm('Are you sure you want to delete this project?')) {
     form.delete(route('employer.destroy', projectId), {
       onSuccess: () => {
-        activeDropdown.value = null // Close dropdown after deletion
+        activeDropdown.value = null
+        window.location.reload()
       },
       onError: (errors) => {
         console.error('Error deleting project:', errors)
