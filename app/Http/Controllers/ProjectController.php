@@ -59,7 +59,6 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Find the project by ID
         $project = Project::findOrFail($id);
 
         // Check if the authenticated user owns the project
