@@ -12,12 +12,11 @@ class ProjectController extends Controller
     public function index()
         {
             $projects = Project::where('user_id', Auth::id())
-                ->orderBy('created_at', 'asc')  // Sorts by most recent first
+                ->orderBy('created_at', 'asc')
                 ->get();
 
-return Inertia::render('Employer/PostProject', [
-    'projects' => $projects,
-]);
+            return Inertia::render('Employer/PostProject', ['projects' => $projects,
+            ]);
     }
     public function store(Request $request)
     {
@@ -30,6 +29,7 @@ return Inertia::render('Employer/PostProject', [
         if (Auth::user()->account_type !== 'employer') {
             return redirect()->route('home')->with('error', 'You do not have permission to create a project.');
         }
+
     // Validate the incoming data
     $request->validate([
         'title' => 'required|string|max:255',      
@@ -58,28 +58,27 @@ return Inertia::render('Employer/PostProject', [
     }
 
     public function update(Request $request, $id)
-{
-    // Find the project by ID
-    $project = Project::findOrFail($id);
+    {
+        // Find the project by ID
+        $project = Project::findOrFail($id);
 
-    // Optional: Check if the authenticated user owns the project
-    if ($project->user_id !== Auth::id()) {
-        abort(403, 'Unauthorized action.');
-    }
+        // Check if the authenticated user owns the project
+        if ($project->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
-    // Update the project fields
-    $project->update([
-        'title' => $request->title,
-        'description' => $request->description,
-        'category' => $request->category,
-        'skills' => $request->skills,
-        'budget' => $request->budget,
-        'start_date' => $request->start_date,
-        'deadline' => $request->deadline,
-    ]);
+        // Update the project fields
+        $project->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category' => $request->category,
+            'skills' => $request->skills,
+            'budget' => $request->budget,
+            'start_date' => $request->start_date,
+            'deadline' => $request->deadline,
+        ]);
 
-    // Redirect with success message
         return redirect()->route('employer.project')->with('success', 'Project updated successfully!');
-    }
+        }
 
-}
+    }
