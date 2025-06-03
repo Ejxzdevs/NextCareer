@@ -201,8 +201,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 
 // Reactive state variables
-const showModal = ref(false) // Controls visibility of the project creation/edit modal
-const activeDropdown = ref(null) // Stores the index of the currently open project dropdown menu
+const showModal = ref(false)
+const activeDropdown = ref(null)
 
 // Retrieve projects data passed from the backend via Inertia props
 const { projects } = usePage().props
