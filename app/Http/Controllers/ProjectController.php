@@ -11,11 +11,13 @@ class ProjectController extends Controller
     {
     public function index()
         {
-            $projects = Project::where('user_id', Auth::id())->get();
+            $projects = Project::where('user_id', Auth::id())
+                ->orderBy('created_at', 'asc')  // Sorts by most recent first
+                ->get();
 
-            return Inertia::render('Employer/PostProject', [
-                'projects' => $projects,
-            ]);
+return Inertia::render('Employer/PostProject', [
+    'projects' => $projects,
+]);
     }
     public function store(Request $request)
     {
@@ -54,4 +56,30 @@ class ProjectController extends Controller
     return redirect()->route('employer.project')->with('success', 'Project created successfully!');
     
     }
+
+    public function update(Request $request, $id)
+{
+    // Find the project by ID
+    $project = Project::findOrFail($id);
+
+    // Optional: Check if the authenticated user owns the project
+    if ($project->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    // Update the project fields
+    $project->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'category' => $request->category,
+        'skills' => $request->skills,
+        'budget' => $request->budget,
+        'start_date' => $request->start_date,
+        'deadline' => $request->deadline,
+    ]);
+
+    // Redirect with success message
+        return redirect()->route('employer.project')->with('success', 'Project updated successfully!');
+    }
+
 }
