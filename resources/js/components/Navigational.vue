@@ -30,7 +30,7 @@
           <li class="cursor-pointer" >|</li>
           <li><a :href="route('employer.dashboard')" class="hover:text-gray-300">Home</a></li>
           <li class="cursor-pointer" >|</li>
-          <li v-if="userRole === 'freelance'" ><a class="hover:text-gray-300 mr-[10px]">Browse Project</a></li>
+          <li v-if="userRole === 'freelance'" ><a class="hover:text-gray-300 mr-[10px]" :href="route('freelance.browse')">Browse Project</a></li>
           <li v-if="userRole === 'employer'"><a :href="route('employer.project')" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</a></li>
         </ul>
       </div>
