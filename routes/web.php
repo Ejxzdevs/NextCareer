@@ -18,7 +18,9 @@ Route::get('/employer/project', [ProjectController::class, 'index'])->name('empl
 Route::post('/employer/create', [ProjectController::class, 'store'])->name('employer.store');
 Route::put('/employer/{id}', [ProjectController::class, 'update'])->name('employer.update');
 Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('employer.destroy');
+
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
+Route::inertia('freelance/browseProject', 'Freelance/Browse')->name('freelance.browse');
 
 
 
