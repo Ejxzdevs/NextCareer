@@ -6,43 +6,53 @@
             
             <div v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="project in projects" :key="project.id" 
-                    class="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-                    <div class="flex items-center mb-4">
-                        <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-                            <i class="fas fa-building text-gray-500 text-lg"></i>
+                    class="bg-white rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-building text-gray-500 text-xl"></i>
                         </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">{{ project.user.email }}</p>
-                            <p class="text-xs text-gray-500">Posted {{ formatDate(project.created_at) }}</p>
-                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="far fa-bookmark text-xl"></i>
+                        </button>
                     </div>
 
-                    <h2 class="text-xl font-bold text-gray-900 mb-2">{{ project.title }}</h2>
+                    <div class="flex items-center text-sm text-gray-500 mb-2">
+                        <span>{{ formatTimeAgo(project.created_at) }}</span>
+                    </div>
+
+                    <h2 class="text-xl font-semibold text-gray-900 mb-3">{{ project.title }}</h2>
 
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <span v-if="project.category" 
-                            class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                            {{ formatCategory(project.category) }}
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full">
+                            Contract
                         </span>
-                        <span v-if="project.skills" 
-                            class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                            {{ formatSkills(project.skills) }}
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full">
+                            Remote
                         </span>
                     </div>
 
-                    <p class="text-sm text-gray-600 mb-4 line-clamp-3">
-                        {{ project.description }}
-                    </p>
-
-                    <div class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4 pt-4 border-t border-gray-100">
-                        <div><strong>Budget:</strong> <span class="font-semibold text-gray-900">{{ formatCurrency(project.budget) }}</span></div>
-                        <div><strong>Deadline:</strong> <span class="font-semibold text-gray-900">{{ formatDate(project.deadline) }}</span></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-gray-600">
+                            <i class="fas fa-user mr-2"></i>
+                            <span class="text-sm">{{ project.user.email }}</span>
+                        </div>
+                        <div class="font-semibold text-gray-900">
+                            {{ formatCurrency(project.budget) }}
+                        </div>
                     </div>
 
-                    <button class="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 
-                        transition-colors duration-200 flex items-center justify-center gap-2">
-                        <i class="fas fa-paper-plane"></i>
-                        Apply Now
+                    <div class="mb-4">
+                        <div class="flex flex-wrap gap-2">
+                            <span v-for="skill in formatSkillsArray(project.skills)" :key="skill"
+                                class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded">
+                                {{ skill }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-black text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-800 
+                        transition-colors duration-200">
+                        Apply now
                     </button>
                 </div>
             </div>
@@ -67,47 +77,38 @@ const props = defineProps({
     }
 });
 
-function formatDate(date) {
-    if (!date) return 'N/A';
-    return new Date(date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
+function formatTimeAgo(date) {
+    if (!date) return '';
+    const now = new Date();
+    const past = new Date(date);
+    const diffTime = Math.abs(now - past);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 30) return `${diffDays} days ago`;
+    
+    const diffMonths = Math.floor(diffDays / 30);
+    if (diffMonths === 1) return '1 month ago';
+    if (diffMonths < 12) return `${diffMonths} months ago`;
+    
+    const diffYears = Math.floor(diffDays / 365);
+    if (diffYears === 1) return '1 year ago';
+    return `${diffYears} years ago`;
 }
 
 function formatCurrency(amount) {
     if (amount === null || typeof amount === 'undefined' || isNaN(amount)) {
         return 'N/A';
     }
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    }).format(amount);
+    return `$${Number(amount).toLocaleString()}/hr`;
 }
 
-function formatCategory(category) {
-    const categoryMap = {
-        'web-dev': 'Web Development',
-        'mobile-dev': 'Mobile Development',
-        'software-dev': 'Software Development',
-        'game-dev': 'Game Development',
-        'data-science': 'Data Science',
-        'ai-ml': 'AI / Machine Learning',
-        'cybersecurity': 'Cybersecurity',
-        'devops': 'DevOps',
-        'cloud-computing': 'Cloud Computing',
-        'blockchain': 'Blockchain',
-        'design': 'UI/UX Design',
-        'marketing': 'Marketing',
-        'writing': 'Content Writing'
-    };
-    return categoryMap[category] || category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-}
-
-function formatSkills(skills) {
-    if (!skills) return '';
-    return skills.split(',').map(skill => skill.trim()).filter(skill => skill).join(', ').toUpperCase();
+function formatSkillsArray(skills) {
+    if (!skills) return [];
+    return skills.split(',')
+        .map(skill => skill.trim())
+        .filter(skill => skill)
+        .map(skill => skill.toUpperCase());
 }
 
 onMounted(() => {
