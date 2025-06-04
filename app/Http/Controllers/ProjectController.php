@@ -8,16 +8,35 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
-    {
+{
     public function index()
-        {
-            $projects = Project::where('user_id', Auth::id())
+    {
+        // Initialize $projects outside the if/else if block to ensure it's always defined
+        $projects = collect(); // Initialize as an empty collection
+
+        if (Auth::user()->account_type == 'employer') {
+            $projects = Project::with('user')
+                ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'asc')
                 ->get();
-
-            return Inertia::render('Employer/PostProject', ['projects' => $projects,
+            return Inertia::render('Employer/PostProject', [
+                'projects' => $projects,
             ]);
+        } elseif (Auth::user()->account_type == 'freelance') {
+            // For freelance users, fetch all projects with their associated users
+            $projects = Project::with('user')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return Inertia::render('Freelance/Browse', [
+                'projects' => $projects,
+            ]);
+        }
+
+        // Fallback for unexpected account types
+        return redirect()->route('login');
     }
+
     public function store(Request $request)
     {
         // Check if the user is logged in

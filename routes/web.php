@@ -20,8 +20,6 @@ Route::put('/employer/{id}', [ProjectController::class, 'update'])->name('employ
 Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('employer.destroy');
 
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
-Route::inertia('freelance/browseProject', 'Freelance/Browse')->name('freelance.browse');
-
-
+Route::get('freelance/browse', [ProjectController::class, 'index'])->name('freelance.browse');
 
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
