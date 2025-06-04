@@ -1,127 +1,141 @@
 <template>
   <MainLayout>
-    <div class="text-right mt-3 me-3">
+    <div class="text-right mt-6 me-6">
       <button
         @click="openModalForCreate"
-        class="py-[5px] px-2 border-1 border-gray-300 text-blue-500 hover:text-blue-700 cursor-pointer shadow-md rounded-sm"
+        class="py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
       >
-        <i class="fas fa-plus fa"></i>
-        Post Project
+        <i class="fas fa-plus mr-2"></i>
+        Post New Project
       </button>
     </div>
 
-    <div class="w-full py-10 px-6">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div
-          v-for="(project, index) in projects"
-          :key="project.id"
-          class="bg-white shadow-md rounded-lg p-6 border border-gray-200 relative group"
-        >
-          <div class="flex justify-between items-start mb-2">
-            <h2 class="text-xl font-semibold text-gray-800">{{ project.title }}</h2>
+    <div class="w-full py-10 px-6 ">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-8 text-center sm:text-left">My Posted Projects</h1>
 
-            <div class="relative dropdown-wrapper">
+        <div v-if="projects && projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            v-for="(project, index) in projects"
+            :key="project.id"
+            class="bg-white rounded-xl shadow-lg p-7 border border-gray-100 flex flex-col relative group hover:shadow-xl transition-shadow duration-300 ease-in-out"
+          >
+            <div class="absolute top-4 right-4 dropdown-wrapper">
               <button
-                @click="toggleDropdown(index)"
-                class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer"
+                @click.stop="toggleDropdown(index)"
+                class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer p-1 rounded-full hover:bg-gray-50"
               >
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
+                  <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </button>
 
               <div
                 v-show="activeDropdown === index"
-                class="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded shadow-md z-10"
+                class="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-md shadow-lg z-10 overflow-hidden origin-top-right scale-95 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition duration-200 ease-out"
+                :class="{ 'scale-100 opacity-100': activeDropdown === index }"
               >
                 <a
                   href="#"
                   @click.prevent="openModalForEdit(project)"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >Edit</a
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150"
+                  >Edit Project</a
                 >
                 <a
                   href="#"
                   @click.prevent="deleteProject(project.id)"
-                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                  >Delete</a
+                  class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150"
+                  >Delete Project</a
                 >
               </div>
             </div>
-          </div>
 
-          <div class="text-xs text-gray-400 mb-4">
-            Posted on {{ formatDate(project.created_at) }}
-          </div>
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3 overflow-hidden">
+                <i class="fas fa-building text-gray-500 text-lg"></i>
+              </div>
+              <div>
+                <p class="text-md font-medium text-gray-800">{{ userEmail }}</p> <p class="text-xs text-gray-500">Posted {{ timeSincePosted(project.created_at) }}</p>
+              </div>
+            </div>
 
-          <p class="text-gray-700 text-sm mb-4">
-            {{ project.description }}
-          </p>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2 leading-tight">
+              {{ project.title }}
+            </h2>
 
-          <div class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4">
-            <div><strong>Category:</strong> {{ project.category }}</div>
-            <div><strong>Skills:</strong> {{ project.skills || 'N/A' }}</div>
-            <div><strong>Budget:</strong> {{ formatCurrency(project.budget) }}</div>
-            <div><strong>Start Date:</strong> {{ formatDate(project.start_date) }}</div>
-            <div><strong>Deadline:</strong> {{ formatDate(project.deadline) }}</div>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span v-if="project.category" class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                {{ formatCategory(project.category) }}
+              </span>
+              <span v-if="project.skills" class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                {{ project.skills.split(',').map(s => s.trim()).filter(s => s).join(', ').toUpperCase() }} </span>
+            </div>
+
+            <p class="text-sm text-gray-600 mb-4 line-clamp-3">
+              {{ project.description }}
+            </p>
+
+            <div class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4 mt-auto pt-4 border-t border-gray-100">
+                <div><strong>Budget:</strong> <span class="font-semibold text-gray-900">{{ formatCurrency(project.budget) }}</span></div>
+                <div><strong>Deadline:</strong> <span class="font-semibold text-gray-900">{{ formatDate(project.deadline) }}</span></div>
+                <div class="col-span-2"><strong>Start Date:</strong> <span class="font-semibold text-gray-900">{{ formatDate(project.start_date) }}</span></div>
+            </div>
           </div>
+        </div>
+
+        <div v-else class="text-center bg-white rounded-xl shadow-lg p-10 mt-10 text-gray-500 text-lg">
+          <i class="fas fa-box-open text-5xl mb-4 text-gray-300"></i>
+          <p class="text-xl font-semibold mb-2">No projects posted yet!</p>
+          <p>It looks like you haven't listed any projects. Start by clicking the "Post New Project" button.</p>
         </div>
       </div>
     </div>
 
     <div
       v-if="showModal"
-      class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-2"
+      class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 py-6"
       @click.self="closeModal"
     >
       <div
-        class="relative bg-white w-[450px] max-w-4xl max-h-[90vh] overflow-y-auto p-6 rounded-md shadow-2xl"
+        class="relative bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto p-8 rounded-lg shadow-2xl"
       >
         <button
           @click="closeModal"
-          class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-2xl font-bold cursor-pointer"
+          class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-3xl font-bold cursor-pointer transition-colors duration-200"
           aria-label="Close"
         >
-          <i class="fas fa-times"></i>
+          &times;
         </button>
 
-        <h3 class="text-[20px] mb-2 mt-3">{{ form.id ? 'Edit Project' : 'Post a Project' }}</h3>
+        <h3 class="text-2xl font-semibold text-gray-800 mb-6 mt-2">{{ form.id ? 'Edit Project' : 'Post a New Project' }}</h3>
 
-        <form @submit.prevent="submitForm" class="space-y-6">
+        <form @submit.prevent="submitForm" class="space-y-5">
           <input type="hidden" v-model="form.id" />
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Project Title</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
             <input
               type="text"
               v-model="form.title"
-              placeholder="Title:"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Build a Vue.js E-commerce Site"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Project Description</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Project Description</label>
             <textarea
               v-model="form.description"
-              rows="3"
-              placeholder="Description:"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="4"
+              placeholder="Provide a detailed description of your project, including goals, scope, and deliverables."
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             ></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Category / Industry</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category / Industry</label>
             <select
               v-model="form.category"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             >
               <option value="">Select a category</option>
@@ -135,59 +149,54 @@
               <option value="devops">DevOps</option>
               <option value="cloud-computing">Cloud Computing</option>
               <option value="blockchain">Blockchain</option>
+              <option value="design">UI/UX Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="writing">Content Writing</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Required Skills</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Required Skills (comma-separated)</label>
             <input
               type="text"
               v-model="form.skills"
-              placeholder="Skill set:"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Vue.js, Tailwind CSS, REST APIs"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Budget Amount ($)</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Budget Amount ($)</label>
             <input
               type="number"
               v-model="form.budget"
-              placeholder="Budget:"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., 5000"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Project Start Date</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Project Start Date</label>
             <input
               type="date"
               v-model="form.start_date"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1"
-              >Deadline / End Date</label
-            >
+            <label class="block text-sm font-medium text-gray-700 mb-1">Deadline / End Date</label>
             <input
               type="date"
               v-model="form.deadline"
-              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
           </div>
-          <div class="flex justify-center items-center">
+          <div class="flex justify-center pt-4">
             <button
               type="submit"
-              class="py-[5px] px-16 border-1 border-gray-300 text-blue-500 hover:text-blue-700 cursor-pointer shadow-md rounded-sm"
+              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
             >
-              {{ form.id ? 'Update' : 'Post' }}
+              {{ form.id ? 'Update Project' : 'Post Project' }}
             </button>
           </div>
         </form>
@@ -195,7 +204,6 @@
     </div>
   </MainLayout>
 </template>
-
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useForm, usePage } from '@inertiajs/vue3'
@@ -203,6 +211,8 @@ import { useForm, usePage } from '@inertiajs/vue3'
 // Reactive state variables
 const showModal = ref(false)
 const activeDropdown = ref(null)
+const page = usePage()
+const userEmail = page.props.user.email;
 
 // Retrieve projects data passed from the backend via Inertia props
 const { projects } = usePage().props
@@ -274,6 +284,7 @@ function submitForm() {
       },
       onError: (errors) => {
         console.log('Form update error:', errors)
+        // You might want to display these errors to the user
       },
     })
   } else {
@@ -286,6 +297,7 @@ function submitForm() {
       },
       onError: (errors) => {
         console.log('Form submission error:', errors)
+        // You might want to display these errors to the user
       },
     })
   }
@@ -297,7 +309,7 @@ function submitForm() {
  * @param {number} projectId - The ID of the project to delete.
  */
 function deleteProject(projectId) {
-  if (confirm('Are you sure you want to delete this project?')) {
+  if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
     form.delete(route('employer.destroy', projectId), {
       onSuccess: () => {
         activeDropdown.value = null
@@ -305,6 +317,7 @@ function deleteProject(projectId) {
       },
       onError: (errors) => {
         console.error('Error deleting project:', errors)
+        // You might want to display these errors to the user
       },
     })
   }
@@ -323,7 +336,7 @@ function toggleDropdown(index) {
  * @param {Event} event - The click event object.
  */
 function handleClickOutside(event) {
-  if (!event.target.closest('.dropdown-wrapper')) {
+  if (activeDropdown.value !== null && !event.target.closest('.dropdown-wrapper')) {
     activeDropdown.value = null
   }
 }
@@ -350,11 +363,78 @@ function formatDate(date) {
 
 /**
  * Formats a numerical amount into a currency string (e.g., $1,000).
+ * If the amount is 0, it will display "$0". If null/undefined/NaN, it will display "N/A".
  * @param {number} amount - The amount to format.
- * @returns {string} Formatted currency string or 'N/A' if input is empty.
+ * @returns {string} Formatted currency string or 'N/A' if input is empty/invalid.
  */
 function formatCurrency(amount) {
-  if (!amount) return 'N/A'
-  return `$${Number(amount).toLocaleString()}`
+  // Check specifically for null or undefined, or if it's NaN
+  if (amount === null || typeof amount === 'undefined' || isNaN(amount)) {
+    return 'N/A';
+  }
+  // If the amount is 0, display "$0"
+  if (Number(amount) === 0) {
+    return '$0';
+  }
+  // Otherwise, format as currency
+  return `$${Number(amount).toLocaleString()}`;
+}
+
+/**
+ * Formats the category string for display.
+ * @param {string} category - The raw category string.
+ * @returns {string} A more human-readable category.
+ */
+function formatCategory(category) {
+  const categoryMap = {
+    'web-dev': 'Web Development',
+    'mobile-dev': 'Mobile Development',
+    'software-dev': 'Software Development',
+    'game-dev': 'Game Development',
+    'data-science': 'Data Science',
+    'ai-ml': 'AI / Machine Learning',
+    'cybersecurity': 'Cybersecurity',
+    'devops': 'DevOps',
+    'cloud-computing': 'Cloud Computing',
+    'blockchain': 'Blockchain',
+    'design': 'UI/UX Design',
+    'marketing': 'Marketing',
+    'writing': 'Content Writing',
+  };
+  return categoryMap[category] || category.replace(/-/g, ' ').replace(/\b\w/g, s => s.toUpperCase());
+}
+
+/**
+ * Calculates and formats the time since a date was posted.
+ * @param {string} dateString - The date string to calculate from.
+ * @returns {string} A human-readable string like "1 day ago", "2 months ago", etc.
+ */
+function timeSincePosted(dateString) {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.floor((now - date) / 1000);
+
+  let interval = seconds / 31536000; // years
+  if (interval > 1) {
+    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' year ago' : ' years ago');
+  }
+  interval = seconds / 2592000; // months
+  if (interval > 1) {
+    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' month ago' : ' months ago');
+  }
+  interval = seconds / 86400; // days
+  if (interval > 1) {
+    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' day ago' : ' days ago');
+  }
+  interval = seconds / 3600; // hours
+  if (interval > 1) {
+    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' hour ago' : ' hours ago');
+  }
+  interval = seconds / 60; // minutes
+  if (interval > 1) {
+    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' minute ago' : ' minutes ago');
+  }
+  return 'just now';
 }
 </script>
