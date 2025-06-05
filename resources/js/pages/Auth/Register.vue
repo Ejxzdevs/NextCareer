@@ -1,37 +1,8 @@
-<script setup>
-import { computed , ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
-
-const form = useForm({
-  email: null,
-  password: null,
-  password_confirmation: null,
-  account_type: 'freelance',
-});
-
-const confirmPasswordTouched = ref(false);
-
-const passwordMismatch = computed(() => {
-  return confirmPasswordTouched.value && form.password !== form.password_confirmation;
-});
-
-function submit() {
-  if (!passwordMismatch.value) {
-    form.post(route('users.store'), {
-      onSuccess: () => {
-        form.reset();
-      },
-    });
-  }
-}
-
-function touchConfirmPassword() {
-  confirmPasswordTouched.value = true;
-}
-</script>
-
 <template>
   <div class="h-[100vh] w-[100vw] flex justify-center items-center px-2 ">
+     <div class="absolute top-0 left-0 w-full">
+          <Navigational />
+        </div>
     <div
       class="border border-gray-300 rounded-lg p-5 shadow-md bg-white
       w-[clamp(350px,50vw,400px)]
@@ -122,8 +93,40 @@ function touchConfirmPassword() {
             Submit
           </button>
         </div>
-        <Link class="text-blue-700 ms-1 underline pointer" :href="route('login')">Go to Login</Link>
+     
       </form>
     </div>
   </div>
 </template>
+<script setup>
+import { computed , ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import Navigational from '../../components/NavGuest.vue'; 
+
+const form = useForm({
+  email: null,
+  password: null,
+  password_confirmation: null,
+  account_type: 'freelance',
+});
+
+const confirmPasswordTouched = ref(false);
+
+const passwordMismatch = computed(() => {
+  return confirmPasswordTouched.value && form.password !== form.password_confirmation;
+});
+
+function submit() {
+  if (!passwordMismatch.value) {
+    form.post(route('users.store'), {
+      onSuccess: () => {
+        form.reset();
+      },
+    });
+  }
+}
+
+function touchConfirmPassword() {
+  confirmPasswordTouched.value = true;
+}
+</script>
