@@ -3,7 +3,7 @@
     <nav class="bg-[#334EAC] p-4">
       <!-- Desktop Menu -->
       <div class="flex justify-between items-center font-semibold">
-        <div class="hidden md:flex text-white text-lg">Next Career</div>
+        <div class="hidden md:flex text-white text-lg"><a :href="route('landing.page')">Next Career</a></div>
         <ul class="hidden md:flex space-x-6 text-white items-center">
             <li><Link class="text-white " :href="route('login')">Login</Link></li>
             <li><Link
