@@ -136,7 +136,7 @@ function formatSkillsArray(skills) {
 }
 
 function toggleBookmark(projectId) {
-    // Placeholder for bookmark logic
+    
     console.log('Toggling bookmark for project:', projectId);
 }
 
@@ -148,8 +148,11 @@ onMounted(() => {
 <style scoped>
 .line-clamp-3 {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    -webkit-line-clamp: 3;
+     line-clamp: 3;     
+  
+  
 }
 </style>
