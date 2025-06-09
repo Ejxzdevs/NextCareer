@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 
-
-Route::inertia('/', 'Auth/Login')->name('login');
+Route::inertia('/', 'LandingPage')->name('landing.page');
+Route::inertia('/Login', 'Auth/Login')->name('login');
 Route::inertia('/register', 'Auth/Register')->name('register');
 Route::post('/users/authenticate', [UserController::class, 'authenticate'])->name('users.authenticate');
 Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
