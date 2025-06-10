@@ -12,7 +12,7 @@
             </div>
 
             <!-- Image Grid -->
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 mb-16">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 px-4 sm:px-6 lg:px-8 mb-16">
                 
                 <!-- Developer Card -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
@@ -62,13 +62,5 @@ const getImageUrl = (path) => {
     return path;
 }
 </script>
-
-<style scoped>
-.site-image {
-    max-width: 100%;
-    height: auto;
-}
-</style>
-
 
 
