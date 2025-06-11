@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ApplicationController;
 
 Route::inertia('/', 'LandingPage')->name('landing.page');
 Route::inertia('/Login', 'Auth/Login')->name('login');
@@ -21,5 +22,6 @@ Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('em
 
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
 Route::get('freelance/browse', [ProjectController::class, 'index'])->name('freelance.browse');
+Route::post('freelance/application', [ApplicationController::class, 'store'])->name('freelance.application');
 
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
