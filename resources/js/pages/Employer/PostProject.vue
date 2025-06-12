@@ -3,18 +3,23 @@
     <div class="text-right mt-6 me-6">
       <button
         @click="openModalForCreate"
-        class="py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
+        class="py-2 px-4 cursor-pointer bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
       >
-        <i class="fas fa-plus mr-2"></i>
-        Post New Project
+        <i class="fas fa-plus mr-2 "></i>
+        Post Project
       </button>
     </div>
 
-    <div class="w-full py-10 px-6 ">
+    <div class="w-full py-10 px-6">
       <div class="max-w-7xl mx-auto">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-8 text-center sm:text-left">My Posted Projects</h1>
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-8 text-center sm:text-left">
+          My Posted Projects
+        </h1>
 
-        <div v-if="projects && projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          v-if="projects && projects.length > 0"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
           <div
             v-for="(project, index) in projects"
             :key="project.id"
@@ -26,7 +31,9 @@
                 class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer p-1 rounded-full hover:bg-gray-50"
               >
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path
+                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
                 </svg>
               </button>
 
@@ -51,11 +58,16 @@
             </div>
 
             <div class="flex items-center mb-4">
-              <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3 overflow-hidden">
+              <div
+                class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3 overflow-hidden"
+              >
                 <i class="fas fa-building text-gray-500 text-lg"></i>
               </div>
               <div>
-                <p class="text-md font-medium text-gray-800">{{ userEmail }}</p> <p class="text-xs text-gray-500">Posted {{ formatTimeAgo(project.created_at) }}</p>
+                <p class="text-md font-medium text-gray-800">{{ userEmail }}</p>
+                <p class="text-xs text-gray-500">
+                  Posted {{ formatTimeAgo(project.created_at) }}
+                </p>
               </div>
             </div>
 
@@ -64,50 +76,96 @@
             </h2>
 
             <div class="flex flex-wrap gap-2 mb-4">
-              <span v-if="project.category" class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
-                {{ formatCategory(project.category) }}
+              <span
+                v-if="project.category"
+                class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
+              >
+                {{ project.category.replace(/-/g, ' ').replace(/\b\w/g, (s) => s.toUpperCase()) }}
               </span>
-              <span v-if="project.skills" class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                {{ project.skills.split(',').map(s => s.trim()).filter(s => s).join(', ').toUpperCase() }} </span>
+              <span
+                v-if="project.skills"
+                class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+              >
+                {{
+                  project.skills
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter((s) => s)
+                    .join(', ')
+                    .toUpperCase()
+                }}
+              </span>
             </div>
 
             <p class="text-sm text-gray-600 mb-4 line-clamp-3">
               {{ project.description }}
             </p>
 
-            <div class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4 mt-auto pt-4 border-t border-gray-100">
-                <div><strong>Budget:</strong> <span class="font-semibold text-gray-900">{{ formatCurrency(project.budget) }}</span></div>
-                <div><strong>Deadline:</strong> <span class="font-semibold text-gray-900">{{ formatDate(project.deadline) }}</span></div>
-                <div class="col-span-2"><strong>Start Date:</strong> <span class="font-semibold text-gray-900">{{ formatDate(project.start_date) }}</span></div>
+            <div
+              class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4 mt-auto pt-4 border-t border-gray-100"
+            >
+              <div>
+                <strong>Budget:</strong>
+                <span class="font-semibold text-gray-900">{{
+                  formatCurrency(project.budget)
+                }}</span>
+              </div>
+              <div>
+                <strong>Start Date: </strong>
+                <span class="font-semibold text-gray-900">{{
+                  formatDate(project.start_date)
+                }}</span>
+              </div>
+              <div class="col-span-2">
+                <strong>Deadline: </strong>
+                <span class="font-semibold text-gray-900">{{
+                  formatDate(project.deadline)
+                }}</span>
+              </div>
             </div>
+            <button
+              @click="openDetailsModal(project)"
+              class="mt-4 w-full cursor-pointer py-2 px-4 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out"
+            >
+              See More
+            </button>
           </div>
         </div>
 
-        <div v-else class="text-center bg-white rounded-xl shadow-lg p-10 mt-10 text-gray-500 text-lg">
+        <div
+          v-else
+          class="text-center bg-white rounded-xl shadow-lg p-10 mt-10 text-gray-500 text-lg"
+        >
           <i class="fas fa-box-open text-5xl mb-4 text-gray-300"></i>
           <p class="text-xl font-semibold mb-2">No projects posted yet!</p>
-          <p>It looks like you haven't listed any projects. Start by clicking the "Post New Project" button.</p>
+          <p>
+            It looks like you haven't listed any projects. Start by clicking the "Post New Project"
+            button.
+          </p>
         </div>
       </div>
     </div>
 
+    <!-- EDIT & ADD PROJECT MODAL -->
     <div
-      v-if="showModal"
+      v-if="showEditCreateModal"
       class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 py-6"
-      @click.self="closeModal"
+      @click.self="closeEditCreateModal"
     >
       <div
         class="relative bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto p-8 rounded-lg shadow-2xl"
       >
         <button
-          @click="closeModal"
+          @click="closeEditCreateModal"
           class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-3xl font-bold cursor-pointer transition-colors duration-200"
           aria-label="Close"
         >
           &times;
         </button>
 
-        <h3 class="text-2xl font-semibold text-gray-800 mb-6 mt-2">{{ form.id ? 'Edit Project' : 'Post a New Project' }}</h3>
+        <h3 class="text-2xl font-semibold text-gray-800 mb-6 mt-2">
+          {{ form.id ? 'Edit Project' : 'Post a New Project' }}
+        </h3>
 
         <form @submit.prevent="submitForm" class="space-y-5">
           <input type="hidden" v-model="form.id" />
@@ -122,7 +180,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Project Description</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Project Description</label
+            >
             <textarea
               v-model="form.description"
               rows="4"
@@ -132,7 +192,9 @@
             ></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category / Industry</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Category / Industry</label
+            >
             <select
               v-model="form.category"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
@@ -155,7 +217,9 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Required Skills (comma-separated)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Required Skills (comma-separated)</label
+            >
             <input
               type="text"
               v-model="form.skills"
@@ -164,7 +228,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Budget Amount ($)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Budget Amount ($)</label
+            >
             <input
               type="number"
               v-model="form.budget"
@@ -174,7 +240,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Project Start Date</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Project Start Date</label
+            >
             <input
               type="date"
               v-model="form.start_date"
@@ -183,7 +251,9 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Deadline / End Date</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1"
+              >Deadline / End Date</label
+            >
             <input
               type="date"
               v-model="form.deadline"
@@ -194,7 +264,7 @@
           <div class="flex justify-center pt-4">
             <button
               type="submit"
-              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
+              class="w-full py-3 bg-blue-600 cursor-pointer text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 ease-in-out"
             >
               {{ form.id ? 'Update Project' : 'Post Project' }}
             </button>
@@ -202,22 +272,113 @@
         </form>
       </div>
     </div>
+
+    <!-- VIEW FULL DETAILS POP UP -->
+    <div
+      v-if="showDetailsModal"
+      class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 py-6"
+      @click.self="closeDetailsModal"
+    >
+      <div
+        class="relative bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 rounded-lg shadow-2xl"
+      >
+        <button
+          @click="closeDetailsModal"
+          class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-3xl font-bold cursor-pointer transition-colors duration-200"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <h3 class="text-3xl font-bold text-gray-900 mb-4">{{ selectedProject?.title }}</h3>
+
+        <div class="flex items-center mb-6 text-gray-600">
+          <div
+            class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-2 overflow-hidden"
+          >
+            <i class="fas fa-building text-gray-500 text-md"></i>
+          </div>
+          <p class="text-md font-medium text-gray-800">{{ userEmail }}</p>
+          <span class="mx-2 text-gray-400">•</span>
+          <p class="text-sm text-gray-500">
+            Posted {{ formatTimeAgo(selectedProject?.created_at) }}
+          </p>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="text-lg font-semibold text-gray-800 mb-2">Description:</h4>
+          <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">
+            {{ selectedProject?.description }}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">Category:</h4>
+            <span class="px-4 py-2 bg-blue-100 text-blue-800 font-medium rounded-full text-sm">
+              {{
+                selectedProject?.category
+                  .replace(/-/g, ' ')
+                  .replace(/\b\w/g, (s) => s.toUpperCase())
+              }}
+            </span>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">Required Skills:</h4>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="skill in selectedProject?.skills.split(',').map((s) => s.trim()).filter((s) => s)"
+                :key="skill"
+                class="px-4 py-2 bg-green-100 text-green-800 font-medium rounded-full text-sm"
+              >
+                {{ skill.toUpperCase() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">Budget:</h4>
+            <p class="text-xl font-bold text-blue-700">
+              {{ formatCurrency(selectedProject?.budget) }}
+            </p>
+          </div>
+          <div>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2">Timeline:</h4>
+            <p class="text-gray-700">
+              <strong class="text-gray-900">Start Date:</strong>
+              {{ formatDate(selectedProject?.start_date) }}
+            </p>
+            <p class="text-gray-700">
+              <strong class="text-gray-900">Deadline:</strong>
+              {{ formatDate(selectedProject?.deadline) }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </MainLayout>
 </template>
+
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useForm, usePage } from '@inertiajs/vue3'
-import { formatTimeAgo } from '../../utils/datetimeUtils';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { formatTimeAgo, formatDate } from '../../utils/datetimeUtils';
 import { formatCurrency } from '../../utils/numberUtils';
 
 // Reactive state variables
-const showModal = ref(false)
-const activeDropdown = ref(null)
-const page = usePage()
+const showEditCreateModal = ref(false);
+const showDetailsModal = ref(false);
+const activeDropdown = ref(null);
+const selectedProject = ref(null);
+
+const page = usePage();
 const userEmail = page.props.user.email;
 
 // Retrieve projects data passed from the backend via Inertia props
-const { projects } = usePage().props
+const { projects } = usePage().props;
 
 // Form state for creating and editing projects
 const form = useForm({
@@ -229,15 +390,15 @@ const form = useForm({
   budget: '',
   start_date: '',
   deadline: '',
-})
+});
 
 /**
  * Opens the modal for creating a new project.
  * Resets the form fields to ensure a clean slate.
  */
 function openModalForCreate() {
-  form.reset()
-  showModal.value = true
+  form.reset();
+  showEditCreateModal.value = true;
 }
 
 /**
@@ -246,26 +407,43 @@ function openModalForCreate() {
  * @param {object} project - The project object to be edited.
  */
 function openModalForEdit(project) {
-  form.id = project.id
-  form.title = project.title
-  form.description = project.description
-  form.category = project.category
-  form.skills = project.skills
-  form.budget = project.budget
+  form.id = project.id;
+  form.title = project.title;
+  form.description = project.description;
+  form.category = project.category;
+  form.skills = project.skills;
+  form.budget = project.budget;
   // Convert dates to 'YYYY-MM-DD' format required by HTML date input
-  form.start_date = project.start_date ? new Date(project.start_date).toISOString().split('T')[0] : ''
-  form.deadline = project.deadline ? new Date(project.deadline).toISOString().split('T')[0] : ''
-  showModal.value = true
-  activeDropdown.value = null // Close any open dropdown after initiating edit
+  form.start_date = project.start_date ? new Date(project.start_date).toISOString().split('T')[0] : '';
+  form.deadline = project.deadline ? new Date(project.deadline).toISOString().split('T')[0] : '';
+  showEditCreateModal.value = true;
+  activeDropdown.value = null; // Close any open dropdown after initiating edit
 }
 
 /**
  * Closes the project creation/edit modal.
  * Resets the form fields.
  */
-function closeModal() {
-  showModal.value = false
-  form.reset()
+function closeEditCreateModal() {
+  showEditCreateModal.value = false;
+  form.reset();
+}
+
+/**
+ * Opens the project details modal.
+ * @param {object} project - The project object to display details for.
+ */
+function openDetailsModal(project) {
+  selectedProject.value = project;
+  showDetailsModal.value = true;
+}
+
+/**
+ * Closes the project details modal.
+ */
+function closeDetailsModal() {
+  showDetailsModal.value = false;
+  selectedProject.value = null;
 }
 
 /**
@@ -279,29 +457,29 @@ function submitForm() {
     // Update existing project
     form.put(route('employer.update', form.id), {
       onSuccess: () => {
-        form.reset()
-        showModal.value = false
+        form.reset();
+        showEditCreateModal.value = false;
         // Reload the page to fetch updated projects from the server
-        window.location.reload()
+        window.location.reload();
       },
       onError: (errors) => {
-        console.log('Form update error:', errors)
+        console.log('Form update error:', errors);
         // You might want to display these errors to the user
       },
-    })
+    });
   } else {
     // Create new project
     form.post(route('employer.store'), {
       onSuccess: () => {
-        form.reset()
-        showModal.value = false
-        window.location.reload()
+        form.reset();
+        showEditCreateModal.value = false;
+        window.location.reload();
       },
       onError: (errors) => {
-        console.log('Form submission error:', errors)
+        console.log('Form submission error:', errors);
         // You might want to display these errors to the user
       },
-    })
+    });
   }
 }
 
@@ -314,14 +492,14 @@ function deleteProject(projectId) {
   if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
     form.delete(route('employer.destroy', projectId), {
       onSuccess: () => {
-        activeDropdown.value = null
-        window.location.reload()
+        activeDropdown.value = null;
+        window.location.reload();
       },
       onError: (errors) => {
-        console.error('Error deleting project:', errors)
+        console.error('Error deleting project:', errors);
         // You might want to display these errors to the user
       },
-    })
+    });
   }
 }
 
@@ -330,7 +508,7 @@ function deleteProject(projectId) {
  * @param {number} index - The index of the project whose dropdown is being toggled.
  */
 function toggleDropdown(index) {
-  activeDropdown.value = activeDropdown.value === index ? null : index
+  activeDropdown.value = activeDropdown.value === index ? null : index;
 }
 
 /**
@@ -339,54 +517,16 @@ function toggleDropdown(index) {
  */
 function handleClickOutside(event) {
   if (activeDropdown.value !== null && !event.target.closest('.dropdown-wrapper')) {
-    activeDropdown.value = null
+    activeDropdown.value = null;
   }
 }
 
 // Lifecycle hooks for event listener management
 onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
+  document.addEventListener('click', handleClickOutside);
+});
 
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
-
-/**
- * Formats a date string into a localized, human-readable format.
- * @param {string} date - The date string to format.
- * @returns {string} Formatted date string or 'N/A' if input is empty.
- */
-function formatDate(date) {
-  if (!date) return 'N/A'
-  const d = new Date(date)
-  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
-}
-
-/**
- * Formats the category string for display.
- * @param {string} category - The raw category string.
- * @returns {string} A more human-readable category.
- */
-function formatCategory(category) {
-  const categoryMap = {
-    'web-dev': 'Web Development',
-    'mobile-dev': 'Mobile Development',
-    'software-dev': 'Software Development',
-    'game-dev': 'Game Development',
-    'data-science': 'Data Science',
-    'ai-ml': 'AI / Machine Learning',
-    'cybersecurity': 'Cybersecurity',
-    'devops': 'DevOps',
-    'cloud-computing': 'Cloud Computing',
-    'blockchain': 'Blockchain',
-    'design': 'UI/UX Design',
-    'marketing': 'Marketing',
-    'writing': 'Content Writing',
-  };
-  return categoryMap[category] || category.replace(/-/g, ' ').replace(/\b\w/g, s => s.toUpperCase());
-}
-
-
-
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
