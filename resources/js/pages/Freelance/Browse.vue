@@ -1,141 +1,190 @@
 <template>
   <MainLayout>
     <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">Browse Projects</h1>
-      <p class="text-gray-600 mb-8">Explore available projects and find your next opportunity.</p>
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-3">
+          Find Your Next <span class="text-[#334EAC]">Venture</span>
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Explore a diverse range of available projects and discover exciting opportunities to
+          showcase your skills.
+        </p>
+      </div>
 
-      <div v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-if="projects.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <article
           v-for="project in projects"
           :key="project.id"
-          class="bg-white rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 border border-gray-100"
+          class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col"
         >
-          <div class="flex justify-between items-start mb-4">
-            <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-              <i class="fas fa-building text-gray-500 text-xl"></i>
+          <div class="p-6 pb-4 flex flex-col h-full">
+            <div class="flex justify-between items-start mb-4">
+              <div
+                class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl"
+              >
+                <i class="fas fa-project-diagram"></i>
+              </div>
+              <button
+                aria-label="Bookmark this project"
+                class="text-gray-400 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 rounded-full p-2 transition-colors duration-200"
+              >
+                <i class="far fa-bookmark text-xl"></i>
+              </button>
             </div>
+
+            <div class="flex items-center text-sm text-gray-500 mb-2">
+              <i class="far fa-clock mr-2"></i>
+              <span>Posted {{ formatTimeAgo(project.created_at) }}</span>
+            </div>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+              {{ project.title }}
+            </h2>
+            <p v-if="project.description" class="text-gray-600 text-sm mb-3 project-description">
+              {{ project.description }}
+            </p>
             <button
-              aria-label="Bookmark this project"
-              class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors duration-200"
+              @click="openDetailsModal(project)"
+              class="text-blue-600 hover:underline text-sm text-left mb-4 mt-auto focus:outline-none"
             >
-              <i class="far fa-bookmark text-xl"></i>
+              See more details
             </button>
           </div>
 
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <span>{{ formatTimeAgo(project.created_at) }}</span>
-          </div>
-
-          <h2 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-3">{{ project.title }}</h2>
-          <p v-if="project.description" class="text-gray-600 text-sm my-5 line-clamp-3">
-            {{ project.description }}
-          </p>
-
-          <div class="flex flex-wrap gap-3 mb-4">
-            <span class="px-3 py-1 bg-green-200 text-black text-sm font-medium rounded-md">Contract</span>
-            <span class="px-3 py-1 bg-green-200 text-black text-sm font-medium rounded-md">Remote</span>
-          </div>
-
-          <div class="flex items-center justify-between my-4">
-            <div class="text-gray-600 text-sm">
-              <i class="fas fa-user mr-2"></i>
-              <span>{{ project.user?.email || 'Unknown' }}</span>
-            </div>
-            <div class="font-semibold text-gray-900">{{ formatCurrency(project.budget) }}</div>
-          </div>
-
-          <div class="mb-4">
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-for="skill in formatSkillsArray(project.skills)"
-                :key="skill"
-                class="px-2 py-1 bg-blue-50 text-blue-600 text-xs font-medium rounded"
-              >
-                {{ skill }}
-              </span>
-            </div>
-          </div>
-
-          <button
-            @click="openApplyModal(project)"
-            class="w-full bg-[#334EAC] text-white font-semibold my-3 py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
-            aria-label="Apply for this project"
+          <div
+            class="mt-auto px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex-grow"
           >
-            Apply Now
-          </button>
+            <div class="grid grid-cols-2 text-sm text-gray-700 gap-y-3 gap-x-2 mb-4">
+              <div class="flex items-center">
+                <i class="fas fa-hand-holding-usd text-gray-500 mr-2"></i>
+                <div>
+                  <span class="font-bold text-gray-900">{{
+                    formatCurrency(project.budget)
+                  }}</span>
+                </div>
+              </div>
+              <div class="flex items-center">
+                <i class="far fa-calendar-alt text-gray-500 mr-2"></i>
+                <div>
+                  <span class="font-semibold text-gray-800">{{
+                    formatDate(project.deadline)
+                  }}</span>
+                </div>
+              </div>
+              <div class="col-span-2 flex items-center">
+                <i class="far fa-calendar-check text-gray-500 mr-2"></i>
+                <div>
+                  <span class="font-semibold text-gray-800">{{
+                    formatDate(project.start_date)
+                  }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="skill in formatSkillsArray(project.skills)"
+                  :key="skill"
+                  class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full transform hover:scale-105 transition-transform duration-200"
+                >
+                  {{ skill }}
+                </span>
+              </div>
+            </div>
+
+            <div class="mb-4 flex items-center text-sm text-gray-600">
+              <i class="fas fa-user-circle mr-2 text-gray-500"></i>
+              <span>{{ project.user?.email || 'Unknown Client' }}</span>
+            </div>
+
+            <button
+              @click="openApplyModal(project)"
+              class="w-full bg-[#334EAC] cursor-pointer text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              aria-label="Apply for this project"
+            >
+              Apply Now
+            </button>
+          </div>
         </article>
       </div>
 
       <div v-else class="text-center bg-white rounded-xl shadow-lg p-10 mt-10">
-        <i class="fas fa-search text-5xl text-gray-300 mb-4"></i>
-        <p class="text-xl font-semibold text-gray-800 mb-2">No projects found</p>
-        <p class="text-gray-600">Check back later for new opportunities.</p>
+        <i class="fas fa-folder-open text-6xl text-gray-300 mb-6"></i>
+        <p class="text-2xl font-bold text-gray-800 mb-3">No projects available right now</p>
+        <p class="text-gray-600 text-lg">
+          We're constantly adding new opportunities. Please check back soon!
+        </p>
       </div>
 
+      <!-- APPLY FORM -->
       <div
         v-if="showApplyModal"
-        class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4 py-6"
+        class="fixed inset-0 bg-black/60 bg-opacity-60 flex items-center justify-center z-50 p-4 sm:p-6"
       >
-        <div class="relative bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto p-8 rounded-lg shadow-2xl">
+        <div
+          class="relative bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto p-8 rounded-xl shadow-2xl transform scale-95 opacity-0 animate-fade-in-scale"
+        >
           <button
             @click="closeApplyModal"
-            class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-3xl font-bold cursor-pointer transition-colors duration-200"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-4xl font-light cursor-pointer transition-colors duration-200 focus:outline-none"
             aria-label="Close"
           >
             &times;
           </button>
 
-          <form @submit.prevent="submitForm" class="space-y-5">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+            Apply for <br /><span class="text-[#334EAC]"
+              >{{ selectedProject ? selectedProject.title : '' }}</span
+            >
+          </h2>
 
-             <div>
-              <h2 class="block font-medium text-gray-700 mb-1">
-               Application for
-                  <span>{{ selectedProject ? selectedProject.title : ' ' }}</span>
-              </h2>
-            </div>
-
-
+          <form @submit.prevent="submitForm" class="space-y-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Portfolio</label>
-              <input type="hidden" v-model="form.project_id"  />
+              <label for="portfolio" class="block text-sm font-medium text-gray-700 mb-1"
+                >Portfolio Link</label
+              >
               <input
-               v-model="form.link_portfolio"
-                type="text"
-                placeholder="Link your portfolio:"
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                id="portfolio"
+                v-model="form.link_portfolio"
+                type="url"
+                placeholder="e.g., https://yourportfolio.com"
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                 required
               />
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Upload resume</label>
-                <input
+              <label for="resume" class="block text-sm font-medium text-gray-700 mb-1"
+                >Upload Resume (PDF, DOC, DOCX)</label
+              >
+              <input
+                id="resume"
                 type="file"
                 @change="form.resume = $event.target.files[0]"
                 accept=".pdf, .doc, .docx"
-                placeholder="Link your portfolio:"
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
                 required
               />
             </div>
 
-            
-
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <label for="message" class="block text-sm font-medium text-gray-700 mb-1"
+                >Cover Letter/Message (Optional)</label
+              >
               <textarea
-               v-model="form.message"
-                rows="4"
-                placeholder="message(optional):"
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                required
+                id="message"
+                v-model="form.message"
+                rows="5"
+                placeholder="Tell us why you're a great fit for this project..."
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 shadow-sm"
               ></textarea>
             </div>
 
             <div class="flex justify-center pt-4">
               <button
                 type="submit"
-                class="w-full py-3 bg-[#334EAC] text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+                class="w-full py-3 bg-[#334EAC] cursor-pointer text-white font-bold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out text-lg"
               >
                 Submit Application
               </button>
@@ -143,6 +192,84 @@
           </form>
         </div>
       </div>
+
+        <!-- SHOW POP UP TO VIEW FULL DESCRIPTION -->
+      <div
+        v-if="showDetailsModal"
+        class="fixed inset-0 bg-black/60 bg-opacity-60 flex items-center justify-center z-50 p-4 sm:p-6"
+      >
+        <div
+          class="relative bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 rounded-xl shadow-2xl transform scale-95 opacity-0 animate-fade-in-scale"
+        >
+          <button
+            @click="closeDetailsModal"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-4xl font-light cursor-pointer transition-colors duration-200 focus:outline-none"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            {{ selectedProject ? selectedProject.title : 'Project Details' }}
+          </h2>
+          <p class="text-gray-600 mb-6">
+            {{ selectedProject ? selectedProject.description : 'No description available.' }}
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mb-6">
+            <div class="flex items-center">
+              <i class="fas fa-hand-holding-usd text-gray-500 mr-2"></i>
+              <strong>Budget:</strong>
+              <span class="ml-2 font-semibold text-gray-900">{{
+                selectedProject ? formatCurrency(selectedProject.budget) : 'N/A'
+              }}</span>
+            </div>
+            <div class="flex items-center">
+              <i class="far fa-calendar-alt text-gray-500 mr-2"></i>
+              <strong>Deadline:</strong>
+              <span class="ml-2 font-semibold text-gray-900">{{
+                selectedProject ? formatDate(selectedProject.deadline) : 'N/A'
+              }}</span>
+            </div>
+            <div class="flex items-center col-span-full">
+              <i class="far fa-calendar-check text-gray-500 mr-2"></i>
+              <strong>Start Date:</strong>
+              <span class="ml-2 font-semibold text-gray-900">{{
+                selectedProject ? formatDate(selectedProject.start_date) : 'N/A'
+              }}</span>
+            </div>
+            <div class="flex items-center col-span-full">
+              <i class="fas fa-user-circle text-gray-500 mr-2"></i>
+              <strong>Client:</strong>
+              <span class="ml-2 font-semibold text-gray-900">{{
+                selectedProject ? (selectedProject.user?.email || 'Unknown Client') : 'N/A'
+              }}</span>
+            </div>
+          </div>
+
+          <div v-if="selectedProject && formatSkillsArray(selectedProject.skills).length" class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Required Skills:</h3>
+            <div class="flex flex-wrap gap-2">
+              <span
+                v-for="skill in formatSkillsArray(selectedProject.skills)"
+                :key="skill"
+                class="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full"
+              >
+                {{ skill }}
+              </span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-gray-100">
+            <button
+              @click="openApplyModal(selectedProject)"
+              class="w-full bg-[#334EAC] cursor-pointer text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Apply Now
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </MainLayout>
 </template>
@@ -151,7 +278,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useForm, usePage } from '@inertiajs/vue3'
+import { useForm, usePage } from '@inertiajs/vue3';
 import { formatTimeAgo } from '../../utils/datetimeUtils';
 import { formatCurrency } from '../../utils/numberUtils';
 
@@ -160,60 +287,139 @@ const form = useForm({
   project_id: null,
   resume: null,
   message: '',
-  link_portfolio: ''
-})
-
+  link_portfolio: '',
+});
 
 const showApplyModal = ref(false);
+const showDetailsModal = ref(false); // New state for details modal
 const selectedProject = ref(null);
 
 // Access projects from the Inertia page props
 const { projects } = usePage().props;
 
+/**
+ * Formats a given date string into a localized short date format.
+ * @param {string} date - The date string to format.
+ * @returns {string} The formatted date string, or 'N/A' if null/empty.
+ */
+function formatDate(date) {
+  if (!date) return 'N/A';
+  const d = new Date(date);
+  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+/**
+ * Opens the application modal for a specific project.
+ * Resets the form and sets the selected project's ID.
+ * @param {Object} project - The project object to apply for.
+ */
 function openApplyModal(project) {
-  form.reset()
-  // console.log('Opening apply modal for project:', project.id);
+  form.reset(); // Clear previous form data
   selectedProject.value = project;
   form.project_id = project.id;
+  showDetailsModal.value = false; // Close details modal if open
   showApplyModal.value = true;
 }
 
+/**
+ * Closes the application modal and resets the form.
+ */
 function closeApplyModal() {
-  form.reset()
+  form.reset();
   showApplyModal.value = false;
 }
 
 /**
- * Handles the submission of the application form.
- * page reload on success for immediate data refresh.
+ * Opens the project details modal for a specific project.
+ * @param {Object} project - The project object to display details for.
  */
-function submitForm() {
-    // Submit the form
-    form.post(route('freelance.application'), {
-      onSuccess: () => {
-        showApplyModal.value = false
-        window.location.reload()
-      },
-      onError: (errors) => {
-        console.log('Form submission error:', errors)
-        // You might want to display these errors to the user
-      },
-    })
+function openDetailsModal(project) {
+  selectedProject.value = project;
+  showDetailsModal.value = true;
 }
 
+/**
+ * Closes the project details modal.
+ */
+function closeDetailsModal() {
+  showDetailsModal.value = false;
+  selectedProject.value = null; // Clear selected project when closing
+}
 
+/**
+ * Handles the submission of the application form.
+ * Reloads the page on success for immediate data refresh (consider more dynamic updates in a real app).
+ */
+function submitForm() {
+  // Submit the form
+  form.post(route('freelance.application'), {
+    onSuccess: () => {
+      showApplyModal.value = false;
+      // In a production app, consider using Inertia's partial reloads or
+      // reactive data updates instead of a full window reload for better UX.
+      window.location.reload();
+    },
+    onError: (errors) => {
+      console.error('Form submission error:', errors);
+      // You might want to display these errors to the user in a more user-friendly way,
+      // e.g., using a toast notification or inline error messages.
+    },
+  });
+}
+
+/**
+ * Formats a comma-separated string of skills into an array of trimmed, uppercase strings.
+ * Filters out any empty strings.
+ * @param {string} skills - The comma-separated skills string.
+ * @returns {string[]} An array of formatted skill strings.
+ */
 function formatSkillsArray(skills) {
   if (!skills) return [];
-  return skills.split(',').map(skill => skill.trim().toUpperCase()).filter(Boolean);
+  return skills.split(',').map((skill) => skill.trim().toUpperCase()).filter(Boolean);
 }
 </script>
 
 <style scoped>
+/* Utility class for line clamping */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 3;
   line-clamp: 3;
+}
+
+/* Specific styling for fixed-height description with ellipsis */
+.project-description {
+  height: 4.5rem; /* Approximately 3 lines for a typical font-size (1.5rem line-height * 3) */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Fallback for some older browsers */
+  -webkit-box-orient: vertical;
+  line-clamp: 3; /* Standard property for line clamping */
+}
+
+/* Keyframe for modal entry animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.3s ease-out forwards;
 }
 </style>
