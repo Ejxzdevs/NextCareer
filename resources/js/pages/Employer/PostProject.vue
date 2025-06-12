@@ -417,7 +417,7 @@ function openModalForEdit(project) {
   form.start_date = project.start_date ? new Date(project.start_date).toISOString().split('T')[0] : '';
   form.deadline = project.deadline ? new Date(project.deadline).toISOString().split('T')[0] : '';
   showEditCreateModal.value = true;
-  activeDropdown.value = null; // Close any open dropdown after initiating edit
+  activeDropdown.value = null;
 }
 
 /**
@@ -459,12 +459,10 @@ function submitForm() {
       onSuccess: () => {
         form.reset();
         showEditCreateModal.value = false;
-        // Reload the page to fetch updated projects from the server
         window.location.reload();
       },
       onError: (errors) => {
         console.log('Form update error:', errors);
-        // You might want to display these errors to the user
       },
     });
   } else {
@@ -477,7 +475,6 @@ function submitForm() {
       },
       onError: (errors) => {
         console.log('Form submission error:', errors);
-        // You might want to display these errors to the user
       },
     });
   }
