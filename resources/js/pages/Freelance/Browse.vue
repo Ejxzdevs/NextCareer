@@ -279,7 +279,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
-import { formatTimeAgo } from '../../utils/datetimeUtils';
+import { formatTimeAgo , formatDate } from '../../utils/datetimeUtils';
 import { formatCurrency } from '../../utils/numberUtils';
 
 // Form state for creating and editing projects
@@ -291,22 +291,12 @@ const form = useForm({
 });
 
 const showApplyModal = ref(false);
-const showDetailsModal = ref(false); // New state for details modal
+const showDetailsModal = ref(false);
 const selectedProject = ref(null);
 
 // Access projects from the Inertia page props
 const { projects } = usePage().props;
 
-/**
- * Formats a given date string into a localized short date format.
- * @param {string} date - The date string to format.
- * @returns {string} The formatted date string, or 'N/A' if null/empty.
- */
-function formatDate(date) {
-  if (!date) return 'N/A';
-  const d = new Date(date);
-  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-}
 
 /**
  * Opens the application modal for a specific project.
@@ -329,6 +319,8 @@ function closeApplyModal() {
   showApplyModal.value = false;
 }
 
+
+
 /**
  * Opens the project details modal for a specific project.
  * @param {Object} project - The project object to display details for.
@@ -343,7 +335,7 @@ function openDetailsModal(project) {
  */
 function closeDetailsModal() {
   showDetailsModal.value = false;
-  selectedProject.value = null; // Clear selected project when closing
+  selectedProject.value = null;
 }
 
 /**
@@ -355,14 +347,10 @@ function submitForm() {
   form.post(route('freelance.application'), {
     onSuccess: () => {
       showApplyModal.value = false;
-      // In a production app, consider using Inertia's partial reloads or
-      // reactive data updates instead of a full window reload for better UX.
       window.location.reload();
     },
     onError: (errors) => {
       console.error('Form submission error:', errors);
-      // You might want to display these errors to the user in a more user-friendly way,
-      // e.g., using a toast notification or inline error messages.
     },
   });
 }
@@ -396,18 +384,17 @@ function formatSkillsArray(skills) {
   line-clamp: 3;
 }
 
-/* Specific styling for fixed-height description with ellipsis */
 .project-description {
-  height: 4.5rem; /* Approximately 3 lines for a typical font-size (1.5rem line-height * 3) */
+  height: 4.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Fallback for some older browsers */
+  -webkit-line-clamp: 3; 
   -webkit-box-orient: vertical;
-  line-clamp: 3; /* Standard property for line clamping */
+  line-clamp: 3; 
 }
 
-/* Keyframe for modal entry animation */
+/* Keyframe for modal apply form */
 @keyframes fadeInScale {
   from {
     opacity: 0;

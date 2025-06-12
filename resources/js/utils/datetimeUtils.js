@@ -29,3 +29,14 @@ export function formatTimeAgo(date) {
 
   return 'Just now';
 }
+
+/**
+ * Formats a given date string into a localized short date format.
+ * @param {string} date - The date string to format.
+ * @returns {string} The formatted date string, or 'N/A' if null/empty.
+ */
+export function formatDate(date) {
+  if (!date) return 'N/A';
+  const d = new Date(date);
+  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+}
