@@ -208,6 +208,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { formatTimeAgo } from '../../utils/datetimeUtils';
+import { formatCurrency } from '../../utils/numberUtils';
 
 // Reactive state variables
 const showModal = ref(false)
@@ -360,25 +361,6 @@ function formatDate(date) {
   if (!date) return 'N/A'
   const d = new Date(date)
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
-}
-
-/**
- * Formats a numerical amount into a currency string (e.g., $1,000).
- * If the amount is 0, it will display "$0". If null/undefined/NaN, it will display "N/A".
- * @param {number} amount - The amount to format.
- * @returns {string} Formatted currency string or 'N/A' if input is empty/invalid.
- */
-function formatCurrency(amount) {
-  // Check specifically for null or undefined, or if it's NaN
-  if (amount === null || typeof amount === 'undefined' || isNaN(amount)) {
-    return 'N/A';
-  }
-  // If the amount is 0, display "$0"
-  if (Number(amount) === 0) {
-    return '$0';
-  }
-  // Otherwise, format as currency
-  return `$${Number(amount).toLocaleString()}`;
 }
 
 /**

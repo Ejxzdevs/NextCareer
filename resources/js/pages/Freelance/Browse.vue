@@ -153,6 +153,7 @@
 import { ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3'
 import { formatTimeAgo } from '../../utils/datetimeUtils';
+import { formatCurrency } from '../../utils/numberUtils';
 
 // Form state for creating and editing projects
 const form = useForm({
@@ -200,9 +201,6 @@ function submitForm() {
     })
 }
 
-function formatCurrency(amount) {
-  return isNaN(amount) ? 'N/A' : `$${Number(amount).toLocaleString()}/hr`;
-}
 
 function formatSkillsArray(skills) {
   if (!skills) return [];
