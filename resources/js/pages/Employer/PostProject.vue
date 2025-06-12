@@ -55,7 +55,7 @@
                 <i class="fas fa-building text-gray-500 text-lg"></i>
               </div>
               <div>
-                <p class="text-md font-medium text-gray-800">{{ userEmail }}</p> <p class="text-xs text-gray-500">Posted {{ timeSincePosted(project.created_at) }}</p>
+                <p class="text-md font-medium text-gray-800">{{ userEmail }}</p> <p class="text-xs text-gray-500">Posted {{ formatTimeAgo(project.created_at) }}</p>
               </div>
             </div>
 
@@ -207,6 +207,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useForm, usePage } from '@inertiajs/vue3'
+import { formatTimeAgo } from '../../utils/datetimeUtils';
 
 // Reactive state variables
 const showModal = ref(false)
@@ -404,37 +405,6 @@ function formatCategory(category) {
   return categoryMap[category] || category.replace(/-/g, ' ').replace(/\b\w/g, s => s.toUpperCase());
 }
 
-/**
- * Calculates and formats the time since a date was posted.
- * @param {string} dateString - The date string to calculate from.
- * @returns {string} A human-readable string like "1 day ago", "2 months ago", etc.
- */
-function timeSincePosted(dateString) {
-  if (!dateString) return 'N/A';
-  const date = new Date(dateString);
-  const now = new Date();
-  const seconds = Math.floor((now - date) / 1000);
 
-  let interval = seconds / 31536000; // years
-  if (interval > 1) {
-    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' year ago' : ' years ago');
-  }
-  interval = seconds / 2592000; // months
-  if (interval > 1) {
-    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' month ago' : ' months ago');
-  }
-  interval = seconds / 86400; // days
-  if (interval > 1) {
-    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' day ago' : ' days ago');
-  }
-  interval = seconds / 3600; // hours
-  if (interval > 1) {
-    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' hour ago' : ' hours ago');
-  }
-  interval = seconds / 60; // minutes
-  if (interval > 1) {
-    return Math.floor(interval) + (Math.floor(interval) === 1 ? ' minute ago' : ' minutes ago');
-  }
-  return 'just now';
-}
+
 </script>
