@@ -1,6 +1,10 @@
-
-// Converts a given date into a human-readable "time ago" format (e.g., "5 minutes ago", "2 days ago").
-// Returns "Just now" if the date is very recent or invalid.
+/**
+ * Converts a given date into a human-readable "time ago" format (e.g., "5 minutes ago", "2 days ago").
+ * Returns "Just now" if the date is very recent or invalid.
+ *
+ * @param {string|Date} date - The date to format, can be a string or Date object.
+ * @returns {string} The formatted time ago string.
+ */
 export function formatTimeAgo(date) {
   if (!date) return '';
   const now = new Date();
