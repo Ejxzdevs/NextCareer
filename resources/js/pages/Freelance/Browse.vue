@@ -221,6 +221,14 @@
                 selectedProject ? formatCurrency(selectedProject.budget) : 'N/A'
               }}</span>
             </div>
+             <div class="flex items-center col-span-full">
+              <i class="far fa-calendar-check text-gray-500 mr-2"></i>
+              <strong>Start Date:</strong>
+              <span class="ml-2 font-semibold text-gray-900">{{
+                selectedProject ? formatDate(selectedProject.start_date) : 'N/A'
+              }}</span>
+            </div>
+            
             <div class="flex items-center">
               <i class="far fa-calendar-alt text-gray-500 mr-2"></i>
               <strong>Deadline:</strong>
@@ -228,13 +236,7 @@
                 selectedProject ? formatDate(selectedProject.deadline) : 'N/A'
               }}</span>
             </div>
-            <div class="flex items-center col-span-full">
-              <i class="far fa-calendar-check text-gray-500 mr-2"></i>
-              <strong>Start Date:</strong>
-              <span class="ml-2 font-semibold text-gray-900">{{
-                selectedProject ? formatDate(selectedProject.start_date) : 'N/A'
-              }}</span>
-            </div>
+           
             <div class="flex items-center col-span-full">
               <i class="fas fa-user-circle text-gray-500 mr-2"></i>
               <strong>Client:</strong>
