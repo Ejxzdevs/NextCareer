@@ -1,61 +1,121 @@
 <template>
-    <div class="h-[100vh] w-[100vw] flex flex-col justify-center items-center px-2 ">
-        <div class="absolute top-0 left-0 w-full">
-          <Navigational />
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col justify-center items-center px-4 py-8 sm:py-12">
+        <!-- Back to Landing Page -->
+        <div class="absolute top-4 left-4">
+            <a :href="route('landing.page')" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>
+                <span class="font-medium">Next Career</span>
+            </a>
         </div>
-        <div 
-        class="border border-gray-300 rounded-lg p-5 shadow-md bg-white 
-        w-[clamp(350px,50vw,400px)]
-        h-[auto] 
-        ">
-        <h2 class="text-2xl font-semibold text-center mb-6">Login</h2>
-        <form @submit.prevent="submit" >
-            <div v-if="$page.props.flash.error"  class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                <span class="block sm:inline">  {{ $page.props.flash.error }}</span>
+
+        <div class="w-full max-w-md mx-auto">
+            <!-- Logo or Brand -->
+            <div class="text-center mb-8">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Welcome Back</h1>
+                <p class="text-gray-600 mt-2 text-sm sm:text-base">Sign in to your account</p>
             </div>
-            <div class="mb-4 relative">
-                <label for="edit_number" class="block text-sm font-medium mb-2">Email</label>
-                <div class="flex items-center border border-gray-300 rounded-md">
-                    <i class="fas fa-envelope text-[#0b1215] pl-3"></i>
-                    <input 
-                        v-model="form.email"
-                        type="email" 
-                        name="email" 
-                        autocomplete="username"
-                        class="text-sm p-2 w-full border-none focus:outline-none focus:ring-1 focus:ring-blue-300 pl-2" 
-                        placeholder="Enter Email:" 
-                        required>
+
+            <!-- Login Form -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+                <form @submit.prevent="submit">
+                    <!-- Error Message -->
+                    <div v-if="$page.props.flash.error" class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-red-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700">{{ $page.props.flash.error }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-envelope text-gray-400"></i>
+                            </div>
+                            <input 
+                                v-model="form.email"
+                                type="email" 
+                                name="email" 
+                                id="email"
+                                autocomplete="username"
+                                class="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm sm:text-base"
+                                placeholder="Enter your email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <input
+                                v-model="form.password" 
+                                type="password"  
+                                name="password"
+                                id="password"
+                                autocomplete="current-password" 
+                                class="block w-full pl-10 pr-3 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-sm sm:text-base"
+                                placeholder="Enter your password"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="flex items-center mb-6">
+                        <input
+                            id="remember_me"
+                            type="checkbox"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        >
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-700">
+                            Remember me
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
+                    >
+                        Sign in
+                    </button>
+
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-500 hover:underline">Forgot password?</a>
+                    </div>
+                </form>
+
+                <!-- Sign Up Link -->
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Don't have an account?
+                        <Link :href="route('register')" class="font-medium text-blue-600 hover:text-blue-500">
+                            Sign up
+                        </Link>
+                    </p>
                 </div>
             </div>
-            <div class="mb-4 relative">
-                <label for="edit_address" class="block text-sm font-medium mb-2">Password</label>
-                <div class="flex items-center border border-gray-300 rounded-md">
-                    <i class="fas fa-lock text-[#0b1215] pl-3"></i>
-                    <input
-                        v-model="form.password" 
-                        type="password"  
-                        name="password"
-                        autocomplete="current-password" 
-                        class="text-sm p-2 w-full border-none focus:outline-none focus:ring-1 focus:ring-blue-300 pl-2" 
-                        placeholder="Enter Password:" 
-                        required>
-                </div>
-            </div>
-            <div class="flex justify-center">
-                <button type="submit" class="w-full py-2 bg-[#334EAC] hover:bg-[#334dace6] text-white font-semibold rounded-md  hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer transition-all duration-200 ease-in-out">Submit</button>
-            </div>
-           
-        </form>
         </div>
     </div>
 </template>
+
 <script setup>
 import { useForm } from '@inertiajs/vue3'
-import Navigational from '../../components/NavGuest.vue'; // Still import it if you plan to use it
+import { Link } from '@inertiajs/vue3'
 
 const form = useForm({
-  email: null,
-  password: null,
+    email: null,
+    password: null,
 })
 
 function submit() {
