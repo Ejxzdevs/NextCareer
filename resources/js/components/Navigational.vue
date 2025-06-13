@@ -3,7 +3,9 @@
     <nav class="bg-[#334EAC] p-4">
       <!-- Desktop Menu -->
       <div class="flex justify-between items-center">
-        <div class="hidden md:flex text-white text-lg font-semibold">Next Career</div>
+        <div class="hidden md:flex text-white text-lg font-semibold">
+          <a :href="route('landing.page')">Next Career</a>
+        </div>
         <ul class="hidden md:flex space-x-6 text-white items-center">
           <li><a href="/jobs" class="hover:text-gray-300">
             <i class="fas fa-bell"></i>
@@ -37,7 +39,9 @@
 
       <!-- Mobile Menu -->
       <div class="md:hidden flex flex-row justify-between">
-        <div class="text-white text-lg font-semibold">Next Career</div>
+        <div class="text-white text-lg font-semibold">
+          <a :href="route('landing.page')">Next Career</a>
+        </div>
         <div class="flex flex-row">
         <ul class="flex flex-row gap-4 me-3 text-white items-center">
           <li><a href="/jobs" class="hover:text-gray-300">
