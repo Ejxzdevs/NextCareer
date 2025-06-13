@@ -45,7 +45,7 @@
             </p>
             <button
               @click="openDetailsModal(project)"
-              class="text-blue-600 hover:underline text-sm text-left mb-4 mt-auto focus:outline-none"
+              class="text-blue-600 cursor-pointer hover:underline text-sm text-left mb-4 mt-auto focus:outline-none"
             >
               See more details
             </button>
@@ -84,11 +84,9 @@
             <div class="mb-4">
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="skill in formatSkillsArray(project.skills)"
-                  :key="skill"
                   class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full transform hover:scale-105 transition-transform duration-200"
                 >
-                  {{ skill }}
+                  {{ formatSkills (project.skills) }}
                 </span>
               </div>
             </div>
@@ -246,15 +244,13 @@
             </div>
           </div>
 
-          <div v-if="selectedProject && formatSkillsArray(selectedProject.skills).length" class="mb-6">
+          <div v-if="selectedProject" class="mb-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-2">Required Skills:</h3>
             <div class="flex flex-wrap gap-2">
               <span
-                v-for="skill in formatSkillsArray(selectedProject.skills)"
-                :key="skill"
                 class="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full"
               >
-                {{ skill }}
+                {{ formatSkills (selectedProject.skills) }}
               </span>
             </div>
           </div>
@@ -280,6 +276,7 @@
 import { ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { formatTimeAgo , formatDate } from '../../utils/datetimeUtils';
+import { formatSkills } from '../../utils/stringUtils';
 import { formatCurrency } from '../../utils/numberUtils';
 
 // Form state for creating and editing projects
@@ -355,16 +352,7 @@ function submitForm() {
   });
 }
 
-/**
- * Formats a comma-separated string of skills into an array of trimmed, uppercase strings.
- * Filters out any empty strings.
- * @param {string} skills - The comma-separated skills string.
- * @returns {string[]} An array of formatted skill strings.
- */
-function formatSkillsArray(skills) {
-  if (!skills) return [];
-  return skills.split(',').map((skill) => skill.trim().toUpperCase()).filter(Boolean);
-}
+
 </script>
 
 <style scoped>

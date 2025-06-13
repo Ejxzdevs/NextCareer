@@ -86,14 +86,7 @@
                 v-if="project.skills"
                 class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
               >
-                {{
-                  project.skills
-                    .split(',')
-                    .map((s) => s.trim())
-                    .filter((s) => s)
-                    .join(', ')
-                    .toUpperCase()
-                }}
+                {{ formatSkills(project.skills) }}
               </span>
             </div>
 
@@ -366,6 +359,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { formatTimeAgo, formatDate } from '../../utils/datetimeUtils';
+import { formatSkills} from '../../utils/stringUtils';
 import { formatCurrency } from '../../utils/numberUtils';
 
 // Reactive state variables
