@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-  import Navigational from '../../components/Navigational.vue';
+  import Navigational from '../../components/shared/Navigational.vue';
  
   export default {
     components: {
