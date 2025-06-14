@@ -167,7 +167,7 @@
             <input
               type="text"
               v-model="form.title"
-              placeholder="e.g., Build a Vue.js E-commerce Site"
+              placeholder="e.g: Build an E-commerce Site"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
@@ -179,7 +179,7 @@
             <textarea
               v-model="form.description"
               rows="4"
-              placeholder="Provide a detailed description of your project, including goals, scope, and deliverables."
+              placeholder="Descriptions:"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             ></textarea>
@@ -216,7 +216,7 @@
             <input
               type="text"
               v-model="form.skills"
-              placeholder="e.g., Vue.js, Tailwind CSS, REST APIs"
+              placeholder="e.g: PHP, HTML, CSS, JavaScript"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
             />
           </div>
@@ -227,7 +227,7 @@
             <input
               type="number"
               v-model="form.budget"
-              placeholder="e.g., 5000"
+              placeholder="Amount:"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               required
             />
