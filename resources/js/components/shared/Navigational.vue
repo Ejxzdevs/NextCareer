@@ -5,11 +5,7 @@
           <Link :href="route('landing.page')">Next Career</Link>
         </div>
         <ul class="hidden md:flex space-x-6 text-white items-center">
-          <li>
-            <Link href="/jobs" class="hover:text-gray-300">
-              <i class="fas fa-bell"></i>
-            </Link>
-          </li>
+          <Notification />
           <li>
             <Link href="/companies" class="hover:text-gray-300">
               <i class="fas fa-envelope"></i>
@@ -72,10 +68,10 @@
 import { ref, watch } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import UserDropdown from '@/Components/Shared/UserDropdown.vue';
+import Notification from '@/Components/Shared/NotifDropdown.vue';
 
 const page = usePage();
 
-// Reactive variables for the main navigation (mobile menu)
 const isMenuOpen = ref(false);
 const userRole = ref('guest');
 
@@ -100,5 +96,4 @@ watch(() => page.props.user, (newVal) => {
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
-
 </script>
