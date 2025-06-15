@@ -26,5 +26,11 @@ class Project extends Model
     {
         return $this->belongsTo(User::class); // A project belongs to one user
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
 }
 
