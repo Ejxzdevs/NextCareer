@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\NotificationController;
 
 Route::inertia('/', 'LandingPage')->name('landing.page');
 Route::inertia('/Login', 'Auth/Login')->name('login');
@@ -25,3 +26,5 @@ Route::get('freelance/browse', [ProjectController::class, 'index'])->name('freel
 Route::post('freelance/application', [ApplicationController::class, 'store'])->name('freelance.application');
 
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+Route::get('/notifications/raw-projects', [NotificationController::class, 'getUserNotifications'])->name('api.raw.notifications');
