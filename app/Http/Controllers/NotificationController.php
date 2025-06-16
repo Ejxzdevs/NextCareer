@@ -2,31 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB; // <-- Import DB facade for raw expressions
 
 class NotificationController extends Controller
 {
     /**
-     * Get projects and related applications for the authenticated user.
+     * Get projects and related applications with applicant info for the authenticated user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getUserNotifications(Request $request)
     {
-        $userId = 3;
+        $userId = Auth::id() ?? 3; // Use authenticated user or fallback to 3
 
-        // Get the latest 10 projects for the authenticated user, with all related applications
-        $projectsWithApplications = Project::where('user_id', $userId)
-                                           ->with('applications') // Load all fields of related applications
-                                           ->orderByDesc('updated_at')
-                                           ->limit(10)
-                                           ->get();
+        // Perform join query replicating the raw SQL you requested
+        $userData = User::where('users.id', $userId)
+            ->join('projects', 'users.id', '=', 'projects.user_id')
+            ->join('applications', 'projects.id', '=', 'applications.project_id')
+            ->select(
+                'users.*',
+                'projects.*',
+                'applications.*',
+                DB::raw('(SELECT email FROM users WHERE users.id = applications.user_id) as applicant_email')
+            )
+            ->get();
 
         return response()->json([
-            'projectsWithApplications' => $projectsWithApplications,
+            'notifications' => $userData,
         ]);
     }
 }
