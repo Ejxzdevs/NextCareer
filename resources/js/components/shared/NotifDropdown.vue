@@ -79,7 +79,6 @@ const fetchApiData = async () => {
   error.value = null;
 
   try {
-    // Use Ziggy's route helper if available
     const response = await fetch(route('api.raw.notifications'));
 
     if (!response.ok) {
@@ -88,7 +87,7 @@ const fetchApiData = async () => {
     }
 
     const data = await response.json();
-    rawProjectData.value = data.projectsWithApplications || [];
+    rawProjectData.value = data.notifications || [];
 
     console.log('Fetched Notifications:', rawProjectData.value);
   } catch (err) {
@@ -103,9 +102,9 @@ const fetchApiData = async () => {
 const notifications = computed(() =>
   rawProjectData.value.map(project => ({
     id: project.project_id || project.id,
-    message: `New update on your project: "${project.title}"`,
+    message: `${project.applicant_email} applied to your ${project.title}`,
     time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
-    read: false, // Default unread
+    read: false, 
     icon: 'fas fa-briefcase'
   }))
 );
