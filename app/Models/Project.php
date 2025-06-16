@@ -22,7 +22,7 @@ class Project extends Model
     ];
 
     // Define the relationship to the User model
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class); // A project belongs to one user
     }
