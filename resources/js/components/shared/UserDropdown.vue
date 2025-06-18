@@ -1,6 +1,6 @@
 <template>
   <li class="relative">
-    <button @click="toggleDropdown" class="hover:text-gray-300 cursor-pointer flex items-center gap-1">
+    <button @click="toggleDropdown" ref="dropdownRef" class="hover:text-gray-300 cursor-pointer flex items-center gap-1">
       <i class="fas fa-user"></i>
     </button>
     <ul
@@ -16,6 +16,7 @@
           :href="route('logout')"
           method="post"
           class="w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          @click="closeDropdown"
         >
           Sign out
         </Link>
@@ -25,35 +26,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
+import { useDropdown } from '../../composables/useToggleVisibility'; // Adjust path as needed
 
-const isDropdownOpen = ref(false);
+const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
 
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-// --- Logic to close dropdown when clicking outside ---
-const handleClickOutside = (event) => {
-  // Check if the click target is outside of the component's root <li> element
-  // This assumes the <li> is the top-level element of this component
-  const componentElement = event.target.closest('li.relative');
-  if (!componentElement || !componentElement.contains(event.target)) {
-    isDropdownOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
-
-// --- Close dropdown on Inertia page navigation ---
 router.on('finish', () => {
-  isDropdownOpen.value = false;
+  closeDropdown();
 });
 </script>
