@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Application;
@@ -50,32 +47,39 @@ class NotificationController extends Controller
     }
 
     /**
-     * Mark all 'pending' applications as 'viewed' for the authenticated user's projects.
+     * Mark all applications for the authenticated user's projects as 'view'.
+     * Only applications with 'pending' status will be updated.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function markApplicationsAsViewed(Request $request): RedirectResponse
+    public function markApplicationsAsViewed(Request $request)
     {
-        $userId = auth::id(); // ✅ Use authenticated user
+        $userId = auth::id();
 
         try {
-            $projectIds = Project::where('user_id', $userId)->pluck('id');
+            $user_project_id = Project::where('user_id', $userId)->pluck('id');
 
-            if ($projectIds->isEmpty()) {
-                return Redirect::back()->with('info', 'No applications to update.');
+            if ($user_project_id->isEmpty()) {
+                return response()->json([
+                    'message' => 'No applications to update for your projects.',
+                    'updated_count' => 0,
+                ]);
             }
+            $updatedCount = Application::whereIn('project_id',     $user_project_id)
+                                      ->where('application_status', 'pending')
+                                      ->update(['application_status' => 'viewed']);
 
-            $updatedCount = Application::whereIn('project_id', $projectIds)
-                ->where('application_status', 'pending')
-                ->update(['application_status' => 'viewed']);
+            return response()->json([
+                'message' => 'Applications marked as viewed successfully.',
+                'updated_count' => $updatedCount,
+            ]);
 
-            return Redirect::back()->with('success', "$updatedCount application(s) marked as viewed.");
-        } catch (\Throwable $e) {
-            Log::error('Failed to mark applications as viewed: ' . $e->getMessage());
-
-            return Redirect::back()->with('error', 'Something went wrong. Please try again.');
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to mark applications as viewed.',
+                'details' => $e->getMessage(),
+            ], 500);
         }
     }
-   
 }
