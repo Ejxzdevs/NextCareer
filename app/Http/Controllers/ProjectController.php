@@ -11,8 +11,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        // Initialize $projects outside the if/else if block to ensure it's always defined
-        $projects = collect(); // Initialize as an empty collection
+        $projects = collect();
 
         if (Auth::user()->account_type == 'employer') {
             $projects = Project::with('user')
@@ -111,5 +110,33 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('employer.project')->with('success', 'Project deleted successfully!');
+    }
+
+    public function show($id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $project = Project::with('user')->find($id);
+
+        if (!$project) {
+            return Inertia::render('Employer/ViewProject', [
+                'error' => 'Project not found.',
+                'project' => null,
+            ]);
+        }
+
+        if (Auth::user()->account_type === 'employer' && $project->user_id !== Auth::id()) {
+            return Inertia::render('Employer/ViewProject', [
+                'error' => 'You do not have permission to view this project.',
+                'project' => null,
+            ]);
+        }
+
+        return Inertia::render('Employer/ViewProject', [
+            'project' => $project,
+            'error' => null,
+        ]);
     }
 }
