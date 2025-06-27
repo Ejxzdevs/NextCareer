@@ -39,7 +39,6 @@ export const fetchApiData = async () => {
 export const markAllAsRead = async () => {
     try {
         await axios.put(API_ENDPOINTS.MARK_ALL_AS_READ);
-        console.log('NotificationService: Applications marked as viewed successfully (markAllAsRead).');
         return { success: true, error: null };
     } catch (error) {
         console.error('NotificationService Error: Failed to mark all as read (markAllAsRead):', error);
