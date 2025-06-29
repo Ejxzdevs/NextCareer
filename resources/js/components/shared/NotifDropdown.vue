@@ -116,56 +116,77 @@ const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdo
 const rawProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
-const project_id = ref(null);
+const project_id = ref(null); // Not used in the provided snippet, kept as null
 
 /**
  * Fetch notifications data from API and update reactive state accordingly
  */
 const loadNotifications = async () => {
     isLoading.value = true;
-    fetchError.value = null;
+    fetchError.value = null; // Clear any previous error
+    rawProjectData.value = []; // Clear data before new fetch
 
-    const { data, error } = await fetchApiData();
+    try {
+        // fetchApiData MUST be implemented to return fully resolved 'data' or 'error'
+        const { data, error } = await fetchApiData(); 
 
-    if (error) {
-        fetchError.value = error;
-        rawProjectData.value = [];
-    } else {
-        rawProjectData.value = data;
+        if (error) {
+            fetchError.value = error;
+            // rawProjectData remains empty, as set above
+        } else {
+            rawProjectData.value = data; // Assign the actual, resolved data
+        }
+    } catch (e) {
+        // Catch any unexpected errors that might occur during the fetch process itself
+        console.error("Error in loadNotifications:", e);
+        fetchError.value = new Error("An unexpected error occurred while fetching notifications.");
+    } finally {
+        isLoading.value = false;
     }
-
-    isLoading.value = false;
 };
 
 /**
  * Mark all notifications as read via API, then refresh notifications list
  */
 const callMarkAllAsRead = async () => { 
-    fetchError.value = null;
+    fetchError.value = null; // Clear any previous error
 
-    const { success, error } = await markAllAsRead();
+    try {
+        // markAllAsRead MUST be implemented to return resolved 'success' or 'error'
+        const { success, error } = await markAllAsRead(); 
 
-    if (error) {
-        fetchError.value = error;
-    }
+        if (error) {
+            fetchError.value = error;
+        }
 
-    if (success) {
-        await loadNotifications();
+        if (success) {
+            await loadNotifications(); // Reload notifications to reflect the changes
+        }
+    } catch (e) {
+        // Catch any unexpected errors that might occur during the mark as read process
+        console.error("Error in callMarkAllAsRead:", e);
+        fetchError.value = new Error("An unexpected error occurred while marking notifications as read.");
     }
 };
 
 /**
  * Compute notification objects for UI from raw project/application data
  */
-const notifications = computed(() =>
-    rawProjectData.value.map(project => ({
+const notifications = computed(() => {
+    // Add a safety check: Ensure rawProjectData.value is an array before mapping
+    if (!Array.isArray(rawProjectData.value)) {
+        // Log a warning if it's not an array, helpful for debugging
+        console.warn("rawProjectData is not an array:", rawProjectData.value);
+        return []; // Return an empty array to prevent errors in the template
+    }
+    return rawProjectData.value.map(project => ({
         id: project.id,
         message: `${project.applicant_email} applied to your ${project.title}`,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
         icon: 'fas fa-briefcase'
-    }))
-);
+    }));
+});
 
 
 /**
@@ -177,8 +198,10 @@ function viewNotification(id) {
         alert('Invalid project ID.');
         return;
     }
+    // Assumes 'route' function is globally available (e.g., from Ziggy for Laravel routes)
     Inertia.get(route('project.show', id), {}, {
         onError: (errors) => {
+            console.error("Inertia navigation error:", errors);
             alert('Could not load project. It may not exist or you do not have permission.');
         }
     });
@@ -193,8 +216,18 @@ const pendingNotificationsCount = computed(() =>
     notifications.value.filter(notification => !notification.read).length
 );
 
+// Initial data load when the component is mounted
 onMounted(() => {
     loadNotifications();
 });
+
+// Optional: You could add a watcher if you want to reload notifications
+// every time the dropdown is opened, for example, but `onMounted` is usually enough.
+// watch(isDropdownOpen, (isOpen) => {
+//   if (isOpen) {
+//     loadNotifications(); // Reload notifications when dropdown opens
+//   }
+// });
+
 </script>
 
