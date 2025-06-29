@@ -59,7 +59,7 @@
             v-else
             v-for="notification in notifications"
             :key="notification.id"
-            @click="viewNotification(notification)"
+            @click="viewNotification(notification.id)"
             :class="[
               'p-2.5 mb-1 border border-gray-200 rounded flex items-center gap-2.5 cursor-pointer',
               notification.read ? 'hover:bg-gray-50' : 'bg-blue-100 font-semibold'
@@ -100,9 +100,10 @@
   </li>
 </template>
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useDropdown } from '../../composables/useToggleVisibility';
 import { fetchApiData, markAllAsRead } from '../../services/NotificationsService';
+import { Inertia } from '@inertiajs/inertia';
 
 /**
  * Initialize dropdown state and utility functions from custom composable
@@ -115,6 +116,7 @@ const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdo
 const rawProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
+const project_id = ref(null);
 
 /**
  * Fetch notifications data from API and update reactive state accordingly
@@ -157,13 +159,32 @@ const callMarkAllAsRead = async () => {
  */
 const notifications = computed(() =>
     rawProjectData.value.map(project => ({
-        id: project.project_id || project.id,
+        id: project.id,
         message: `${project.applicant_email} applied to your ${project.title}`,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
         icon: 'fas fa-briefcase'
     }))
 );
+
+
+/**
+ * Handle notification click to view details, passing project ID
+ * This function can be expanded to navigate to a specific page or perform other actions
+ */
+function viewNotification(id) {
+    if (!id) {
+        alert('Invalid project ID.');
+        return;
+    }
+    Inertia.get(route('project.show', id), {}, {
+        onError: (errors) => {
+            alert('Could not load project. It may not exist or you do not have permission.');
+        }
+    });
+    closeDropdown();
+}
+
 
 /**
  * Compute count of unread (pending) notifications for badge display

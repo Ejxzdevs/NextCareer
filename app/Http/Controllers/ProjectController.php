@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Project;
+use App\Models\Application;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -119,6 +120,7 @@ class ProjectController extends Controller
         }
 
         $project = Project::with('user')->find($id);
+        $userApplication = Application::with('user')->where('project_id', $id)->get();
 
         if (!$project) {
             return Inertia::render('Employer/ViewProject', [
@@ -134,8 +136,9 @@ class ProjectController extends Controller
             ]);
         }
 
-        return Inertia::render('Employer/ViewProject', [
+        return Inertia::render('Employer/ProjectShow', [
             'project' => $project,
+            'userApplication' => $userApplication,
             'error' => null,
         ]);
     }
