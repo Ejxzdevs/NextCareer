@@ -23,7 +23,7 @@
     >
       <div
         v-if="isDropdownOpen"
-        class="absolute right-0 mt-3 w-80 bg-white text-gray-800 shadow-xl rounded-lg border border-gray-200 z-50 overflow-hidden"
+        class="absolute right-0 mt-3 w-80 bg-white text-gray-800 shadow-xl rounded-lg border border-gray-200 z-50 overflow-x-hidden"
         @click.stop
       >
         <div
@@ -89,7 +89,7 @@
           class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
         >
           <a
-            href="/notifications"
+            :href="route('notifications.all')"
             class="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
             View All Notifications
@@ -102,7 +102,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
 import { useDropdown } from '../../composables/useToggleVisibility';
-import { fetchApiData, markAllAsRead } from '../../services/NotificationsService';
+import { fetchUserNotifications, markAllAsRead } from '../../services/NotificationsService';
 import { Inertia } from '@inertiajs/inertia';
 
 /**
@@ -125,7 +125,7 @@ const loadNotifications = async () => {
     isLoading.value = true;
     fetchError.value = null;
 
-    const { data, error } = await fetchApiData();
+    const { data, error } = await fetchUserNotifications();
 
     if (error) {
         fetchError.value = error;
