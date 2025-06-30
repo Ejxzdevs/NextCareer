@@ -38,7 +38,6 @@ class NotificationController extends Controller
                 DB::raw('(SELECT email FROM users WHERE users.id = applications.user_id) as applicant_email')
             )
             ->orderBy('applications.created_at', 'desc')
-            ->limit(5)
             ->get();
 
         return response()->json([
