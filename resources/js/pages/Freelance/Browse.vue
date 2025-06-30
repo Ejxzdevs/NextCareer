@@ -98,60 +98,13 @@
         @submitted="handleApplicationSubmitted"
       />
 
-      <div v-if="showDetailsModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-        <div
-          class="bg-white max-w-2xl w-full p-6 rounded-xl shadow-xl animate-fade-in-scale relative overflow-y-auto max-h-[90vh]"
-        >
-          <button @click="closeDetailsModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl">
-            &times;
-          </button>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">
-            {{ selectedProject?.title || 'Project Details' }}
-          </h2>
-          <p class="text-gray-700 mb-4">
-            {{ selectedProject?.description || 'No description available.' }}
-          </p>
+      <ProjectDetailsModal
+        :show="showDetailsModal"
+        :project="selectedProject"
+        @close="closeDetailsModal"
+        @openApplyModal="openApplyModal"
+      />
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800 mb-4">
-            <div class="flex items-center">
-              <i class="fas fa-hand-holding-usd text-gray-500 mr-2"></i>
-              <strong>Budget:</strong>
-              <span class="ml-2">{{ formatCurrency(selectedProject?.budget) }}</span>
-            </div>
-            <div class="flex items-center">
-              <i class="far fa-calendar-alt text-gray-500 mr-2"></i>
-              <strong>Deadline:</strong>
-              <span class="ml-2">{{ formatDate(selectedProject?.deadline) }}</span>
-            </div>
-            <div class="flex items-center col-span-full">
-              <i class="far fa-calendar-check text-gray-500 mr-2"></i>
-              <strong>Start Date:</strong>
-              <span class="ml-2">{{ formatDate(selectedProject?.start_date) }}</span>
-            </div>
-            <div class="flex items-center col-span-full">
-              <i class="fas fa-user-circle text-gray-500 mr-2"></i>
-              <strong>Client:</strong>
-              <span class="ml-2">{{ selectedProject?.user?.email || 'Unknown Client' }}</span>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <h3 class="text-sm font-semibold mb-2">Required Skills:</h3>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
-                {{ formatSkills(selectedProject?.skills) }}
-              </span>
-            </div>
-          </div>
-
-          <button
-            @click="openApplyModal(selectedProject)"
-            class="w-full bg-[#334EAC] text-white py-3 rounded-lg font-semibold hover:bg-blue-700"
-          >
-            Apply Now
-          </button>
-        </div>
-      </div>
     </div>
   </MainLayout>
 </template>
@@ -159,10 +112,9 @@
 <script setup>
 import { ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import { formatTimeAgo, formatDate } from '../../utils/datetimeUtils';
-import { formatSkills } from '../../utils/stringUtils';
-import { formatCurrency } from '../../utils/numberUtils';
+import { formatTimeAgo } from '../../utils/datetimeUtils';
 import ApplyModal from '../../components/modals/ApplyForm.vue';
+import ProjectDetailsModal from '../../components/modals/ShowProjectDetails.vue'
 
 const showApplyModal = ref(false);
 const showDetailsModal = ref(false);
@@ -177,7 +129,7 @@ const { projects } = usePage().props;
 function openApplyModal(project) {
   selectedProject.value = project;
   showApplyModal.value = true;
-  showDetailsModal.value = false;
+  showDetailsModal.value = false; // Ensure details modal is closed
 }
 
 /**
@@ -189,7 +141,7 @@ function closeApplyModal() {
 }
 
 /**
- * Handles the successful submission event from the application modal.
+ * Handles the successful submission event from the ApplyFormModal.
  * Displays a success alert and reloads the page.
  */
 function handleApplicationSubmitted() {
@@ -204,7 +156,7 @@ function handleApplicationSubmitted() {
 function openDetailsModal(project) {
   selectedProject.value = project;
   showDetailsModal.value = true;
-  showApplyModal.value = false;
+  showApplyModal.value = false; // Ensure apply modal is closed
 }
 
 /**
@@ -224,20 +176,5 @@ function closeDetailsModal() {
   line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-fade-in-scale {
-  animation: fadeInScale 0.3s ease-out forwards;
 }
 </style>
