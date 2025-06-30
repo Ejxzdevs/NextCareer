@@ -1,12 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\NotificationController;
 
 Route::inertia('/', 'LandingPage')->name('landing.page');
 Route::inertia('/Login', 'Auth/Login')->name('login');
@@ -28,4 +25,4 @@ Route::post('freelance/application', [ApplicationController::class, 'store'])->n
 
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/notifications/raw-projects', [NotificationController::class, 'getUserNotifications'])->name('api.raw.notifications');
+Route::inertia('/notifications', 'Employer/AllNotifications')->name('notifications.all');
