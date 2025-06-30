@@ -13,7 +13,7 @@
     <div class="w-full py-10 px-6">
       <div class="max-w-7xl mx-auto">
         <div class="text-center sm:text-left mb-8">
-          <h1 class="text-4xl font-extrabold text-gray-900">My Posted Projects</h1>
+          <h1 class="text-4xl font-extrabold text-gray-900">Your Job Posts</h1>
           <p class="text-xl text-gray-600 mt-2">Manage and view the projects you've listed.</p>
         </div>
 
