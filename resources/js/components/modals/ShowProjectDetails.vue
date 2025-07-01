@@ -1,59 +1,81 @@
 <template>
   <div v-if="show" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div
-      class="bg-white max-w-2xl w-full p-6 rounded-xl shadow-xl animate-fade-in-scale relative overflow-y-auto max-h-[90vh]"
+      class="bg-white max-w-md w-full p-4 md:p-6 rounded-md shadow-2xl animate-fade-in-scale relative overflow-y-auto max-h-[75vh] space-y-6"
     >
-      <button @click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl">
-        &times;
+      <!-- Close Button -->
+      <button @click="closeModal" class="absolute top-1 right-3 text-red-400 hover:text-red-700 text-2xl">
+        <i class="fas fa-times"></i>
       </button>
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">
-        {{ project?.title || 'Project Details' }}
-      </h2>
-      <p class="text-gray-700 mb-4">
-        {{ project?.description || 'No description available.' }}
-      </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800 mb-4">
-        <div class="flex items-center">
-          <i class="fas fa-hand-holding-usd text-gray-500 mr-2"></i>
-          <strong>Budget:</strong>
-          <span class="ml-2">{{ formatCurrency(project?.budget) }}</span>
-        </div>
-        <div class="flex items-center">
-          <i class="far fa-calendar-alt text-gray-500 mr-2"></i>
-          <strong>Deadline:</strong>
-          <span class="ml-2">{{ formatDate(project?.deadline) }}</span>
-        </div>
-        <div class="flex items-center col-span-full">
-          <i class="far fa-calendar-check text-gray-500 mr-2"></i>
-          <strong>Start Date:</strong>
-          <span class="ml-2">{{ formatDate(project?.start_date) }}</span>
-        </div>
-        <div class="flex items-center col-span-full">
-          <i class="fas fa-user-circle text-gray-500 mr-2"></i>
-          <strong>Client:</strong>
-          <span class="ml-2">{{ project?.user?.email || 'Unknown Client' }}</span>
-        </div>
-      </div>
+      <!-- Project Title -->
+      <header>
+        <h2 class="text-2xl font-bold text-gray-900 my-3">
+          {{ project?.title || 'Project Details' }}
+        </h2>
+        <p class="text-gray-600 text-sm">
+          {{ project?.description || 'No description available.' }}
+        </p>
+      </header>
 
-      <div class="mb-4">
-        <h3 class="text-sm font-semibold mb-2">Required Skills:</h3>
+      <!-- Details Grid -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800 text-sm">
+        <div class="flex items-start gap-2">
+          <i class="far fa-calendar-alt text-blue-500 mt-1"></i>
+          <div>
+            <strong class="block">Start Date</strong>
+            <span>{{ formatDate(project?.start_date) }}</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2">
+          <i class="far fa-calendar-check text-blue-500 mt-1"></i>
+          <div>
+            <strong class="block">Deadline</strong>
+            <span>{{ formatDate(project?.deadline) }}</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2">
+          <i class="fas fa-hand-holding-usd text-blue-500 mt-1"></i>
+          <div>
+            <strong class="block">Budget</strong>
+            <span>{{ formatCurrency(project?.budget) }}</span>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-2 md:col-span-2">
+          <i class="fas fa-user-circle text-blue-500 mt-1"></i>
+          <div>
+            <strong class="block">Client</strong>
+            <span>{{ project?.user?.email || 'Unknown Client' }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section>
+        <h3 class="text-sm font-semibold text-gray-700 mb-2">Required Skills:</h3>
         <div class="flex flex-wrap gap-2">
-          <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+          <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
             {{ formatSkills(project?.skills) }}
           </span>
         </div>
-      </div>
+      </section>
 
-      <button
-        @click="applyForProject(project)"
-        class="w-full bg-[#334EAC] text-white py-3 rounded-lg font-semibold hover:bg-blue-700"
-      >
-        Apply Now
-      </button>
+      <!-- Apply Button -->
+      <div class="flex justify-center">
+        <button
+          @click="applyForProject(project)"
+          class="w-full md:w-56 lg:w-64 bg-[#334EAC] text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+        >
+          Apply Now
+        </button>
+      </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { defineProps, defineEmits } from 'vue';
