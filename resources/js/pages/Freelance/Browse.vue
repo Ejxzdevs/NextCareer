@@ -12,35 +12,56 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-[30%_70%] gap-4 lg:gap-0 sm:px-4 md:px-8 lg:px-16 xl:px-32">
+        <!-- Sidebar Filters -->
         <aside class="bg-white p-4 rounded-xl shadow h-full md:h-screen overflow-y-auto sticky top-6">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Filters</h2>
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select class="w-full border border-gray-300 rounded-md p-2">
-                <option>All</option>
-                <option>Web Development</option>
-                <option>Design</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
-              <input
-                type="text"
-                placeholder="e.g. 100 - 1000"
-                class="w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
-              <select class="w-full border border-gray-300 rounded-md p-2">
-                <option>Newest</option>
-                <option>Budget: High to Low</option>
-              </select>
-            </div>
+
+          <!-- Search -->
+          <input
+            v-model="searchTitle"
+            type="text"
+            placeholder="Search title"
+            class="w-full border border-gray-300 rounded-md p-2 mb-4"
+          />
+
+          <!-- Category -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <select
+              v-model="category"
+              class="w-full border border-gray-300 rounded-md p-2"
+            >
+              <option value="">All</option>
+              <option value="web-dev">Web Development</option>
+              <option value="mobile-dev">Mobile Development</option>
+              <option value="software-dev">Software Development</option>
+              <option value="game-dev">Game Development</option>
+              <option value="data-science">Data Science</option>
+              <option value="ai-ml">AI / Machine Learning</option>
+              <option value="cybersecurity">Cybersecurity</option>
+              <option value="devops">DevOps</option>
+              <option value="cloud-computing">Cloud Computing</option>
+              <option value="blockchain">Blockchain</option>
+              <option value="design">UI/UX Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="writing">Content Writing</option>
+            </select>
+          </div>
+
+          <!-- Budget -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
+            <input
+              v-model="budgetRange"
+              type="text"
+              placeholder="e.g. 100 - 1000"
+              class="w-full border border-gray-300 rounded-md p-2"
+            />
+            <small class="text-xs text-gray-400">Format: min - max</small>
           </div>
         </aside>
 
+        <!-- Projects List -->
         <section class="space-y-3 h-full md:h-screen overflow-y-auto pr-2">
           <div v-if="projects.length > 0" class="space-y-4">
             <div
@@ -91,6 +112,7 @@
         </section>
       </div>
 
+      <!-- Modals -->
       <ApplyModal
         :show="showApplyModal"
         :selectedProject="selectedProject"
@@ -104,64 +126,76 @@
         @close="closeDetailsModal"
         @openApplyModal="openApplyModal"
       />
-
     </div>
   </MainLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { formatTimeAgo } from '../../utils/datetimeUtils';
 import ApplyModal from '../../components/modals/ApplyForm.vue';
-import ProjectDetailsModal from '../../components/modals/ShowProjectDetails.vue'
+import ProjectDetailsModal from '../../components/modals/ShowProjectDetails.vue';
 
 const showApplyModal = ref(false);
 const showDetailsModal = ref(false);
 const selectedProject = ref(null);
 
-const { projects } = usePage().props;
+const { projects: allProjects } = usePage().props;
 
-/**
- * Opens the application modal and sets the selected project.
- * @param {Object} project - The project data for which to open the application modal.
- */
+// Filters
+const searchTitle = ref('');
+const category = ref('');
+const budgetRange = ref('');
+
+// Filtered Projects
+const projects = computed(() => {
+  return allProjects.filter(project => {
+    const matchesTitle = project.title?.toLowerCase().includes(searchTitle.value.toLowerCase());
+
+    const matchesCategory = category.value === '' || project.category === category.value;
+
+    const matchesBudget = (() => {
+      if (!budgetRange.value.includes('-')) return true;
+
+      const [minStr, maxStr] = budgetRange.value.split('-').map(s => s.trim());
+      const min = parseFloat(minStr);
+      const max = parseFloat(maxStr);
+      if (isNaN(min) || isNaN(max)) return true;
+
+      const budget = parseFloat(project.budget);
+      if (isNaN(budget)) return false;
+
+      return budget >= min && budget <= max;
+    })();
+
+    return matchesTitle && matchesCategory && matchesBudget;
+  });
+});
+
+// Modal Functions
 function openApplyModal(project) {
   selectedProject.value = project;
   showApplyModal.value = true;
-  showDetailsModal.value = false; // Ensure details modal is closed
+  showDetailsModal.value = false;
 }
 
-/**
- * Closes the application modal and clears the selected project.
- */
 function closeApplyModal() {
   showApplyModal.value = false;
   selectedProject.value = null;
 }
 
-/**
- * Handles the successful submission event from the ApplyFormModal.
- * Displays a success alert and reloads the page.
- */
 function handleApplicationSubmitted() {
   alert('Your application has been submitted successfully!');
   window.location.reload();
 }
 
-/**
- * Opens the project details modal and sets the selected project.
- * @param {Object} project - The project data for which to open the details modal.
- */
 function openDetailsModal(project) {
   selectedProject.value = project;
   showDetailsModal.value = true;
-  showApplyModal.value = false; // Ensure apply modal is closed
+  showApplyModal.value = false;
 }
 
-/**
- * Closes the project details modal and clears the selected project.
- */
 function closeDetailsModal() {
   showDetailsModal.value = false;
   selectedProject.value = null;
