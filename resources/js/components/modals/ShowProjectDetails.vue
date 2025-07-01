@@ -67,7 +67,7 @@
       <div class="flex justify-center">
         <button
           @click="applyForProject(project)"
-          class="w-full md:w-56 lg:w-64 bg-[#334EAC] text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+          class="w-full md:w-56 lg:w-64 bg-[#334EAC] text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
         >
           Apply Now
         </button>
