@@ -125,8 +125,10 @@ class ProjectController extends Controller
         // Load the project with its associated user
         $project = Project::with('user')->find($id);
 
+        $application_id = Application::where('project_id', $id)->pluck('id')->first();
+
         // Mark all applications related to this project as 'viewed'
-        Application::where('project_id', $id)->update(['application_status' => 'viewed']);
+        Application::where('id', $application_id)->update(['application_status' => 'viewed']);
 
         // Load all applications with associated user data
         $userApplication = Application::with('user')->where('project_id', $id)->get();
