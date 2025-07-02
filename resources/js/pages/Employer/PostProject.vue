@@ -81,7 +81,7 @@
                 v-if="project.category"
                 class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
               >
-                {{ project.category.replace(/-/g, ' ').replace(/\b\w/g, (s) => s.toUpperCase()) }}
+                  {{ formatSkills(project?.category) }}
               </span>
               <span
                 v-if="project.skills"
@@ -268,117 +268,11 @@
   </div>
 
   <!-- VIEW FULL DETAILS POP UP -->
- <div
-  v-if="showDetailsModal"
-  class="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4 sm:p-6 lg:p-8"
-  @click.self="closeDetailsModal"
->
-  <div
-    class="relative bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 md:p-10 rounded-xl shadow-2xl transform transition-all duration-300 scale-100 opacity-100"
-  >
-    <button
-      @click="closeDetailsModal"
-      class="absolute top-4 right-4 text-red-400 hover:text-red-600 text-4xl font-light leading-none cursor-pointer transition-colors duration-200"
-      aria-label="Close"
-    >
-      &times;
-    </button>
-
-    <h3 class="text-4xl font-extrabold text-gray-900 mb-6 border-b pb-4 border-gray-200">
-      {{ selectedProject?.title }}
-    </h3>
-
-    <div class="flex items-center mb-6 text-gray-700">
-      <div
-        class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl mr-3"
-      >
-        <i class="fas fa-user-circle"></i>
-      </div>
-      <p class="text-lg font-semibold text-gray-800">{{ userEmail }}</p>
-      <span class="mx-3 text-gray-300">•</span>
-      <p class="text-md text-gray-500">
-        Posted {{ formatTimeAgo(selectedProject?.created_at) }}
-      </p>
-    </div>
-
-    <div class="mb-8">
-      <h4 class="text-xl font-bold text-gray-800 mb-3">Project Description:</h4>
-      <p class="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
-        {{ selectedProject?.description }}
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div>
-        <h4 class="text-xl font-bold text-gray-800 mb-3">Category:</h4>
-        <span
-          class="inline-flex items-center px-5 py-2 bg-blue-100 text-blue-800 font-semibold rounded-full text-md tracking-wide"
-        >
-          <i class="fas fa-tag mr-2 text-blue-500"></i>
-          {{
-            selectedProject?.category
-              .replace(/-/g, ' ')
-              .replace(/\b\w/g, (s) => s.toUpperCase())
-          }}
-        </span>
-      </div>
-      <div>
-        <h4 class="text-xl font-bold text-gray-800 mb-3">Required Skills:</h4>
-        <div class="flex flex-wrap gap-3">
-          <span
-            v-for="skill in selectedProject?.skills.split(',').map((s) => s.trim()).filter((s) => s)"
-            :key="skill"
-            class="inline-flex items-center px-5 py-2 bg-green-100 text-green-800 font-semibold rounded-full text-md tracking-wide"
-          >
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>
-            {{ skill.toUpperCase() }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-      <div class="bg-gradient-to-br from-purple-50 to-indigo-100 p-6 rounded-lg shadow-md flex flex-col items-center justify-center text-center">
-        <h4 class="text-xl font-bold text-indigo-900 mb-4 flex items-center">
-          <i class="fas fa-wallet text-indigo-600 mr-3 text-2xl"></i> Project Budget
-        </h4>
-        <p class="text-5xl font-extrabold text-indigo-700 animate-pulse-once">
-          {{ formatCurrency(selectedProject?.budget) }}
-        </p>
-      </div>
-
-      <div class="bg-gradient-to-br from-teal-50 to-green-100 p-6 rounded-lg shadow-md">
-        <h4 class="text-xl font-bold text-teal-900 mb-4 flex items-center">
-          <i class="fas fa-history text-teal-600 mr-3 text-2xl"></i> Project Timeline
-        </h4>
-
-        <div class="relative pl-6">
-          <div class="absolute left-2 top-0 h-full w-0.5 bg-gray-300 rounded-full"></div>
-
-          <div class="mb-5 relative">
-            <div class="absolute left-0 -ml-2 -mt-1 w-4 h-4 bg-teal-500 rounded-full border-2 border-white flex items-center justify-center z-10">
-              <i class="fas fa-play text-white text-xs"></i>
-            </div>
-            <p class="text-lg text-gray-800 ml-4">
-              <strong class="text-teal-800">Start Date:</strong>
-              <span class="block text-md font-semibold text-gray-700">{{ formatDate(selectedProject?.start_date) }}</span>
-            </p>
-          </div>
-
-          <div class="relative">
-            <div class="absolute left-0 -ml-2 -mt-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center z-10">
-              <i class="fas fa-flag text-white text-xs"></i>
-            </div>
-            <p class="text-lg text-gray-800 ml-4">
-              <strong class="text-red-700">Deadline:</strong>
-              <span class="block text-md font-semibold text-gray-700">{{ formatDate(selectedProject?.deadline) }}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
- </div>
+    <ProjectDetailsModal
+      :show="showDetailsModal"
+      :project="selectedProject"
+      @close="closeDetailsModal"
+    />
   </MainLayout>
 </template>
 
@@ -388,6 +282,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { formatTimeAgo, formatDate } from '../../utils/datetimeUtils';
 import { formatSkills} from '../../utils/stringUtils';
 import { formatCurrency } from '../../utils/numberUtils';
+import ProjectDetailsModal from '../../components/modals/ShowProjectDetails.vue';
 
 // Reactive state variables
 const showEditCreateModal = ref(false);
@@ -395,8 +290,10 @@ const showDetailsModal = ref(false);
 const activeDropdown = ref(null);
 const selectedProject = ref(null);
 
-const page = usePage();
-const userEmail = page.props.user.email;
+// Get user and projects data from Inertia props
+// Then extract the email from the user object
+const { user, projects } = usePage().props;
+const userEmail = user.email;
 
 // Retrieve projects data passed from the backend via Inertia props
 const { projects } = usePage().props;
