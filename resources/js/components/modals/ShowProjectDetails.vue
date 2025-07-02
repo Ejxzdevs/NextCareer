@@ -57,6 +57,12 @@
       <section>
         <h3 class="text-sm font-semibold text-gray-700 mb-2">Required Skills:</h3>
         <div class="flex flex-wrap gap-2">
+          <span
+                v-if="project.category"
+                class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
+              >
+                {{ formatSkills(project?.category) }}
+              </span>
           <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
             {{ formatSkills(project?.skills) }}
           </span>
