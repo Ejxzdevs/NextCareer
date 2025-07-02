@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 py-6">
       <div class="text-center mb-6">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-3">
-          Find Your Next <span class="text-[#334EAC]">Career</span>
+          Find Your Next <span class="text-[#334EAC]">Client</span>
         </h1>
         <p class="text-md text-gray-600 max-w-2xl mx-auto">
           Explore a diverse range of available projects and discover exciting opportunities to
@@ -70,12 +70,8 @@
               class="max-w-full sm:max-w-xl mx-auto lg:mx-2 bg-white rounded-xl shadow-md p-4 flex items-center justify-between space-x-4"
             >
               <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg"
-                    alt="Nike Logo"
-                    class="w-6 h-6"
-                  />
+                <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <i class=" text-gray-700 fas fa-building"></i>
                 </div>
                 <div>
                   <h2 class="text-lg font-semibold text-gray-800">{{ project.title }}</h2>
