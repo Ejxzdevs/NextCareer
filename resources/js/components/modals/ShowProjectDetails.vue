@@ -4,7 +4,7 @@
       class="bg-white max-w-md w-full p-4 md:p-6 rounded-md shadow-2xl animate-fade-in-scale relative overflow-y-auto max-h-[75vh] space-y-6"
     >
       <!-- Close Button -->
-      <button @click="closeModal" class="absolute top-1 right-3 text-red-400 hover:text-red-700 text-2xl">
+      <button @click="closeModal" class="absolute top-1 right-3 text-red-400 hover:text-red-700 text-2xl cursor-pointer">
         <i class="fas fa-times"></i>
       </button>
 
@@ -44,7 +44,7 @@
           </div>
         </div>
 
-        <div class="flex items-start gap-2 md:col-span-2">
+        <div v-if="user.role == 'freelance'" class="flex items-start gap-2 md:col-span-2">
           <i class="fas fa-user-circle text-blue-500 mt-1"></i>
           <div>
             <strong class="block">Client</strong>
@@ -64,7 +64,7 @@
       </section>
 
       <!-- Apply Button -->
-      <div class="flex justify-center">
+      <div v-if="user.role == 'freelance'" class="flex justify-center">
         <button
           @click="applyForProject(project)"
           class="w-full md:w-56 lg:w-64 bg-[#334EAC] text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
@@ -82,6 +82,9 @@ import { defineProps, defineEmits } from 'vue';
 import { formatDate } from '../../utils/datetimeUtils';
 import { formatSkills } from '../../utils/stringUtils';
 import { formatCurrency } from '../../utils/numberUtils';
+import { usePage } from '@inertiajs/vue3'
+
+const { user } = usePage().props
 
 const props = defineProps({
   show: {
