@@ -15,7 +15,7 @@ Route::post('/users/create', [UserController::class, 'store'])->name('users.stor
 Route::inertia('employer/dahsboard', 'Employer/Dashboard')->name('employer.dashboard');
 Route::get('/employer/project', [ProjectController::class, 'index'])->name('employer.project');
 Route::post('/employer/create', [ProjectController::class, 'store'])->name('employer.store');
-Route::get('/employer/project/{id}', [ProjectController::class, 'show'])->name('project.show');
+Route::get('/employer/project/{id}/{application_id}', [ProjectController::class, 'show'])->name('project.show');
 Route::put('/employer/{id}', [ProjectController::class, 'update'])->name('employer.update');
 Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('employer.destroy');
 

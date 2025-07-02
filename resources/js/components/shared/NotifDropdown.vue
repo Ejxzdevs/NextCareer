@@ -59,7 +59,7 @@
             v-else
             v-for="notification in notifications"
             :key="notification.id"
-            @click="viewNotification(notification.id)"
+            @click="viewNotification(notification.id,notification.application_id)"
             :class="[
               'p-2.5 mb-1 border border-gray-200 rounded flex items-center gap-2.5 cursor-pointer',
               notification.read ? 'hover:bg-gray-50' : 'bg-blue-100 font-semibold'
@@ -100,7 +100,7 @@
   </li>
 </template>
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useDropdown } from '../../composables/useToggleVisibility';
 import { fetchUserNotifications, markAllAsRead } from '../../services/NotificationsService';
 import { Inertia } from '@inertiajs/inertia';
@@ -160,6 +160,7 @@ const callMarkAllAsRead = async () => {
 const notifications = computed(() =>
     rawProjectData.value.map(project => ({
         id: project.project_id,
+        application_id: project.id,
         message: `${project.applicant_email} applied to your ${project.title}`,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
@@ -167,23 +168,29 @@ const notifications = computed(() =>
     }))
 );
 
-
 /**
- * Handle notification click to view details, passing project ID
- * This function can be expanded to navigate to a specific page or perform other actions
+ * Handle notification click to view project details
+ * @param {number} id - Project ID
+ * @param {number} application_id - Application ID
  */
-function viewNotification(id) {
-    if (!id) {
-        alert('Invalid project ID.');
+function viewNotification(id, application_id) {
+    if (!id || !application_id) {
+        alert('Invalid project or application ID.');
         return;
     }
-    Inertia.get(route('project.show', id), {}, {
-        onError: (errors) => {
-            alert('Could not load project. It may not exist or you do not have permission.');
+    Inertia.get(
+        route('project.show', { id: id, application_id: application_id }),
+        {},
+        {
+            onError: (errors) => {
+                alert('Could not load project. It may not exist or you do not have permission.');
+            }
         }
-    });
+    );
+
     closeDropdown();
 }
+
 
 
 /**

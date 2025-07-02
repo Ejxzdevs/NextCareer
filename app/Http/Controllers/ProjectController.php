@@ -115,25 +115,21 @@ class ProjectController extends Controller
         return redirect()->route('employer.project')->with('success', 'Project deleted successfully!');
     }
 
-    public function show($id)
+    public function show($id,$application_id)
     {
         // Ensure the user is logged in
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
-        // Load the project with its associated user
+    
         $project = Project::with('user')->find($id);
 
-        $application_id = Application::where('project_id', $id)->pluck('id')->first();
-
-        // Mark all applications related to this project as 'viewed'
+        // Mark this project as 'viewed'
         Application::where('id', $application_id)->update(['application_status' => 'viewed']);
 
         // Load all applications with associated user data
         $userApplication = Application::with('user')->where('project_id', $id)->get();
 
-        // Handle case where the project does not exist
         if (!$project) {
             return Inertia::render('Employer/ViewProject', [
                 'error' => 'Project not found.',
