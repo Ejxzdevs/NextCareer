@@ -62,7 +62,7 @@
                 class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
               >
                 {{ formatSkills(project?.category) }}
-              </span>
+          </span>
           <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
             {{ formatSkills(project?.skills) }}
           </span>
