@@ -295,9 +295,6 @@ const selectedProject = ref(null);
 const { user, projects } = usePage().props;
 const userEmail = user.email;
 
-// Retrieve projects data passed from the backend via Inertia props
-const { projects } = usePage().props;
-
 // Form state for creating and editing projects
 const form = useForm({
   id: null,
