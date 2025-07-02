@@ -13,13 +13,20 @@
           </li>
           <UserDropdown />
           <li class="cursor-pointer">|</li>
-          <li><Link :href="route('employer.dashboard')" class="hover:text-gray-300">Home</Link></li>
-          <li class="cursor-pointer">|</li>
-          <li v-if="userRole === 'freelance'">
-            <Link class="hover:text-gray-300 mr-[10px]" :href="route('freelance.browse')">Browse Project</Link>
+          <li>
+            <Link 
+              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
+              class="hover:text-gray-300">
+                Home
+            </Link>
           </li>
-          <li v-if="userRole === 'employer'">
-            <Link :href="route('employer.project')" class="hover:text-gray-300 mr-[10px]">Hire a Freelancer</Link>
+          <li class="cursor-pointer">|</li>
+           <li>
+            <Link 
+              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
+              class="hover:text-gray-300">
+                Applications
+            </Link>
           </li>
         </ul>
       </div>
@@ -30,11 +37,7 @@
         </div>
         <div class="flex flex-row">
           <ul class="flex flex-row gap-4 me-3 text-white items-center">
-            <li>
-              <Link href="/jobs" class="hover:text-gray-300">
-                <i class="fas fa-bell"></i>
-              </Link>
-            </li>
+            <Notification />
             <li>
               <Link href="/companies" class="hover:text-gray-300">
                 <i class="fas fa-envelope"></i>
@@ -52,12 +55,19 @@
       </div>
 
       <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#7789C7] p-4 space-y-2">
-        <li><Link :href="route('employer.dashboard')" class="hover:text-gray-300">Home</Link></li>
-        <li v-if="userRole === 'freelance'">
-          <Link class="hover:text-gray-300" :href="route('freelance.browse')">Browse Project</Link>
+        <li>
+            <Link 
+              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
+              class="hover:text-gray-300">
+                Home
+            </Link>
         </li>
-        <li v-if="userRole === 'employer'">
-          <Link :href="route('employer.project')" class="hover:text-gray-300">Hire a Freelancer</Link>
+        <li>
+            <Link 
+              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
+              class="hover:text-gray-300">
+                Applications
+            </Link>
         </li>
       </ul>
     </nav>
