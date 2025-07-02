@@ -86,7 +86,7 @@
       </div>
 
       <!-- Right Sidebar (Applications) -->
-      <div class="border border-gray-300 bg-white shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)] lg:max-h-full lg:col-span-2">
+      <div class="border border-gray-300 bg-white shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)] lg:max-h-screen lg:col-span-2">
         <div class="p-4 border-b border-gray-200 bg-gray-50">
           <h3 class="text-lg font-semibold text-gray-800">Application List</h3>
         </div>
