@@ -7,10 +7,11 @@
 
         <!-- Back Button -->
         <div class="h-16 flex items-center ms-3 lg:ms-5 mb-4 lg:mb-0">
-          <a :href="route('employer.project')" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200">
+
+          <button @click="previewPage()" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200">
             <i class="fas fa-arrow-left mr-2"></i>
             <span class="font-medium">Back</span>
-          </a>
+          </button>
         </div>
 
         <!-- Error Message -->
@@ -155,6 +156,12 @@ const { project, error, userApplication, user } = usePage().props
 onMounted(() => {
   console.log('User Application:', userApplication)
 })
+
+
+
+function previewPage() {
+  window.history.back()
+}
 </script>
 
 <style scoped>
