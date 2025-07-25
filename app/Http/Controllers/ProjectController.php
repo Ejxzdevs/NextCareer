@@ -115,7 +115,7 @@ class ProjectController extends Controller
         return redirect()->route('employer.project')->with('success', 'Project deleted successfully!');
     }
 
-    public function show($id,$application_id)
+    public function show($id,$application_id=null)
     {
         // Ensure the user is logged in
         if (!Auth::check()) {
@@ -125,7 +125,15 @@ class ProjectController extends Controller
         $project = Project::with('user')->find($id);
 
         // Mark this project as 'viewed'
-        Application::where('id', $application_id)->update(['application_status' => 'viewed']);
+        if ($application_id) {
+        $application = Application::where('id', $application_id)
+            ->where('project_id', $id)
+            ->first();
+
+        if ($application) {
+            $application->update(['application_status' => 'viewed']);
+            }
+        }
 
         // Load all applications with associated user data
         $userApplication = Application::with('user')->where('project_id', $id)->get();
