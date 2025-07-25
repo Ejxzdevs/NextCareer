@@ -15,15 +15,23 @@
           <li class="cursor-pointer">|</li>
           <li>
             <Link 
+              v-if="userRole === 'employer'" :href="route('employer.dashboard')" 
+              class="hover:text-gray-300">
+                Dashboard
+            </Link>
+          </li>
+          <li class="cursor-pointer">|</li>
+          <li>
+            <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
               class="hover:text-gray-300">
-                Home
+                {{ userRole === 'freelance' ? 'Find Jobs' : 'My Job Posts' }}
             </Link>
           </li>
           <li class="cursor-pointer">|</li>
            <li>
             <Link 
-              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
+              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.application')" 
               class="hover:text-gray-300">
                 Applications
             </Link>
