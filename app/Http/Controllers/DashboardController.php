@@ -28,7 +28,6 @@ class DashboardController extends Controller
             ->with('user')
             ->with('project')
             ->latest() 
-            ->limit(8)
             ->get();
 
             
