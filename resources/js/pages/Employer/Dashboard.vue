@@ -71,7 +71,7 @@
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Recent Applicants</h2>
 
         <div v-if="applications.length > 0" class="space-y-4">
-          <div v-for="application in applications" class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 rounded-md transition-colors">
+          <div v-for="application in getFiveApplications" class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 rounded-md transition-colors">
             <div>
               <p class="text-lg font-medium text-gray-900">{{ application.user.email }}</p>
               <p class="text-sm text-gray-600">Applied for: <span class="font-medium">{{ application.project.title}}</span></p>
@@ -91,12 +91,13 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3';
 import { formatDate } from '../../utils/datetimeUtils';
 import { Inertia } from '@inertiajs/inertia';
 
 const { projects , applications , totalWeeklyApplications } = usePage().props
+const getFiveApplications = computed(() => applications.slice(0, 5));
 
 /**
  * Handle notification click to view project details
