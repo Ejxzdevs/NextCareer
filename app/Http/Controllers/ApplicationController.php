@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Project;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +12,22 @@ class ApplicationController extends Controller
 {
     public function index()
     {
-        // Logic to display all applications
+        $userId = auth::id();
+        $get_all_projects = Project::where('user_id', $userId)->get();
+        $project_ids = $get_all_projects->pluck('id'); // Extract only IDs
+
+        $applications = Application::whereIn('project_id', $project_ids)->get();
+
+        $applications = Application::whereIn('project_id', $project_ids)
+            ->with('user')
+            ->with('project')
+            ->latest() 
+            ->paginate(3);
+
+         return Inertia::render('Employer/Application', [
+            'applications' => $applications,
+            'projects' =>  $get_all_projects,
+        ]);
     }
     public function create()
     {
