@@ -77,7 +77,7 @@
                   View Resume
                 </a>
               </div>
-              <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto">
                 <a
                   href="#"
                   class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md text-center"
@@ -85,7 +85,7 @@
                   View Profile
                 </a>
                 <select
-                  class="px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  class="text-center px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option>New</option>
                   <option :selected="application.application_status === 'Reviewed'">Reviewed</option>
