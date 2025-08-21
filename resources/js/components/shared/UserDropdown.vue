@@ -8,7 +8,7 @@
       class="absolute right-0 mt-2 w-40 bg-white text-black shadow-md rounded-md z-50"
     >
       <li>
-        <Link href="/profile" class="block px-4 py-2 hover:bg-gray-100">Profile</Link>
+        <Link :href="route('employer.profile')" class="block px-4 py-2 hover:bg-gray-100">Profile</Link>
       </li>
       <li>
         <Link
