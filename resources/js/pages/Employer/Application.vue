@@ -95,11 +95,10 @@
                   <option :selected="application.application_status === 'Rejected'">Rejected</option>
                   <option :selected="application.application_status === 'viewed'">Viewed</option>
                 </select>
-                <button
-                  class="px-5 py-2 border border-gray-400 text-gray-700 text-sm rounded-lg hover:bg-gray-100 transition-colors shadow-sm"
-                >
-                  Message
-                </button>
+                <MessageModal 
+                  :email="application.user.email" 
+                  :id="application.user.id" 
+                />
               </div>
             </div>
           </div>
@@ -138,6 +137,8 @@
 import { onMounted, ref, computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
 import { formatDate } from '../../utils/datetimeUtils';
+import MessageModal from '@/components/shared/MessageModal.vue'
+
 
 const { applications, projects } = usePage().props;
 
