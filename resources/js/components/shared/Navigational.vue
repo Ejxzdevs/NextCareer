@@ -5,12 +5,8 @@
           <Link :href="route('landing.page')">Next Career</Link>
         </div>
         <ul class="hidden md:flex space-x-6 text-white items-center">
-          <Notification />
-          <li>
-            <Link href="/companies" class="hover:text-gray-300">
-              <i class="fas fa-envelope"></i>
-            </Link>
-          </li>
+          <NotificationDropdown/>
+          <MessageDropdown/>
           <UserDropdown />
           <li class="cursor-pointer">|</li>
           <li>
@@ -45,14 +41,10 @@
         </div>
         <div class="flex flex-row">
           <ul class="flex flex-row gap-4 me-3 text-white items-center">
-            <Notification />
-            <li>
-              <Link href="/companies" class="hover:text-gray-300">
-                <i class="fas fa-envelope"></i>
-              </Link>
-            </li>
+            <NotificationDropdown/>
+            <MessageDropdown/>
             <UserDropdown />
-            </ul>
+          </ul>
 
           <button @click="toggleMenu" class="text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -86,7 +78,8 @@
 import { ref, watch } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import UserDropdown from '@/Components/Shared/UserDropdown.vue';
-import Notification from '@/Components/Shared/NotifDropdown.vue';
+import NotificationDropdown from '@/Components/Shared/NotifDropdown.vue';
+import MessageDropdown from '@/Components/Shared/MessageDropdown.vue';
 
 const page = usePage();
 
