@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MessageController;
 
 Route::inertia('/', 'LandingPage')->name('landing.page');
 Route::inertia('/Login', 'Auth/Login')->name('login');
@@ -31,3 +32,6 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::inertia('/notifications', 'Employer/AllNotifications')->name('notifications.all');
 Route::get('/profile', [ProfileController::class,'showProfile'])->name('employer.profile');
 Route::put('/user/profile', [ProfileController::class, 'update'])->name('userProfile.update');
+
+Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation'])->name('messages.conversation');
