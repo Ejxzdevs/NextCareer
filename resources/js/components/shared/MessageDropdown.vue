@@ -51,7 +51,6 @@
           <li
             v-for="message in messages"
             :key="message.id"
-            @click="openMessage(message.id)"
             :class="[
               'flex items-center gap-3 p-3 cursor-pointer',
               message.read ? 'hover:bg-gray-50' : 'bg-blue-100 font-semibold'
@@ -75,6 +74,11 @@
             <!-- Time -->
             <div class="text-xs text-gray-400 whitespace-nowrap">
               {{ message.time }}
+              <!-- for testing -->
+               <MessageModal 
+                  :email="message.sender" 
+                  :id="message.id" 
+                />
             </div>
           </li>
         </ul>
@@ -97,43 +101,42 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed , onMounted  } from "vue";
 import { useDropdown } from "../../composables/useToggleVisibility";
-
+import { formatTimeAgo } from '@/utils/datetimeUtils';
+import axios from 'axios'
+import MessageModal from '@/components/shared/MessageModal.vue'
 // Dropdown state
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
 
-// Hardcoded messages
-const messages = ref([
-  {
-    id: 1,
-    sender: "John Doe",
-    text: "Hey, are you available for a quick call?",
-    time: "2m ago",
-    read: false,
-    avatar: "https://i.pravatar.cc/40?img=1"
-  },
-  {
-    id: 2,
-    sender: "Jane Smith",
-    text: "I’ve sent the report. Check your email!",
-    time: "15m ago",
-    read: true,
-    avatar: "https://i.pravatar.cc/40?img=2"
-  },
-  {
-    id: 3,
-    sender: "Mark Lee",
-    text: "Let's meet tomorrow at 3PM.",
-    time: "1h ago",
-    read: false,
-    avatar: "https://i.pravatar.cc/40?img=3"
+const data = ref([])
+
+async function fetchNotifcationMessages() {
+  try {
+    const response = await axios.get(route('messages.notifications'))
+    data.value = response.data
+    console.log(response.data)
+
+  } catch (error) {
+    console.error(error)
   }
-]);
+}
+
+
+const messages = computed(() => {
+  return data.value.map(msg => ({
+    id: msg.received_messages[0].sender_id,
+    sender: msg.received_messages[0].sender.email,
+    text: msg.received_messages[0]?.message_content || 'No content',
+    time: formatTimeAgo(msg.received_messages[0]?.created_at) || '',
+    read: msg.received_messages[0]?.status || false,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
+  }))
+})
 
 // Computed unread count
 const unreadCount = computed(() =>
-  messages.value.filter(m => !m.read).length
+  data.value.filter(m => m.received_messages[0].status === 'sent').length
 );
 
 // Mark all as read
@@ -141,13 +144,8 @@ function markAllAsRead() {
   messages.value = messages.value.map(m => ({ ...m, read: true }));
 }
 
-// Open a message
-function openMessage(id) {
-  const msg = messages.value.find(m => m.id === id);
-  if (msg) {
-    msg.read = true;
-    alert(`Opening message from ${msg.sender}: "${msg.text}"`);
-  }
-  closeDropdown();
-}
+onMounted(() => {
+  fetchNotifcationMessages()
+})
+
 </script>
