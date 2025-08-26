@@ -34,4 +34,5 @@ Route::get('/profile', [ProfileController::class,'showProfile'])->name('employer
 Route::put('/user/profile', [ProfileController::class, 'update'])->name('userProfile.update');
 
 Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+Route::get('/messages/notifications', [MessageController::class, 'getMessageNotifications'])->name('messages.notifications');
 Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation'])->name('messages.conversation');
