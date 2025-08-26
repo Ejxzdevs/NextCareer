@@ -134,7 +134,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
 import { formatDate } from '../../utils/datetimeUtils';
 import MessageModal from '@/components/shared/MessageModal.vue'
@@ -157,7 +157,4 @@ const filteredApplications = computed(() => {
   });
 });
 
-onMounted(() => {
-  console.log(JSON.stringify(projects));
-});
 </script>
