@@ -43,18 +43,19 @@
         <!-- Messages List -->
         <ul class="max-h-80 overflow-y-auto divide-y divide-gray-100 list-none p-0 m-0">
           <li
-            v-if="messages.length === 0"
+            v-if="userWithLastMessages.length === 0"
             class="p-4 text-center text-gray-500"
           >
             No messages yet.
           </li>
-          <li
-            v-for="message in messages"
+          <a
+            v-for="message in userWithLastMessages"
             :key="message.id"
             :class="[
-              'flex items-center gap-3 p-3 cursor-pointer',
-              message.read ? 'hover:bg-gray-50' : 'bg-blue-100 font-semibold'
+              'flex items-center gap-3 p-3 cursor-pointer border-gray-200',
+              message.read ? 'bg-blue-100 font-semibold' : 'hover:bg-gray-50'
             ]"
+            :href="route('messages.all', message.id)"
           >
             <!-- Avatar -->
             <img
@@ -64,7 +65,7 @@
             />
 
             <!-- Message content -->
-            <div class="flex-grow">
+            <div class="flex-grow" >
               <p class="text-sm font-semibold">{{ message.sender }}</p>
               <p class="text-xs text-gray-600 truncate">
                 {{ message.text }}
@@ -72,24 +73,23 @@
             </div>
 
             <!-- Time -->
-            <div class="text-xs text-gray-400 whitespace-nowrap">
+            <div class="text-xs text-gray-400 whitespace-nowrap mt-4">
               {{ message.time }}
-              <!-- for testing -->
-               <MessageModal 
-                  :email="message.sender" 
-                  :id="message.id" 
-                />
             </div>
-          </li>
+            <div
+              v-if="message.read"
+              class="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"
+            ></div>
+          </a>
         </ul>
 
         <!-- Footer -->
         <div
-          v-if="messages.length > 0"
+          v-if="userWithLastMessages.length > 0"
           class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
         >
           <a
-            href="#"
+            :href="route('messages.all')"
             class="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
             View All Messages
@@ -105,47 +105,55 @@ import { ref, computed , onMounted  } from "vue";
 import { useDropdown } from "../../composables/useToggleVisibility";
 import { formatTimeAgo } from '@/utils/datetimeUtils';
 import axios from 'axios'
-import MessageModal from '@/components/shared/MessageModal.vue'
+
 // Dropdown state
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
-
 const data = ref([])
 
+// Fetch messages with last message
 async function fetchNotifcationMessages() {
   try {
-    const response = await axios.get(route('messages.notifications'))
+    const response = await axios.get(route('messages.listWithLastMessage'));
     data.value = response.data
     console.log(response.data)
-
   } catch (error) {
     console.error(error)
   }
 }
 
-
-const messages = computed(() => {
-  return data.value.map(msg => ({
-    id: msg.received_messages[0].sender_id,
-    sender: msg.received_messages[0].sender.email,
-    text: msg.received_messages[0]?.message_content || 'No content',
-    time: formatTimeAgo(msg.received_messages[0]?.created_at) || '',
-    read: msg.received_messages[0]?.status || false,
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
-  }))
-})
+// Computed property to flatten messages with user info
+const userWithLastMessages = computed(() => {
+  return data.value.flatMap(user => {
+    return user.received_messages.map(msg => ({
+      id: msg.sender_id,
+      sender: msg.sender.email,
+      text: msg?.message_content || 'No content',
+      time: formatTimeAgo(msg?.created_at) || '',
+      read: msg?.status === 'sent',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
+    }));
+  });
+});
 
 // Computed unread count
-const unreadCount = computed(() =>
-  data.value.filter(m => m.received_messages[0].status === 'sent').length
-);
+const unreadCount = computed(() => {
+  return data.value.flatMap(user => user.received_messages)
+    .filter(message => message.status === 'sent')
+    .length;
+});
 
 // Mark all as read
 function markAllAsRead() {
-  messages.value = messages.value.map(m => ({ ...m, read: true }));
+  axios.put(route('messages.markAllAsRead'))
+    .then(() => {
+      fetchNotifcationMessages();
+    })
+    .catch(error => {
+      console.error('Error marking messages as read:', error);
+    });
 }
 
 onMounted(() => {
   fetchNotifcationMessages()
 })
-
 </script>
