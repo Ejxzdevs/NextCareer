@@ -6,9 +6,16 @@ use App\Models\User;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class MessageController extends Controller
 {
+    // Render all messages view
+    public function getAllMessages()
+    {
+        return Inertia::render('Employer/AllMessages');
+    }
+
     // Get message notifications
     public function getMessageNotifications()
     {
@@ -17,7 +24,7 @@ class MessageController extends Controller
         $users = User::withWhereHas('receivedMessages', function ($q) use ($authId) {
         $q->where('receiver_id', $authId)
           ->latest()
-          ->take(1)->with(['sender']);
+          ->with(['sender']);
         })
         ->get();
             return response()->json($users);
@@ -66,4 +73,15 @@ class MessageController extends Controller
         'messages' => $messages
     ]);
 }
+    // Mark all messages as read
+    public function markAllAsRead()
+    {
+        $authId = Auth::id();
+
+        Message::where('receiver_id', $authId)
+            ->where('status', 'sent')
+            ->update(['status' => 'read']);
+
+        return response()->json(['success' => true]);
+    }
 }
