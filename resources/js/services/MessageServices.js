@@ -5,6 +5,7 @@ const API_ENDPOINTS = {
     FETCH_INBOX: route('messages.listWithLastMessage'),
     SEND_MESSAGE: route('messages.send'),
     FETCH_CONVERSATION: (userId) => route('messages.conversation', userId),
+    MARK_ALL_READ: route('messages.markAllAsRead'),
 };
 
 /** * Fetches inbox messages from the API.
@@ -62,3 +63,15 @@ export const getConversationApi = async (userId) => {
     return { data: null, error: formatApiError(err, 'Failed to load conversation') };
   }
 };
+
+
+// Mark all messages as read
+export const markAllAsReadApi = async () => {
+  try {
+    const response = await axios.put(API_ENDPOINTS.MARK_ALL_READ);
+    return { data: response.data.success, error: null };
+  }catch (err) {  
+    return { data: null, error: formatApiError(err, 'Failed to mark messages as read') };
+  }
+
+}
