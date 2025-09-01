@@ -108,19 +108,16 @@ async function fetchNotifcationMessages() {
 }
 
 const userWithLastMessages = computed(() => {
-  // Use flatMap to map and then flatten the array of messages
-  return data.value.flatMap(user => {
-    // For each user, map through their received_messages
-    return user.received_messages.map(msg => ({
-      id: msg.sender_id,
-      sender: msg.sender.email,
-      text: msg?.message_content || 'No content',
-      time: formatTimeAgo(msg?.created_at) || '',
-      read: msg?.status || false,
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
-    }));
-  });
+  return data.value.map(msg => ({
+    id: msg.sender_id,
+    sender: msg.sender.email,
+    text: msg?.message_content || 'No content',
+    time: formatTimeAgo(msg?.created_at) || '',
+    read: msg?.status === 'sent',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
+  }));
 });
+
 
 async function selectConversations($userId){
     try {

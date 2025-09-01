@@ -123,17 +123,16 @@ async function fetchNotifcationMessages() {
 
 // Computed property to flatten messages with user info
 const userWithLastMessages = computed(() => {
-  return data.value.flatMap(user => {
-    return user.received_messages.map(msg => ({
-      id: msg.sender_id,
-      sender: msg.sender.email,
-      text: msg?.message_content || 'No content',
-      time: formatTimeAgo(msg?.created_at) || '',
-      read: msg?.status === 'sent',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
-    }));
-  });
+  return data.value.map(msg => ({
+    id: msg.sender_id,
+    sender: msg.sender.email,
+    text: msg?.message_content || 'No content',
+    time: formatTimeAgo(msg?.created_at) || '',
+    read: msg?.status === 'sent',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
+  }));
 });
+
 
 // Computed unread count
 const unreadCount = computed(() => {
