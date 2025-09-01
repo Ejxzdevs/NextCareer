@@ -104,22 +104,22 @@
 import { ref, computed , onMounted  } from "vue";
 import { useDropdown } from "../../composables/useToggleVisibility";
 import { formatTimeAgo } from '@/utils/datetimeUtils';
-import axios from 'axios'
+import { getInboxApi , markAllAsReadApi } from "../../services/MessageServices";
 
 // Dropdown state
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
 const data = ref([])
 
-// Fetch messages with last message
-async function fetchNotifcationMessages() {
-  try {
-    const response = await axios.get(route('messages.listWithLastMessage'));
-    data.value = response.data
-    console.log(response.data)
-  } catch (error) {
-    console.error(error)
+
+// Load inbox messages
+const loadInbox = async () => {
+  const { data: inboxData, error } = await getInboxApi();
+  if (data) {
+    data.value = inboxData;
+  } else {
+    console.error('Error loading inbox:', error);
   }
-}
+};
 
 // Computed property to flatten messages with user info
 const userWithLastMessages = computed(() => {
@@ -134,18 +134,16 @@ const userWithLastMessages = computed(() => {
 });
 
 
-// Computed unread count
+// count unread messages
 const unreadCount = computed(() => {
-  return data.value.flatMap(user => user.received_messages)
-    .filter(message => message.status === 'sent')
-    .length;
+  return (data.value || []).filter(m => m?.status === 'sent').length;
 });
 
 // Mark all as read
-function markAllAsRead() {
-  axios.put(route('messages.markAllAsRead'))
+const markAllAsRead = () => {
+   markAllAsReadApi() 
     .then(() => {
-      fetchNotifcationMessages();
+      loadInbox();
     })
     .catch(error => {
       console.error('Error marking messages as read:', error);
@@ -153,6 +151,6 @@ function markAllAsRead() {
 }
 
 onMounted(() => {
-  fetchNotifcationMessages()
+  loadInbox();
 })
 </script>
