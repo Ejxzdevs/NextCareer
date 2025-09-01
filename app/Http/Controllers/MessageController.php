@@ -18,17 +18,23 @@ class MessageController extends Controller
 
     // Get message notifications
     public function getMessageNotifications()
-    {
-        $authId = Auth::id();
+{
+    $authId = Auth::id();
 
-        $users = User::withWhereHas('receivedMessages', function ($q) use ($authId) {
-        $q->where('receiver_id', $authId)
-          ->latest()
-          ->with(['sender']);
-        })
+    // Get the latest message_id for each sender
+    $latestMessageIds = Message::where('receiver_id', $authId)
+        ->selectRaw('MAX(message_id) as message_id')
+        ->groupBy('sender_id')
+        ->pluck('message_id');
+
+    // Fetch those messages with sender info
+    $latestMessages = Message::whereIn('message_id', $latestMessageIds)
+        ->with('sender')
+        ->orderByDesc('created_at')
         ->get();
-            return response()->json($users);
-    }
+
+    return response()->json($latestMessages);
+}
 
     // Send a message
      public function sendMessage(Request $request)
@@ -68,6 +74,11 @@ class MessageController extends Controller
         })
         ->orderBy('created_at')
         ->get();
+
+        Message::where('sender_id', $userId)
+            ->where('receiver_id', $currentUserId)
+            ->where('status', 'sent')
+            ->update(['status' => 'read']);
 
     return response()->json([
         'messages' => $messages
