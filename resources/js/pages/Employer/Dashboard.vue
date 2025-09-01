@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { computed } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3';
 import { formatDate } from '../../utils/datetimeUtils';
 import { Inertia } from '@inertiajs/inertia';
@@ -118,12 +118,6 @@ function viewNotification(id ) {
             }
         }
     );
-
     closeDropdown();
 }
-
-onMounted(() => {
-  console.log(JSON.stringify(projects[2]));
-})
-
 </script>
