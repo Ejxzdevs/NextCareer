@@ -9,20 +9,33 @@ use Illuminate\Support\Facades\Session;
 class userController extends Controller
 {
     public function store(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|max:50',
-            'password' => 'required|string|max:50',
-            'account_type' => 'required|string|'
-        ]);
-        User::create([
-            'email' => $request->email ,
-            'password' => bcrypt($request->password),
-            'account_type' => $request->account_type,
-            ]
-        );
-        return redirect()->back()->with('success', 'Successfully registered!');
-    }
+{
+    $request->validate([
+        'email' => 'required|string|max:50|unique:users,email',
+        'password' => 'required|string|max:50',
+        'account_type' => 'required|string',
+    ]);
+
+    // Create user
+    $user = User::create([
+        'email' => $request->email,
+        'password' => bcrypt($request->password),
+        'account_type' => $request->account_type,
+    ]);
+
+    // Create empty user profile for the user
+    $user->profile()->create([
+        'about' => null,
+        'profile_picture' => null,
+        'skills' => null,
+        'occupation' => null,
+        'user_status' => null,
+        'address' => null,
+    ]);
+
+    return redirect()->back()->with('success', 'Successfully registered!');
+}
+
 
     public function authenticate(Request $request){
         
