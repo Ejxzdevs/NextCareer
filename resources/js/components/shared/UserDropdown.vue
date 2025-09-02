@@ -8,7 +8,7 @@
       class="absolute right-0 mt-2 w-40 bg-white text-black shadow-md rounded-md z-50"
     >
       <li>
-        <Link :href="route('employer.profile')" class="block px-4 py-2 hover:bg-gray-100">Profile</Link>
+        <Link :href="route('userProfile.show', page.props.user.id)" class="block px-4 py-2 hover:bg-gray-100">Profile</Link>
       </li>
       <li>
         <Link
@@ -26,10 +26,11 @@
 </template>
 
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { Link, usePage ,router } from '@inertiajs/vue3';
 import { useDropdown } from '../../composables/useToggleVisibility'; // Adjust path as needed
-
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
+
+const page = usePage();
 
 router.on('finish', () => {
   closeDropdown();
