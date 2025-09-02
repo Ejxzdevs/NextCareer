@@ -35,15 +35,24 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
 {
+      
     $validated = $request->validate([
         'skills' => 'array',
         'skills.*' => 'string|max:55',
         'address' => 'nullable|string|max:155',
         'occupation' => 'nullable|string|max:50',
         'about' => 'nullable|string|max:1000',
+        'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:5048',
     ]);
 
     $userId = Auth::id();
+
+    if ($request->hasFile('profile_picture')) {
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        $validated['profile_picture'] = '/storage/' . $path;
+    } else {
+        unset($validated['profile_picture']);
+    }
 
     UserProfile::updateOrCreate(
         ['user_id' => $userId],
