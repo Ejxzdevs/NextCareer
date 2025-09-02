@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class UserProfile extends Model
 {
     protected $fillable = [
-        'user_id',        // add this!
+        'user_id',    
         'address',
         'skills',
         'occupation',
         'about',
         'profile_picture',
-        'user_status',    // include if you want to set it later
+        'user_status',  
     ];
     
     protected $casts = [
