@@ -10,7 +10,7 @@
     <Transition name="modal-fade">
       <div
         v-if="messageModal"
-        class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+        class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center px-5"
       >
         <div
           class="h-5/6 w-full bg-white md:h-5/6 md:max-w-lg md:rounded-2xl md:shadow-2xl flex flex-col"
@@ -24,13 +24,15 @@
             />
             <div>
               <h2 class="text-sm font-semibold text-gray-900">{{ email }}</h2>
-              <p class="text-xs text-gray-500">User Profile <a href="#" class="text-blue-500 underline">visit here</a></p>
+              <p class="text-xs text-gray-500">
+                User Profile <a href="#" class="text-blue-500 underline">visit here</a>
+              </p>
             </div>
             <button
               @click="closeMessageModal"
               class="ml-auto text-gray-400 hover:text-gray-600"
             >
-              <i class="fas fa-xmark"></i>
+              <i class="fas fa-xmark cursor-pointer me-2 mb-2"></i>
             </button>
           </div>
 
@@ -58,21 +60,24 @@
           </div>
 
           <!-- Input -->
-          <div class="p-4 border-t border-gray-200 bg-white md:rounded-b-2xl">
-            <form @submit.prevent="sendMessage" class="flex items-center w-full gap-2">
+          <div class="p-3 border-t border-gray-200 bg-white md:rounded-b-2xl">
+            <form
+              @submit.prevent="sendMessage"
+              class="flex items-center w-full gap-2"
+            >
               <input
                 type="text"
                 v-model="message_content"
-                class="flex-1 rounded-full px-4 py-2 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                class="flex-1 rounded-full px-3 py-2 bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 placeholder="Write your message..."
               />
               <button
                 type="submit"
-                class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="flex-shrink-0 bg-blue-500 text-white p-2 md:p-3 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 transform -rotate-45"
+                  class="h-5 w-5 md:h-6 md:w-6 transform -rotate-45"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -95,7 +100,6 @@
     </Transition>
   </div>
 </template>
-
 
 <script setup>
 import { ref, nextTick } from 'vue'
@@ -150,14 +154,14 @@ async function sendMessage() {
       message_content: message_content.value
     })
 
-    // Add new message instantly
+    // push new message to conversations
     conversations.value.push(response.data.message)
 
     // Reset input
     message_content.value = ''
     errors.value = {}
 
-    // scroll after new message renders
+    // scroll after messages render
     scrollToBottom()
   } catch (error) {
     if (error.response?.status === 422) {
