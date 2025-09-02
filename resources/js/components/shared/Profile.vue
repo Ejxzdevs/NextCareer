@@ -53,25 +53,31 @@
             <input
               v-model="form.occupation"
               class="border rounded p-2 w-full mb-2"
-              placeholder="occupation"
+              placeholder="Occupation"
             />
             <input
               v-model="form.address"
               class="border rounded p-2 w-full mb-2"
-              placeholder="address"
+              placeholder="Address"
             />
           </div>
         </div>
 
         <div class="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+          <MessageModal 
+            v-show="authId !== userProfile.user_id"
+            :email="userProfile.email" 
+            :id="userProfile.user_id" 
+          />
           <button
+            v-show="authId === userProfile.user_id"
             v-if="!isEditing"
             @click="editMode"
-            class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+            class="flex items-center gap-2 cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
           >
-            Edit Profile
+            <i class="fas fa-edit"></i>
+            <span>Edit Profile</span>
           </button>
-
           <template v-else>
             <button
               @click="saveProfile"
@@ -149,15 +155,22 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
+import MessageModal from '@/components/shared/MessageModal.vue';
 
+// get user profile data from the server
 const { profile } = usePage().props;
+const page = usePage();
+
+// get authenticated user id
+const authId = page.props.user.id;
 
 const isEditing = ref(false);
 const newSkill = ref('');
 const previewImage = ref(null);
 
 const userProfile = ref({
-  email: profile.user?.email,
+  user_id: profile.user_id,
+  email: profile.user.email,
   about: profile.about,
   occupation: profile.occupation,
   address: profile.address,
