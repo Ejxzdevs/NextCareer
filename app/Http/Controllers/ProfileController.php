@@ -14,9 +14,9 @@ class ProfileController extends Controller
      *
      * @return \Inertia\Response
      */
-    public function showProfile()
+    public function showProfile(request $request)
     {
-        $userId = Auth::id();
+        $userId = $request->id;
         
         $profile = UserProfile::with('user:id,email')
             ->where('user_id', $userId)
@@ -59,7 +59,7 @@ class ProfileController extends Controller
         $validated
     );
 
-    return redirect()->route('employer.profile')
+    return back()
         ->with('success', 'Profile updated successfully.');
     }
 }
