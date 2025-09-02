@@ -11,6 +11,7 @@ class UserProfile extends Model
         'skills',
         'occupation',
         'about',
+        'profile_picture',
     ];
     protected $casts = [
         'skills' => 'array',
