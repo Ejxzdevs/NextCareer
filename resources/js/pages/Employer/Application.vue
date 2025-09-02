@@ -78,12 +78,12 @@
                 </a>
               </div>
               <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto">
-                <a
-                  href="#"
+                <Link
+                  :href="route('userProfile.show', application.user.id)"
                   class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md text-center"
                 >
                   View Profile
-                </a>
+              </Link>
                 <select
                   class="text-center px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
