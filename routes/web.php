@@ -30,7 +30,7 @@ Route::post('freelance/application', [ApplicationController::class, 'store'])->n
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::inertia('/notifications', 'Employer/AllNotifications')->name('notifications.all');
-Route::get('/profile', [ProfileController::class,'showProfile'])->name('employer.profile');
+Route::get('user/profile/{id}', [ProfileController::class,'showProfile'])->name('userProfile.show');
 Route::put('/user/profile', [ProfileController::class, 'update'])->name('userProfile.update');
 
 Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
