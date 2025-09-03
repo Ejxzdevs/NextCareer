@@ -2,9 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MessageController;
 
 // Routes in api.php automatically get the '/api' prefix.
 Route::middleware('web')->group(function () {
-Route::get('/notifications/raw-projects', [NotificationController::class, 'getUserNotifications'])->name('api.raw.notifications');
-Route::put('/notifications/mark-as-viewed', [NotificationController::class, 'markApplicationsAsViewed'])->name('update.applications.viewed');
+
+// Notification Routes
+Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.read');
+Route::put('/notifications/mark-all-as-viewed', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsViewed');
+
+// Messaging Routes
+Route::get('/messages', [MessageController::class, 'getMessageNotifications'])->name('messages.notifications.read');
+Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation'])->name('messages.conversation.read');
+Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.store');
+Route::put('/messages/mark-all-as-read', [MessageController::class, 'markAllAsRead'])->name('messages.markAllAsRead');
 });
