@@ -55,7 +55,7 @@
               'flex items-center gap-3 p-3 cursor-pointer border-gray-200',
               message.read ? 'bg-blue-100 font-semibold' : 'hover:bg-gray-50'
             ]"
-            :href="route('messages.all', message.id)"
+            :href="route('user.AllMessages.index', message.id)"
           >
             <!-- Avatar -->
             <img
@@ -88,12 +88,12 @@
           v-if="userWithLastMessages.length > 0"
           class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
         >
-          <a
-            :href="route('messages.all')"
+          <Link
+            :href="route('user.AllMessages.index')"
             class="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
             View All Messages
-          </a>
+        </Link>
         </div>
       </div>
     </transition>

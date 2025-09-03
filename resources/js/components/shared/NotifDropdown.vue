@@ -88,12 +88,12 @@
           v-if="notifications.length > 0 && !isLoading && !fetchError"
           class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
         >
-          <a
-            :href="route('notifications.all')"
+          <Link
+            :href="route('user.allNotifications.index')"
             class="text-sm text-blue-600 hover:text-blue-800 font-medium"
           >
             View All Notifications
-          </a>
+          </Link>
         </div>
       </div>
     </transition>
