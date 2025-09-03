@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class MessageController extends Controller
 {
-    // Render all messages view
-    public function getAllMessages()
-    {
-        return Inertia::render('Employer/AllMessages');
-    }
-
     // Get message notifications
     public function getMessageNotifications()
 {
