@@ -52,7 +52,7 @@ class NotificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function markApplicationsAsViewed(Request $request)
+    public function markAllAsRead(Request $request)
     {
         $userId = auth::id();
 
