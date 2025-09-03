@@ -22,7 +22,7 @@ class ProfileController extends Controller
             ->where('user_id', $userId)
             ->first();
 
-        return inertia('Employer/Profile', [
+        return inertia('Shared/Profile', [
             'profile' => $profile,
         ]);
     }
