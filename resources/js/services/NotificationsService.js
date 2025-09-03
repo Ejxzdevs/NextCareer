@@ -3,8 +3,8 @@ import axios from 'axios';
 
 // Since Ziggy is global, 'route()' is available here without explicit import.
 const API_ENDPOINTS = {
-    FETCH_NOTIFICATIONS: route('api.raw.notifications'),
-    MARK_ALL_AS_READ: route('update.applications.viewed')
+    FETCH_NOTIFICATIONS: route('notifications.read'),
+    MARK_ALL_AS_READ: route('notifications.markAllAsViewed'),
 };
 
 /**

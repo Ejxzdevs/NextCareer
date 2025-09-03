@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // Since Ziggy is global, 'route()' is available here without explicit import.
 const API_ENDPOINTS = {
-    FETCH_INBOX: route('messages.listWithLastMessage'),
-    SEND_MESSAGE: route('messages.send'),
-    FETCH_CONVERSATION: (userId) => route('messages.conversation', userId),
+    FETCH_INBOX: route('messages.notifications.read'),
+    SEND_MESSAGE: route('messages.store'),
+    FETCH_CONVERSATION: (userId) => route('messages.conversation.read', userId),
     MARK_ALL_READ: route('messages.markAllAsRead'),
 };
 
