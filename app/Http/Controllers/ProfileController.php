@@ -33,7 +33,7 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function updateProfile(Request $request)
 {
       
     $validated = $request->validate([
