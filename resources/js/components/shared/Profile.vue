@@ -168,6 +168,7 @@ const isEditing = ref(false);
 const newSkill = ref('');
 const previewImage = ref(null);
 
+// Initialize user profile data
 const userProfile = ref({
   user_id: profile.user_id,
   email: profile.user.email,
@@ -176,10 +177,12 @@ const userProfile = ref({
   address: profile.address,
   profile_picture:
     profile.profile_picture ??
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...',
-  skills: profile.skills,
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  skills: profile.skills ?? [],
 });
 
+
+// Form state
 const form = useForm({
   _method: 'put',
   about: null,
@@ -189,6 +192,7 @@ const form = useForm({
   skills: [],
 });
 
+// Handle profile picture change
 const handleFileChange = (event) => {
   const file = event.target.files[0];
   if (file) {
@@ -199,10 +203,11 @@ const handleFileChange = (event) => {
     reader.readAsDataURL(file);
 
     form.profile_picture = file;
-    console.log('Selected file:', form.profile_picture);
   }
 };
 
+
+// Save profile changes
 function saveProfile() {
   form.post(route('userProfile.update'), {
     onSuccess: () => {
@@ -216,6 +221,7 @@ function saveProfile() {
   isEditing.value = false;
 }
 
+// Enter edit mode and pre-fill form fields with current profile data
 function editMode() {
   form.about = userProfile.value.about;
   form.occupation = userProfile.value.occupation;
@@ -226,19 +232,22 @@ function editMode() {
   isEditing.value = true;
 }
 
+// Add a new skill to the skills array 
 function addSkill() {
   const skill = newSkill.value.trim();
   if (skill && !userProfile.value.skills.includes(skill)) {
     userProfile.value.skills.push(skill);
     newSkill.value = '';
-    console.log('form value:', form.skills);
   }
 }
 
+
+// Remove a skill from the skills array by index
 function removeSkill(index) {
   userProfile.value.skills.splice(index, 1);
 }
 
+// Cancel editing and revert changes
 function cancelEdit() {
   userProfile.value = { ...userProfile.value };
   isEditing.value = false;
