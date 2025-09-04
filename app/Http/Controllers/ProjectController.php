@@ -122,7 +122,7 @@ class ProjectController extends Controller
             return redirect()->route('login');
         }
     
-        $project = Project::with('user')->find($id);
+        $project = Project::with('user.profile')->find($id);
 
         // Mark this project as 'viewed'
         if ($application_id) {
@@ -136,7 +136,7 @@ class ProjectController extends Controller
         }
 
         // Load all applications with associated user data
-        $userApplication = Application::with('user')->where('project_id', $id)->get();
+        $userApplication = Application::with('user.profile')->where('project_id', $id)->get();
 
         if (!$project) {
             return Inertia::render('Employer/ViewProject', [

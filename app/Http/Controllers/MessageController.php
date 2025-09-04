@@ -21,7 +21,7 @@ class MessageController extends Controller
 
     // Fetch those messages with sender info
     $latestMessages = Message::whereIn('message_id', $latestMessageIds)
-        ->with('sender')
+        ->with('sender.profile')
         ->orderByDesc('created_at')
         ->get();
 

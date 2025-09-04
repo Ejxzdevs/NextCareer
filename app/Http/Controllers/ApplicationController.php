@@ -14,13 +14,12 @@ class ApplicationController extends Controller
     {
         $userId = auth::id();
         $get_all_projects = Project::where('user_id', $userId)->get();
-        $project_ids = $get_all_projects->pluck('id'); // Extract only IDs
+        $project_ids = $get_all_projects->pluck('id');
 
         $applications = Application::whereIn('project_id', $project_ids)->get();
 
         $applications = Application::whereIn('project_id', $project_ids)
-            ->with('user')
-            ->with('project')
+            ->with(['user.profile','project'])
             ->latest() 
             ->paginate(3);
 

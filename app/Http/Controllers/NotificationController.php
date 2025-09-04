@@ -30,11 +30,14 @@ class NotificationController extends Controller
 
         $userData = User::where('users.id', $userId)
             ->join('projects', 'users.id', '=', 'projects.user_id')
+            
             ->join('applications', 'projects.id', '=', 'applications.project_id')
+            ->join('user_profiles', 'applications.user_id', '=', 'user_profiles.user_id')
             ->select(
                 'users.*',
                 'projects.*',
                 'applications.*',
+                'user_profiles.*',
                 DB::raw('(SELECT email FROM users WHERE users.id = applications.user_id) as applicant_email')
             )
             ->orderBy('applications.created_at', 'desc')
