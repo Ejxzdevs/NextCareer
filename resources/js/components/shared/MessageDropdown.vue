@@ -116,6 +116,7 @@ const loadInbox = async () => {
   const { data: inboxData, error } = await getInboxApi();
   if (data) {
     data.value = inboxData;
+    console.log('Inbox data loaded:', data.value);
   } else {
     console.error('Error loading inbox:', error);
   }
@@ -129,7 +130,7 @@ const userWithLastMessages = computed(() => {
     text: msg?.message_content || 'No content',
     time: formatTimeAgo(msg?.created_at) || '',
     read: msg?.status === 'sent',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
+    avatar: msg.sender.profile.profile_picture  || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?...'
   }));
 });
 

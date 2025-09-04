@@ -8,7 +8,7 @@
         <!-- Back Button -->
         <div class="h-16 flex items-center ms-3 lg:ms-5 mb-4 lg:mb-0">
 
-          <button @click="previewPage()" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200">
+          <button @click="previewPage()" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 cursor-pointer">
             <i class="fas fa-arrow-left mr-2"></i>
             <span class="font-medium">Back</span>
           </button>
@@ -25,10 +25,9 @@
 
             <!-- User Info -->
             <div class="flex items-center mb-5 sm:mb-6">
-              <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
-                <i class="fas fa-project-diagram"></i>
-              </div>
-              <div class="ms-3 sm:ms-4">
+                <img :src="project.user.profile.profile_picture ? project.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'" 
+                alt="profile" class="h-13 w-13 rounded-full object-center object-cover mt-2">
+              <div class="ms-1 sm:ms-2">
                 <p class="text-md sm:text-lg font-semibold text-gray-800">{{ user?.email || 'Unknown User' }}</p>
                 <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Posted {{ formatTimeAgo(project.created_at) }}</p>
               </div>
@@ -105,10 +104,14 @@
             </div>
 
             <p class="text-base font-bold text-gray-700 mb-3 flex items-center gap-2 truncate">
-              <span class="flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-full">
-                <i class="fas fa-user"></i>
-              </span>
-              {{ application.user.email || 'Untitled Application' }}
+                <img :src="application.user.profile.profile_picture ? application.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'" 
+                alt="profile" class="h-9 w-9 rounded-full object-center object-cover">
+                <div class="flex flex-col">
+                  <p>{{ application.user.email || 'Untitled Application' }}  </p>
+                  <p class="cursor-pointer font-normal text-xs flex items-center gap-1  text-gray-500" :href="route('userProfile.show', application.user.id)">Profile
+                      <Link :href="route('userProfile.show', application.user.id)" class="text-blue-500 underline">visit here</Link>
+                  </p>
+                </div>
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">

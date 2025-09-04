@@ -68,6 +68,7 @@
             v-show="authId !== userProfile.user_id"
             :email="userProfile.email" 
             :id="userProfile.user_id" 
+            :profile_picture="userProfile.profile_picture"
           />
           <button
             v-show="authId === userProfile.user_id"

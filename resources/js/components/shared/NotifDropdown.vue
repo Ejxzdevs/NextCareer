@@ -66,15 +66,15 @@
             ]"
           >
             <div class="flex-shrink-0">
-              <i
-                :class="notification.icon || 'fas fa-info-circle'"
-                class="text-blue-500 text-lg"
-              ></i>
+                <img :src="notification.profile_picture ? notification.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'" 
+                alt="profile" class="h-10 w-10 rounded-full object-center object-cover"
+                >
             </div>
             <div class="flex-grow">
               <p :class="['text-sm', { 'font-semibold': !notification.read }]">
                 {{ notification.message }}
               </p>
+          
               <p class="text-xs text-gray-600 ml-auto">{{ notification.time }}</p>
             </div>
             <div
@@ -101,8 +101,8 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { useDropdown } from '../../composables/useToggleVisibility';
-import { fetchUserNotifications, markAllAsRead } from '../../services/NotificationsService';
+import { useDropdown } from '@/composables/useToggleVisibility';
+import { fetchUserNotifications, markAllAsRead } from '@/services/NotificationsService';
 import { Inertia } from '@inertiajs/inertia';
 
 /**
@@ -164,9 +164,10 @@ const notifications = computed(() =>
         message: `${project.applicant_email} applied to your ${project.title}`,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
-        icon: 'fas fa-briefcase'
+        profile_picture : project.profile_picture,
     }))
 );
+
 
 /**
  * Handle notification click to view project details

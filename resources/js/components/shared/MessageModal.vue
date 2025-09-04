@@ -18,9 +18,9 @@
           <!-- Header -->
           <div class="p-4 border-b border-gray-200 flex items-center gap-3 bg-white rounded-t-2xl">
             <img
-              src="https://ui-avatars.com/api/?name=AI+Support"
-              alt="AI"
-              class="h-10 w-10 rounded-full"
+              :src="profile_picture ? profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+              alt="profile"
+              class="h-12 w-12 rounded-full object-center object-cover"
             />
             <div>
               <h2 class="text-sm font-semibold text-gray-900">{{ email }}</h2>
@@ -113,7 +113,8 @@ const authId = page.props.user.id
 
 const props = defineProps({
   email: String,
-  id: Number
+  id: Number,
+  profile_picture: String,
 })
 
 // State
@@ -136,8 +137,9 @@ async function scrollToBottom() {
 // Fetch conversation messages
 async function fetchMessages() {
   try {
-    const response = await axios.get(route('messages.conversation', props.id))
+    const response = await axios.get(route('messages.conversation.read', props.id))
     conversations.value = response.data.messages 
+
 
     // scroll after messages render
     scrollToBottom()

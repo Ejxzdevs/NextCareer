@@ -67,7 +67,11 @@
           >
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <div class="flex-grow">
-                <h3 class="text-xl font-bold text-gray-900">{{ application.user.email }}</h3>
+                <div class="flex flex-row gap-2 items-center">
+                  <img :src="application.user.profile.profile_picture ? application.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' " class="h-10 w-10 rounded-full object-center object-cover" alt="profile">
+                  <h4 class="text-xl font-medium text-gray-800">{{ application.user.email }}</h4>
+                </div>
+               
                 <p class="text-md text-gray-700 mt-1">
                   Applied for:
                   <span class="font-semibold text-blue-600">{{ application.project.title }}</span>
@@ -98,6 +102,7 @@
                 <MessageModal 
                   :email="application.user.email" 
                   :id="application.user.id" 
+                  :profile_picture="application.user.profile.profile_picture"
                 />
               </div>
             </div>
@@ -145,6 +150,8 @@ const { applications, projects } = usePage().props;
 const searchName = ref('');
 const selectedProjectTitle = ref('');
 const selectedStatus = ref('');
+
+console.log(applications.data);
 
 const filteredApplications = computed(() => {
   return applications.data.filter(app => {
