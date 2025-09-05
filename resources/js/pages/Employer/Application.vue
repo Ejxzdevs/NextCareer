@@ -52,7 +52,12 @@
                      sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
               <option value="viewed">Viewed</option>
+              <option value="reviewed">Reviewed</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="hired">Hired</option>
+              <option value="rejected">Rejected</option>
             </select>
           </div>
 
@@ -81,7 +86,7 @@
       <div
         class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto"
       >
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+        <h2 class="label mb-6">
           Applicant List
         </h2>
 
@@ -116,7 +121,7 @@
                 <div class="flex-1 min-w-0">
                   <Link
                     :href="route('userProfile.show', application.user.id)"
-                    class="block text-lg font-semibold text-blue-700 hover:underline Poppins truncate"
+                    class="block name font-semibold text-blue-700 hover:underline Poppins truncate"
                   >
                     {{ capitalizeFirstLetter(application.user.email) }}
                   </Link>
