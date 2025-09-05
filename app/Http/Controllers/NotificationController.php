@@ -36,6 +36,7 @@ class NotificationController extends Controller
             ->select(
                 'users.*',
                 'projects.*',
+                'applications.id as application_id',
                 'applications.*',
                 'user_profiles.*',
                 DB::raw('(SELECT email FROM users WHERE users.id = applications.user_id) as applicant_email')
