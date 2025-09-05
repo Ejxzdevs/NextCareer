@@ -19,3 +19,28 @@ export function formatSkills(skillsString) {
     .join(', ')         // Join the skills back into a comma-separated string
     .toUpperCase();     // Convert the entire string to uppercase
 }
+
+/**
+ * Extracts a readable name from an email.
+ * - Removes domain (@gmail.com, etc.)
+ * - Capitalizes first letter
+ * - Turns dots into spaces
+ */
+export function formatNameFromEmail(email) {
+  if (!email) return ''
+
+  const username = email.split('@')[0] // before @
+  const withSpaces = username.replace(/\./g, ' ') // john.doe -> john doe
+  return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1)
+}
+
+/**
+ * Capitalizes the first letter of a string.
+ *
+ * @param {string} str - The input string.
+ * @returns {string} The string with the first letter capitalized.
+ */
+export function capitalizeFirstLetter(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
