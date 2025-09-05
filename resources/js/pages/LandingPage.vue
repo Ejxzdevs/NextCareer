@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen ">
         <div class="absolute top-0 left-0 w-full">
             <Navigational />
         </div>
@@ -17,7 +17,7 @@
                 <!-- Developer Card -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                     <div class="relative">
-                        <img :src="getImageUrl('/images/developer.png')" alt="Skilled Developers" class="w-full h-48 object-cover" />
+                        <img :src="getImageUrl('/images/developer.png')" alt="Skilled Developers" class="w-full h-48 object-center object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     </div>
                     <div class="p-6">
@@ -29,7 +29,7 @@
                 <!-- Employer Card -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                     <div class="relative">
-                        <img :src="getImageUrl('/images/employer.png')" alt="For Employers" class="w-full h-48 object-cover" />
+                        <img :src="getImageUrl('/images/employer.png')" alt="For Employers" class="w-full h-48 object-center object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     </div>
                     <div class="p-6">
@@ -41,7 +41,7 @@
                 <!-- Connect Card -->
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl cursor-pointer">
                     <div class="relative">
-                        <img :src="getImageUrl('/images/connect.png')" alt="Connect with Freelancers" class="w-full h-48 object-cover" />
+                        <img :src="getImageUrl('/images/connect.png')" alt="Connect with Freelancers" class="w-full h-48 object-center object-cover" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     </div>
                     <div class="p-6">
@@ -93,7 +93,7 @@
         </div>
 
         <!-- Testimonials Section -->
-        <div class="py-20 bg-gray-50">
+        <div class="py-20 ">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">What Our Users Say</h2>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <div class="flex items-center mb-4">
-                            <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson" class="w-12 h-12 rounded-full">
+                            <img src="https://ui-avatars.com/api/?name=Mike+Johnson&background=random" alt="Mike Johnson" class="w-12 h-12 rounded-full ">
                             <div class="ml-4">
                                 <h4 class="font-semibold">Mike Johnson</h4>
                                 <p class="text-gray-500">Freelancer</p>
@@ -159,7 +159,7 @@
         </div>
 
         <!-- How It Works Section -->
-        <div class="py-20 bg-gray-50">
+        <div class="py-20 ">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
@@ -195,7 +195,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <div class=" p-6 rounded-xl shadow-lg bg-white">
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                                 <span class="text-blue-600 font-bold text-xl">3</span>
                             </div>

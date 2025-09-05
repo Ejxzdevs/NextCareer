@@ -1,20 +1,29 @@
 <template>
   <MainLayout>
-    <div class="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-8 text-center">
+    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center title">
         All Applicants
       </h1>
 
-      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-6xl mx-auto">
+      <!-- Filters Section -->
+      <div
+        class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-6xl mx-auto"
+      >
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Filter by Job Post -->
           <div v-if="projects && projects.length > 0">
-            <label for="job-filter" class="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              for="job-filter"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
               Filter by Job Post
             </label>
             <select
               v-model="selectedProjectTitle"
               id="job-filter"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 
+                     focus:outline-none focus:ring-blue-500 focus:border-blue-500 
+                     sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Job Posts</option>
               <option
@@ -27,22 +36,32 @@
             </select>
           </div>
 
+          <!-- Filter by Status -->
           <div>
-            <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              for="status-filter"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
               Filter by Status
             </label>
             <select
               v-model="selectedStatus"
               id="status-filter"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 
+                     focus:outline-none focus:ring-blue-500 focus:border-blue-500 
+                     sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Statuses</option>
               <option value="viewed">Viewed</option>
             </select>
           </div>
 
+          <!-- Search Applicants -->
           <div class="md:col-span-2 lg:col-span-1">
-            <label for="search-applicant" class="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              for="search-applicant"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
               Search Applicants
             </label>
             <input
@@ -50,70 +69,152 @@
               type="text"
               id="search-applicant"
               placeholder="Search by name or keyword..."
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 
+                     rounded-md shadow-sm focus:outline-none focus:ring-blue-500 
+                     focus:border-blue-500 sm:text-sm"
             />
           </div>
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Applicant List</h2>
+      <!-- Applicants List -->
+      <div
+        class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto"
+      >
+        <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+          Applicant List
+        </h2>
 
-        <div v-if="applications.data && applications.data.length > 0" class="space-y-6">
+        <!-- Applications -->
+        <div
+          v-if="applications.data && applications.data.length > 0"
+          class="space-y-6"
+        >
           <div
             v-for="application in filteredApplications"
             :key="application.id"
             class="border-b border-gray-200 pb-6 last:border-b-0"
           >
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <div class="flex-grow">
-                <div class="flex flex-row gap-2 items-center">
-                  <img :src="application.user.profile.profile_picture ? application.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' " class="h-10 w-10 rounded-full object-center object-cover" alt="profile">
-                  <h4 class="text-xl font-medium text-gray-800">{{ application.user.email }}</h4>
+            <div
+              class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
+            >
+              <!-- Applicant Info -->
+              <div
+                class="flex items-start gap-4 flex-1 min-w-0 mb-4 sm:mb-0"
+              >
+                <div class="flex-shrink-0">
+                  <img
+                    :src="
+                      application.user.profile.profile_picture
+                        ? application.user.profile.profile_picture
+                        : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+                    "
+                    class="h-16 w-16 rounded-full object-cover border-2 border-gray-300"
+                    alt="profile photo"
+                  />
                 </div>
-               
-                <p class="text-md text-gray-700 mt-1">
-                  Applied for:
-                  <span class="font-semibold text-blue-600">{{ application.project.title }}</span>
-                </p>
-                <p class="text-sm text-gray-500 mt-1">Applied on: {{ formatDate(application.created_at) }}</p>
-                <a :href="`/storage/${application.resume}`" target="_blank" class="text-blue-600">
-                  View Resume
-                </a>
+                <div class="flex-1 min-w-0">
+                  <Link
+                    :href="route('userProfile.show', application.user.id)"
+                    class="block text-lg font-semibold text-blue-700 hover:underline Poppins truncate"
+                  >
+                    {{ capitalizeFirstLetter(application.user.email) }}
+                  </Link>
+                  <p class="text-sm text-gray-700 mt-1">
+                    Applied for:
+                    <span class="font-medium text-gray-900">
+                      {{ application.project.title }}
+                    </span>
+                  </p>
+                  <p class="text-sm text-gray-500">
+                    Applied: {{ formatDate(application.created_at) }}
+                  </p>
+                </div>
               </div>
-              <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto">
-                <Link
-                  :href="route('userProfile.show', application.user.id)"
-                  class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md text-center"
-                >
-                  View Profile
-              </Link>
+
+              <!-- Actions -->
+              <div
+                class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto"
+              >
+                <!-- Status Dropdown -->
                 <select
-                  class="text-center px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  v-model="application.application_status"
+                  class="text-center cursor-pointer py-2 border border-gray-300 text-gray-700 
+                         text-sm rounded-lg shadow-sm focus:outline-none 
+                         focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option>New</option>
-                  <option :selected="application.application_status === 'Reviewed'">Reviewed</option>
-                  <option :selected="application.application_status === 'Shortlisted'">Shortlisted</option>
-                  <option :selected="application.application_status === 'Interview Scheduled'">Interview Scheduled</option>
-                  <option :selected="application.application_status === 'Hired'">Hired</option>
-                  <option :selected="application.application_status === 'Rejected'">Rejected</option>
-                  <option :selected="application.application_status === 'viewed'">Viewed</option>
+                  <option value="pending">Pending</option>
+                  <option value="viewed">Viewed</option>
+                  <option value="reviewed">Reviewed</option>
+                  <option value="scheduled">Scheduled</option>
+                  <option value="hired">Hired</option>
+                  <option value="rejected">Rejected</option>
                 </select>
-                <MessageModal 
-                  :email="application.user.email" 
-                  :id="application.user.id" 
+
+                <!-- Resume -->
+                <a
+                  :href="`/storage/${application.resume}`"
+                  target="_blank"
+                  class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline 
+                         px-3 py-2 border border-blue-200 rounded-md bg-blue-50 
+                         hover:bg-blue-100 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 mr-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 
+                         012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 
+                         1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Resume
+                </a>
+
+                <!-- Message -->
+                <MessageModal
+                  :email="application.user.email"
+                  :id="application.user.id"
                   :profile_picture="application.user.profile.profile_picture"
                 />
+
+                <!-- View Profile -->
+                <Link
+                  :href="route('userProfile.show', application.user.id)"
+                  class="px-5 py-2 bg-blue-600 text-white text-sm font-medium 
+                         rounded-lg hover:bg-blue-700 transition-colors 
+                         shadow-md text-center"
+                >
+                  View Profile
+                </Link>
               </div>
             </div>
           </div>
 
-          <div class="flex justify-center mt-8" v-if="applications.links && applications.links.length > 0">
-            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-              <template v-for="(link, key) in applications.links" :key="key">
+          <!-- Pagination -->
+          <div
+            class="flex justify-center mt-8"
+            v-if="applications.links && applications.links.length > 0"
+          >
+            <nav
+              class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+              aria-label="Pagination"
+            >
+              <template
+                v-for="(link, key) in applications.links"
+                :key="key"
+              >
                 <div
                   v-if="link.url === null"
-                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 cursor-not-allowed"
+                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 
+                         bg-white text-sm font-medium text-gray-500 cursor-not-allowed"
                   v-html="link.label"
                 ></div>
                 <Link
@@ -130,6 +231,8 @@
             </nav>
           </div>
         </div>
+
+        <!-- No Applicants -->
         <div v-else class="text-center text-gray-600 py-8">
           No applicants found.
         </div>
@@ -141,9 +244,9 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
-import { formatDate } from '../../utils/datetimeUtils';
-import MessageModal from '@/components/shared/MessageModal.vue'
-
+import { formatDate } from '@/utils/datetimeUtils';
+import { capitalizeFirstLetter } from '@/utils/stringUtils';
+import MessageModal from '@/components/shared/MessageModal.vue';
 
 const { applications, projects } = usePage().props;
 
@@ -151,17 +254,19 @@ const searchName = ref('');
 const selectedProjectTitle = ref('');
 const selectedStatus = ref('');
 
-console.log(applications.data);
-
 const filteredApplications = computed(() => {
-  return applications.data.filter(app => {
-    const matchesName = app.user?.email?.toLowerCase().includes(searchName.value.toLowerCase());
+  return applications.data.filter((app) => {
+    const matchesName = app.user?.email
+      ?.toLowerCase()
+      .includes(searchName.value.toLowerCase());
     const matchesProject =
-      selectedProjectTitle.value === '' || app.project?.title === selectedProjectTitle.value;
+      selectedProjectTitle.value === '' ||
+      app.project?.title === selectedProjectTitle.value;
     const matchesStatus =
-      selectedStatus.value === '' || app.application_status === selectedStatus.value;
+      selectedStatus.value === '' ||
+      app.application_status === selectedStatus.value;
+
     return matchesName && matchesProject && matchesStatus;
   });
 });
-
 </script>

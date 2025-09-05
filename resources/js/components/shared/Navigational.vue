@@ -13,22 +13,22 @@
           <li>
             <Link 
               v-if="userRole === 'employer'" :href="route('employer.dashboard')" 
-              class="hover:text-gray-300">
-                DASHBOARD
+              class="hover:text-gray-300 nav-link">
+                Dashboard
             </Link>
           </li>
           <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
-              class="hover:text-gray-300">
-                {{ userRole === 'freelance' ? 'FIND JOBS' : 'JOB POSTS' }}
+              class="hover:text-gray-300 nav-link">
+                {{ userRole === 'freelance' ? 'Find Jobs' : 'Job Posts' }}
             </Link>
           </li>
            <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.application')" 
-              class="hover:text-gray-300">
-                APPLICATIONS
+              class="hover:text-gray-300 nav-link">
+                Applications
             </Link>
           </li>
         </ul>
@@ -56,15 +56,15 @@
         <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
-              class="hover:text-gray-300">
-                DASHBOARD
+              class="hover:text-gray-300 nav-link">
+                Dashboard
             </Link>
         </li>
         <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
-              class="hover:text-gray-300">
-                APPLICATIONS
+              class="nav-link">
+                Applications
             </Link>
         </li>
       </ul>
