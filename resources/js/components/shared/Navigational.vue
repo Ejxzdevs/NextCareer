@@ -4,32 +4,31 @@
         <div class="hidden md:flex text-white text-lg font-semibold">
           <Link :href="route('landing.page')">Next Career</Link>
         </div>
-        <ul class="hidden md:flex space-x-6 text-white items-center">
+        <ul class="hidden md:flex item-center space-x-3 text-white items-center font-medium text-sm">
+          <div class="flex flex-row gap-2">
           <NotificationDropdown/>
           <MessageDropdown/>
           <UserDropdown />
-          <li class="cursor-pointer">|</li>
+          </div>
           <li>
             <Link 
               v-if="userRole === 'employer'" :href="route('employer.dashboard')" 
               class="hover:text-gray-300">
-                Dashboard
+                DASHBOARD
             </Link>
           </li>
-          <li class="cursor-pointer">|</li>
           <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
               class="hover:text-gray-300">
-                {{ userRole === 'freelance' ? 'Find Jobs' : 'My Job Posts' }}
+                {{ userRole === 'freelance' ? 'FIND JOBS' : 'JOB POSTS' }}
             </Link>
           </li>
-          <li class="cursor-pointer">|</li>
            <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.application')" 
               class="hover:text-gray-300">
-                Applications
+                APPLICATIONS
             </Link>
           </li>
         </ul>
@@ -40,13 +39,12 @@
           <Link :href="route('landing.page')">Next Career</Link>
         </div>
         <div class="flex flex-row">
-          <ul class="flex flex-row gap-4 me-3 text-white items-center">
+          <ul class="flex flex-row gap-1 me-3 text-white items-center">
             <NotificationDropdown/>
             <MessageDropdown/>
             <UserDropdown />
           </ul>
-
-          <button @click="toggleMenu" class="text-white">
+          <button @click="toggleMenu" class="text-white cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -54,19 +52,19 @@
         </div>
       </div>
 
-      <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#7789C7] p-4 space-y-2">
+      <ul v-if="isMenuOpen" class="md:hidden text-white bg-[#5b72c6] p-4 space-y-2">
         <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
               class="hover:text-gray-300">
-                Home
+                DASHBOARD
             </Link>
         </li>
         <li>
             <Link 
               :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.project')" 
               class="hover:text-gray-300">
-                Applications
+                APPLICATIONS
             </Link>
         </li>
       </ul>

@@ -1,7 +1,8 @@
 <template>
   <li class="relative">
-    <button @click="toggleDropdown" ref="dropdownRef" class="hover:text-gray-300 cursor-pointer flex items-center gap-1">
-      <i class="fas fa-user"></i>
+    <button @click="toggleDropdown" ref="dropdownRef" 
+      class="relative hover:text-gray-300 cursor-pointer flex items-center gap-1 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+      <i class="fas fa-user text-base"></i>
     </button>
     <ul
       v-if="isDropdownOpen"
