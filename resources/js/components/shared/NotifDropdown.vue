@@ -132,7 +132,6 @@ const loadNotifications = async () => {
         rawProjectData.value = [];
     } else {
         rawProjectData.value = data;
-          console.log(rawProjectData.value)
     }
 
     isLoading.value = false;
