@@ -71,8 +71,11 @@
                 >
             </div>
             <div class="flex-grow">
-              <p :class="['text-sm', { 'font-semibold': !notification.read }]">
-                {{ notification.message }}
+              <p>
+                <span class="text-sm text-blue-600 name">
+                  {{ notification.username}}
+                </span>
+                <span class="font-normal"> Applied to your</span> {{ notification.project_title }}
               </p>
           
               <p class="text-xs text-gray-600 ml-auto">{{ notification.time }}</p>
@@ -105,22 +108,14 @@ import { useDropdown } from '@/composables/useToggleVisibility';
 import { fetchUserNotifications, markAllAsRead } from '@/services/NotificationsService';
 import { Inertia } from '@inertiajs/inertia';
 
-/**
- * Initialize dropdown state and utility functions from custom composable
- */
+// Dropdown state and handlers from the custom useDropdown composable
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
 
-/**
- * Reactive references to hold notifications data, loading state, and errors
- */
 const rawProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
-const project_id = ref(null);
 
-/**
- * Fetch notifications data from API and update reactive state accordingly
- */
+// load notifications
 const loadNotifications = async () => {
     isLoading.value = true;
     fetchError.value = null;
@@ -137,31 +132,26 @@ const loadNotifications = async () => {
     isLoading.value = false;
 };
 
-/**
- * Mark all notifications as read via API, then refresh notifications list
- */
+// Mark all notifications as read
 const callMarkAllAsRead = async () => { 
     fetchError.value = null;
 
     const { success, error } = await markAllAsRead();
-
     if (error) {
         fetchError.value = error;
     }
-
     if (success) {
         await loadNotifications();
     }
 };
 
-/**
- * Compute notification objects for UI from raw project/application data
- */
+// Transform raw project data into a list of notification objects for the UI
 const notifications = computed(() =>
     rawProjectData.value.map(project => ({
         id: project.project_id,
         application_id: project.application_id,
-        message: `${project.applicant_username} applied to your ${project.title}`,
+        username: project.applicant_username,
+        project_title: project.title,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
         profile_picture : project.profile_picture,
@@ -181,22 +171,15 @@ function viewNotification(id, application_id) {
     }
     Inertia.get(
         route('project.show', { id: id, application_id: application_id }),
-        {},
-        {
-            onError: (errors) => {
-                alert('Could not load project. It may not exist or you do not have permission.');
+        {},{ onError: (errors) => {
+              alert('Could not load project. It may not exist or you do not have permission.');
             }
         }
     );
-
     closeDropdown();
 }
 
-
-
-/**
- * Compute count of unread (pending) notifications for badge display
- */
+// count pending status
 const pendingNotificationsCount = computed(() =>
     notifications.value.filter(notification => !notification.read).length
 );
