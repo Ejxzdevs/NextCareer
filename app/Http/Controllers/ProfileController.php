@@ -18,7 +18,7 @@ class ProfileController extends Controller
     {
         $userId = $request->id;
         
-        $profile = UserProfile::with('user:id,email')
+        $profile = UserProfile::with('user:id,username')
             ->where('user_id', $userId)
             ->first();
 
