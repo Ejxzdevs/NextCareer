@@ -103,8 +103,8 @@
 
 <script setup>
 import { ref, nextTick } from 'vue'
-import axios from 'axios'
 import { usePage } from '@inertiajs/vue3';
+import { sendMessageApi , getConversationApi } from "../../services/MessageServices";
 
 const page = usePage()
 
@@ -134,40 +134,32 @@ async function scrollToBottom() {
   }
 }
 
-// Fetch conversation messages
-async function fetchMessages() {
-  try {
-    const response = await axios.get(route('messages.conversation.read', props.id))
-    conversations.value = response.data.messages 
-
-
-    // scroll after messages render
-    scrollToBottom()
-  } catch (error) {
-    console.error(error)
+// fetct conversation
+async function  fetchMessages() {
+  const { data } = await getConversationApi(props.id);
+  if (data) {
+    conversations.value = data;
+    await nextTick();
+    scrollToBottom();
+  } else {
+    conversations.value = [];
   }
 }
 
-// Send message
+// send message
 async function sendMessage() {
-  try {
-    const response = await axios.post(route('messages.send'), {
-      receiver_id: props.id,
-      message_content: message_content.value
-    })
-
-    // push new message to conversations
-    conversations.value.push(response.data.message)
-
-    // Reset input
-    message_content.value = ''
-    errors.value = {}
-
-    // scroll after messages render
-    scrollToBottom()
-  } catch (error) {
-    if (error.response?.status === 422) {
-      errors.value = error.response.data.errors
+  const { data, error } = await sendMessageApi(props.id, message_content.value);
+  if (data) {
+    conversations.value.push(data);
+    message_content.value = "";
+    errors.value = {};
+    await nextTick();
+    scrollToBottom();
+  } else {
+    if (typeof error === 'object') {
+      errors.value = error;
+    } else {
+      console.error(error);
     }
   }
 }
