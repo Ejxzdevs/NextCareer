@@ -107,16 +107,14 @@ import { formatTimeAgo } from '@/utils/datetimeUtils';
 import { getInboxApi , markAllAsReadApi } from "../../services/MessageServices";
 
 // Dropdown state
-const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } = useDropdown();
+const { isDropdownOpen, toggleDropdown, dropdownRef } = useDropdown();
 const data = ref([])
-
 
 // Load inbox messages
 const loadInbox = async () => {
   const { data: inboxData, error } = await getInboxApi();
   if (data) {
     data.value = inboxData;
-    console.log('Inbox data loaded:', data.value);
   } else {
     console.error('Error loading inbox:', error);
   }
