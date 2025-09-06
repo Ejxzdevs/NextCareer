@@ -66,7 +66,7 @@
         <div class="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
           <MessageModal 
             v-show="authId !== userProfile.user_id"
-            :email="userProfile.email" 
+            :username="userProfile.username" 
             :id="userProfile.user_id" 
             :profile_picture="userProfile.profile_picture"
           />

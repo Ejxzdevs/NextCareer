@@ -23,7 +23,7 @@
               class="h-12 w-12 rounded-full object-center object-cover"
             />
             <div>
-              <h2 class="text-sm font-semibold text-gray-900">{{ email }}</h2>
+              <h2 class="text-sm font-semibold text-gray-900">{{ username }}</h2>
               <p class="text-xs text-gray-500">
                 User Profile <Link :href="route('userProfile.show', id)" class="text-blue-500 underline">visit here</Link>
               </p>
@@ -112,7 +112,7 @@ const page = usePage()
 const authId = page.props.user.id
 
 const props = defineProps({
-  email: String,
+  username: String,
   id: Number,
   profile_picture: String,
 })

@@ -185,7 +185,7 @@
 
                 <!-- Message -->
                 <MessageModal
-                  :email="application.user.email"
+                  :username="application.user.username"
                   :id="application.user.id"
                   :profile_picture="application.user.profile.profile_picture"
                 />
