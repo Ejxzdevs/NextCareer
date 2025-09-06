@@ -16,7 +16,7 @@ class ProjectController extends Controller
 
         if (Auth::user()->account_type == 'employer') {
             // Fetch projects created by the authenticated employer
-            $projects = Project::with('user')
+            $projects = Project::with('user.profile')
                 ->where('user_id', Auth::id())
                 ->orderBy('created_at', 'asc')
                 ->get();
