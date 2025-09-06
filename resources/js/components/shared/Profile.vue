@@ -41,7 +41,7 @@
 
         <div class="flex-grow text-center sm:text-left">
           <div v-if="!isEditing">
-            <h2 class="text-3xl font-extrabold text-gray-800">{{ userProfile.email }}</h2>
+            <h2 class="text-3xl font-extrabold text-gray-800">{{ userProfile.username }}</h2>
             <p class="text-xl text-gray-600 mt-1">{{ userProfile.occupation }}</p>
             <p class="text-md text-gray-500 mt-2">
               📍 {{ userProfile.address }}
@@ -172,7 +172,7 @@ const previewImage = ref(null);
 // Initialize user profile data
 const userProfile = ref({
   user_id: profile.user_id,
-  email: profile.user.email,
+  username: profile.user.username,
   about: profile.about,
   occupation: profile.occupation,
   address: profile.address,

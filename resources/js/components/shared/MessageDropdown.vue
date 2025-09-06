@@ -124,7 +124,7 @@ const loadInbox = async () => {
 const userWithLastMessages = computed(() => {
   return data.value.map(msg => ({
     id: msg.sender_id,
-    sender: msg.sender.email,
+    sender: msg.sender.username,
     text: msg?.message_content || 'No content',
     time: formatTimeAgo(msg?.created_at) || '',
     read: msg?.status === 'sent',

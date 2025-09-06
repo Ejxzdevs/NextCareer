@@ -123,7 +123,7 @@
                     :href="route('userProfile.show', application.user.id)"
                     class="block name font-semibold text-blue-700 hover:underline Poppins truncate"
                   >
-                    {{ capitalizeFirstLetter(application.user.email) }}
+                    {{ capitalizeFirstLetter(application.user.username) }}
                   </Link>
                   <p class="text-sm text-gray-700 mt-1">
                     Applied for:

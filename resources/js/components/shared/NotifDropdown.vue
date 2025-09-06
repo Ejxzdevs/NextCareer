@@ -161,7 +161,7 @@ const notifications = computed(() =>
     rawProjectData.value.map(project => ({
         id: project.project_id,
         application_id: project.application_id,
-        message: `${project.applicant_email} applied to your ${project.title}`,
+        message: `${project.applicant_username} applied to your ${project.title}`,
         time: new Date(project.project_updated_at || project.updated_at).toLocaleString(),
         read: project.application_status !== 'pending',
         profile_picture : project.profile_picture,
