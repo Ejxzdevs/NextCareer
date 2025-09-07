@@ -72,13 +72,13 @@
             </div>
             <div class="flex-grow">
               <p>
-                <span class="text-sm text-blue-600 name">
+                <span class="text-sm text-blue-500">
                   {{ notification.username}}
                 </span>
                 <span class="font-normal"> Applied to your</span> {{ notification.project_title }}
               </p>
           
-              <p class="text-xs text-gray-600 ml-auto">{{ notification.time }}</p>
+              <p class="text-xs font-normal text-gray-600 ml-auto">{{ notification.time }}</p>
             </div>
             <div
               v-if="!notification.read"
