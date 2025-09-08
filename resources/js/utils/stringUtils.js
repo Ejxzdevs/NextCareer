@@ -11,7 +11,6 @@ export function formatSkills(skillsString) {
   // Return an empty string if input is not a string
   if (typeof skillsString !== 'string') return '';
 
-  // Split the string by commas, trim each skill, remove empty entries, and convert to uppercase
   const skills = skillsString
     .split(',')
     .map(skill => skill.trim())
