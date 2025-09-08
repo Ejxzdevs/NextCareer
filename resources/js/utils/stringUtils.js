@@ -8,17 +8,20 @@
  * @returns {string} A comma-separated string of uppercase, trimmed skills.
  */
 export function formatSkills(skillsString) {
-  if (typeof skillsString !== 'string') {
-    return '';
-  }
+  // Return an empty string if input is not a string
+  if (typeof skillsString !== 'string') return '';
 
-  return skillsString
-    .split(',')         // Split the string into an array by commas
-    .map((s) => s.trim()) // Trim whitespace from each skill
-    .filter((s) => s)   // Remove any empty strings resulting from extra commas
-    .join(', ')         // Join the skills back into a comma-separated string
-    .toUpperCase();     // Convert the entire string to uppercase
+  // Split the string by commas, trim each skill, remove empty entries, and convert to uppercase
+  const skills = skillsString
+    .split(',')
+    .map(skill => skill.trim())
+    .filter(Boolean)
+    .map(skill => skill.toUpperCase());
+
+  return skills;
 }
+
+
 
 /**
  * Extracts a readable name from an email.
