@@ -144,6 +144,7 @@
                 <!-- Status Dropdown -->
                 <select
                   v-model="application.application_status"
+                  @change="updateStatus(application)"
                   class="text-center cursor-pointer py-2 border border-gray-300 text-gray-700 
                          text-sm rounded-lg shadow-sm focus:outline-none 
                          focus:ring-blue-500 focus:border-blue-500"
@@ -252,13 +253,16 @@ import { usePage, Link } from '@inertiajs/vue3';
 import { formatDate } from '@/utils/datetimeUtils';
 import { capitalizeFirstLetter } from '@/utils/stringUtils';
 import MessageModal from '@/components/shared/MessageModal.vue';
+import { updateStatusApi } from '@/services/ApplicationServices'
 
 const { applications, projects } = usePage().props;
 
 const searchName = ref('');
 const selectedProjectTitle = ref('');
 const selectedStatus = ref('');
+const fetchError = ref(null);
 
+// Display applications filtered by name, project, and status; if no filter is applied, show the current state
 const filteredApplications = computed(() => {
   return applications.data.filter((app) => {
     const matchesName = app.user?.email
@@ -274,4 +278,23 @@ const filteredApplications = computed(() => {
     return matchesName && matchesProject && matchesStatus;
   });
 });
+
+// Updates application status and reloads page on success
+const updateStatus = async (application) => {
+  const { success, error } = await updateStatusApi(
+    application.application_status,
+    application.id
+  );
+
+  fetchError.value = null;
+
+  if (error) {
+    fetchError.value = error;
+  }
+
+  if (success) {
+    window.location.reload();    
+  }
+};
+
 </script>

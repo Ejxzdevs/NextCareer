@@ -166,7 +166,8 @@
                 <!-- Actions -->
                 <div class="flex flex-col sm:flex-row gap-3 items-center">
                   <select
-                    v-model="application.application_status"
+                     v-model="application.application_status"
+                    @change="updateStatus(application)"
                     class="py-2 px-3 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-center cursor-pointer"
                   >
                     <option value="pending">Pending</option>
@@ -228,17 +229,20 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import { formatDate } from '@/utils/datetimeUtils'
 import { Inertia } from '@inertiajs/inertia'
 import { formatNameFromEmail, capitalizeFirstLetter } from '@/utils/stringUtils'
 import MessageModal from '@/components/shared/MessageModal.vue'
+import { updateStatusApi } from '@/services/ApplicationServices'
+
 
 const { projects, applications, totalWeeklyApplications } = usePage().props
-const getFiveApplications = computed(() => applications.slice(0, 5))
 const page = usePage()
 const user = page.props.user
+const getFiveApplications = computed(() => applications.slice(0, 5))
+const fetchError = ref(null);
 
 /**
  * Handle notification click to view project details
@@ -259,4 +263,22 @@ function viewNotification(id) {
     }
   )
 }
+
+// Updates application status and reloads page on success
+const updateStatus = async (application) => {
+  const { success, error } = await updateStatusApi(
+    application.application_status,
+    application.id
+  );
+
+  fetchError.value = null;
+
+  if (error) {
+    fetchError.value = error;
+  }
+
+  if (success) {
+    window.location.reload();    
+  }
+};
 </script>
