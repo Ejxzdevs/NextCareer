@@ -54,16 +54,18 @@ class ApplicationController extends Controller
 
         return redirect()->route('freelance.browse')->with('success', 'Application submitted successfully.');
     }
+
+    // update application
     public function updateStatus(Request $request, $id)
-{
-    $request->validate([
+    {
+        $request->validate([
         'application_status' => 'required|string|in:pending,viewed,reviewed,scheduled,hired,rejected'
     ]);
 
-    $application = Application::findOrFail($id);
-    $application->application_status = $request->application_status;
-    $application->save();
+        $application = Application::findOrFail($id);
+        $application->application_status = $request->application_status;
+        $application->save();
 
-    return response()->json(['message' => 'Status updated successfully']);
+        return response()->json(['message' => 'Status updated successfully']);
     }
 }
