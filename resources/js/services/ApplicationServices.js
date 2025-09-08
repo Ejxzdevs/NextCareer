@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-// Create a pre-configured Axios instance
+// Axios instance configured to send requests with default headers and credentials,
+// used for making API calls to the backend
 const api = axios.create({
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
   withCredentials: true,
 });
 
 const API_ENDPOINTS = {
-  UPDATE_APPLICATION: (id) => route('application.update', { id }), // dynamic endpoint
+  UPDATE_APPLICATION: (id) => route('application.update', { id }),
 };
 
 export const updateStatusApi = async (application_status, application_id) => {
