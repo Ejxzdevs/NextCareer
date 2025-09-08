@@ -2,11 +2,15 @@
   <MainLayout>
     <!-- Header -->
     <div class="mt-6 text-center">
-      <h1 class="text-4xl font-extrabold text-gray-900">Your Job Posts</h1>
-      <p class="text-lg text-gray-600 mt-2">Manage and view the projects you've listed.</p>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 text-center title">
+        Your Job Posts
+      </h1>
+      <p class="text-lg text-gray-600 mt-2">
+        Manage and view the projects you've listed.
+      </p>
     </div>
 
-    <div class="w-full py-10 px-6">
+    <div class="w-full px-6 py-3">
       <div class="max-w-7xl mx-auto">
         <!-- Post Project Button -->
         <div class="flex sm:justify-end mb-6">
@@ -19,13 +23,77 @@
           </button>
         </div>
 
+        <!-- FILTER -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Filter by Job Post -->
+            <div v-if="projects && projects.length > 0">
+              <label
+                for="job-filter"
+                class="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Filter by Job Post
+              </label>
+              <select
+                v-model="selectProjectCategory"
+                id="job-filter"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm"
+              >
+                <option value="">All Job Posts</option>
+                <option
+                  v-for="project in projects"
+                  :key="project.id"
+                  :value="project.category"
+                >
+                  {{ project.category }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Filter by Status -->
+            <div>
+              <label
+                for="status-filter"
+                class="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Filter by Status
+              </label>
+              <select
+                v-model="selectProjectStatus"
+                id="status-filter"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm"
+              >
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+
+            <!-- Search Projects -->
+            <div class="md:col-span-2 lg:col-span-1">
+              <label
+                for="search-project"
+                class="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Search Projects
+              </label>
+              <input
+                type="text"
+                v-model="searchProjectTitle"
+                placeholder="Search title"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
         <!-- Project List -->
         <div
           v-if="projects && projects.length > 0"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <div
-            v-for="(project, index) in projects"
+            v-for="(project, index) in filteredProjects"
             :key="project.id"
             class="bg-white rounded-2xl shadow-lg p-7 border border-gray-100 flex flex-col relative group hover:shadow-xl transition duration-300"
           >
@@ -69,8 +137,12 @@
                 alt="profile photo"
               />
               <div class="ml-3">
-                <p class="font-medium text-gray-800">{{ formatNameFromEmail(project.user.username) }}</p>
-                <p class="text-xs text-gray-500">Posted {{ formatTimeAgo(project.created_at) }}</p>
+                <p class="font-medium text-gray-800">
+                  {{ formatNameFromEmail(project.user.username) }}
+                </p>
+                <p class="text-xs text-gray-500">
+                  Posted {{ formatTimeAgo(project.created_at) }}
+                </p>
               </div>
             </div>
 
@@ -79,19 +151,21 @@
               {{ project.title }}
             </h2>
 
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 mb-4">
+            <!-- Requirements -->
+            <div class="flex flex-wrap justify-start items-start gap-2 py-2 mb-2 w-full">
               <span
-                v-if="project.category"
+                v-for="category in formatSkills(project.category)"
+                :key="category"
                 class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full"
               >
-                {{ formatSkills(project.category) }}
+                {{ category }}
               </span>
               <span
-                v-if="project.skills"
+                v-for="skill in formatSkills(project.skills)"
+                :key="skill"
                 class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"
               >
-                {{ formatSkills(project.skills) }}
+                {{ skill }}
               </span>
             </div>
 
@@ -134,7 +208,8 @@
           <i class="fas fa-box-open text-6xl mb-4 text-gray-300"></i>
           <p class="text-xl font-semibold mb-2">No projects posted yet!</p>
           <p class="text-gray-600">
-            It looks like you haven't listed any projects. Start by clicking the <b>Post Project</b> button.
+            It looks like you haven't listed any projects. Start by clicking the
+            <b>Post Project</b> button.
           </p>
         </div>
       </div>
@@ -166,7 +241,9 @@
 
           <!-- Title -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Project Title</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Project Title
+            </label>
             <input
               type="text"
               v-model="form.title"
@@ -178,7 +255,9 @@
 
           <!-- Description -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
             <textarea
               v-model="form.description"
               rows="4"
@@ -190,32 +269,36 @@
 
           <!-- Category -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Category
+            </label>
             <select
               v-model="form.category"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">Select a category</option>
-              <option value="web-dev">Web Development</option>
-              <option value="mobile-dev">Mobile Development</option>
-              <option value="software-dev">Software Development</option>
-              <option value="game-dev">Game Development</option>
-              <option value="data-science">Data Science</option>
-              <option value="ai-ml">AI / Machine Learning</option>
-              <option value="cybersecurity">Cybersecurity</option>
-              <option value="devops">DevOps</option>
-              <option value="cloud-computing">Cloud Computing</option>
-              <option value="blockchain">Blockchain</option>
-              <option value="design">UI/UX Design</option>
-              <option value="marketing">Marketing</option>
-              <option value="writing">Content Writing</option>
+              <option value="" selected>Select a category</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Mobile Development">Mobile Development</option>
+              <option value="Software Development">Software Development</option>
+              <option value="Game Development">Game Development</option>
+              <option value="Data Science">Data Science</option>
+              <option value="AI / Machine Learning">AI / Machine Learning</option>
+              <option value="Cybersecurity">Cybersecurity</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Cloud Computing">Cloud Computing</option>
+              <option value="Blockchain">Blockchain</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Content Writing">Content Writing</option>
             </select>
           </div>
 
           <!-- Skills -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Skills</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Skills
+            </label>
             <input
               type="text"
               v-model="form.skills"
@@ -226,7 +309,9 @@
 
           <!-- Budget -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Budget ($)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Budget ($)
+            </label>
             <input
               type="number"
               v-model="form.budget"
@@ -239,7 +324,9 @@
           <!-- Dates -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Start Date
+              </label>
               <input
                 type="date"
                 v-model="form.start_date"
@@ -248,7 +335,9 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1">
+                Deadline
+              </label>
               <input
                 type="date"
                 v-model="form.deadline"
@@ -279,9 +368,8 @@
     />
   </MainLayout>
 </template>
-
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { formatTimeAgo, formatDate } from '@/utils/datetimeUtils';
 import { formatSkills, formatNameFromEmail } from '@/utils/stringUtils';
@@ -292,8 +380,20 @@ const showEditCreateModal = ref(false);
 const showDetailsModal = ref(false);
 const activeDropdown = ref(null);
 const selectedProject = ref(null);
+const searchProjectTitle = ref('');
+const selectProjectStatus = ref('');
+const selectProjectCategory = ref('');
 
 const { projects } = usePage().props;
+
+const filteredProjects = computed(() => {
+  return projects.filter((project) => {
+    const matchTitle = project.title.toLowerCase().includes(searchProjectTitle.value.toLowerCase());
+    const matchStatus = selectProjectStatus.value === '' || project.project_status === selectProjectStatus.value;
+    const matchCategory = selectProjectCategory.value === '' || project.category === selectProjectCategory.value;
+    return matchTitle && matchStatus && matchCategory;
+  });
+});
 
 const form = useForm({
   id: null,
@@ -306,40 +406,44 @@ const form = useForm({
   deadline: '',
 });
 
-function openModalForCreate() {
+const openModalForCreate = () => {
   form.reset();
   showEditCreateModal.value = true;
-}
+};
 
-function openModalForEdit(project) {
+const openModalForEdit = (project) => {
   form.id = project.id;
   form.title = project.title;
   form.description = project.description;
   form.category = project.category;
   form.skills = project.skills;
   form.budget = project.budget;
-  form.start_date = project.start_date ? new Date(project.start_date).toISOString().split('T')[0] : '';
-  form.deadline = project.deadline ? new Date(project.deadline).toISOString().split('T')[0] : '';
+  form.start_date = project.start_date
+    ? new Date(project.start_date).toISOString().split('T')[0]
+    : '';
+  form.deadline = project.deadline
+    ? new Date(project.deadline).toISOString().split('T')[0]
+    : '';
   showEditCreateModal.value = true;
   activeDropdown.value = null;
-}
+};
 
-function closeEditCreateModal() {
+const closeEditCreateModal = () => {
   showEditCreateModal.value = false;
   form.reset();
-}
+};
 
-function openDetailsModal(project) {
+const openDetailsModal = (project) => {
   selectedProject.value = project;
   showDetailsModal.value = true;
-}
+};
 
-function closeDetailsModal() {
+const closeDetailsModal = () => {
   showDetailsModal.value = false;
   selectedProject.value = null;
-}
+};
 
-function submitForm() {
+const submitForm = () => {
   if (form.id) {
     form.put(route('employer.update', form.id), {
       onSuccess: () => {
@@ -357,9 +461,9 @@ function submitForm() {
       },
     });
   }
-}
+};
 
-function deleteProject(projectId) {
+const deleteProject = (projectId) => {
   if (confirm('Are you sure you want to delete this project?')) {
     form.delete(route('employer.destroy', projectId), {
       onSuccess: () => {
@@ -368,17 +472,17 @@ function deleteProject(projectId) {
       },
     });
   }
-}
+};
 
-function toggleDropdown(index) {
+const toggleDropdown = (index) => {
   activeDropdown.value = activeDropdown.value === index ? null : index;
-}
+};
 
-function handleClickOutside(event) {
+const handleClickOutside = (event) => {
   if (activeDropdown.value !== null && !event.target.closest('.dropdown-wrapper')) {
     activeDropdown.value = null;
   }
-}
+};
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
