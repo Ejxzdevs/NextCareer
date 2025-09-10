@@ -151,44 +151,12 @@
               {{ project.title }}
             </h2>
 
-            <!-- Requirements -->
-            <div class="flex flex-wrap justify-start items-start gap-2 py-2 mb-2 w-full">
-              <span
-                v-for="category in formatSkills(project.category)"
-                :key="category"
-                class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full"
-              >
-                {{ category }}
-              </span>
-              <span
-                v-for="skill in formatSkills(project.skills)"
-                :key="skill"
-                class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full"
-              >
-                {{ skill }}
-              </span>
-            </div>
-
             <!-- Description -->
             <p class="text-sm text-gray-600 mb-5 line-clamp-3">
               {{ project.description }}
             </p>
 
-            <!-- Project Info -->
-            <div class="grid grid-cols-2 text-sm text-gray-700 gap-y-2 mb-5 pt-4 border-t border-gray-100">
-              <div>
-                <span class="font-semibold text-gray-800">Budget:</span>
-                <span> {{ formatCurrency(project.budget) }}</span>
-              </div>
-              <div>
-                <span class="font-semibold text-gray-800">Start Date:</span>
-                <span> {{ formatDate(project.start_date) }}</span>
-              </div>
-              <div class="col-span-2">
-                <span class="font-semibold text-gray-800">Deadline:</span>
-                <span> {{ formatDate(project.deadline) }}</span>
-              </div>
-            </div>
+         
 
             <!-- See More Button -->
             <button
