@@ -1,16 +1,25 @@
 <template>
-  <div v-if="show" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+  <div
+    v-if="show"
+    class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+  >
     <div
-      class="bg-white max-w-md w-full p-4 md:p-6 rounded-md shadow-2xl animate-fade-in-scale relative overflow-y-auto max-h-[75vh] space-y-6"
+      class="bg-white max-w-md w-full p-4 md:p-8 rounded-md shadow-2xl animate-fade-in-scale relative overflow-y-auto max-h-[75vh] space-y-6"
     >
       <!-- Close Button -->
-      <button @click="closeModal" class="absolute top-1 right-3 text-red-400 hover:text-red-700 text-2xl cursor-pointer">
-        <i class="fas fa-times"></i>
+      <button
+        @click="closeModal"
+        class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+        aria-label="Close modal"
+      >
+        <i class="fas fa-times text-lg"></i>
       </button>
 
       <!-- Project Title -->
       <header>
-        <h2 class="text-2xl font-bold text-gray-900 my-3">
+        <h2 class="text-2xl font-bold text-blue-900 title mb-2">
           {{ project?.title || 'Project Details' }}
         </h2>
         <p class="text-gray-600 text-sm">
@@ -19,32 +28,39 @@
       </header>
 
       <!-- Details Grid -->
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-800 text-sm">
-        <div class="flex items-start gap-2">
-          <i class="far fa-calendar-alt text-blue-500 mt-1"></i>
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 px-3 text-gray-800 text-sm">
+        <!-- Budget -->
+        <div class="flex items-start gap-3 md:col-span-2">
+          <i class="fa-2x fas fa-coins text-yellow-500 mt-1"></i>
           <div>
-            <strong class="block">Start Date</strong>
-            <span>{{ formatDate(project?.start_date) }}</span>
+            <strong class="block label">Budget</strong>
+            <span class="text-xs">{{ formatCurrency(project?.budget) }}</span>
           </div>
         </div>
 
-        <div class="flex items-start gap-2">
-          <i class="far fa-calendar-check text-blue-500 mt-1"></i>
+        <!-- Start Date -->
+        <div class="flex items-start gap-3">
+          <i class="fa-2x far fa-calendar-alt text-green-500 mt-1"></i>
           <div>
-            <strong class="block">Deadline</strong>
-            <span>{{ formatDate(project?.deadline) }}</span>
+            <strong class="block label">Start Date</strong>
+            <span class="text-xs">{{ formatDate(project?.start_date) }}</span>
           </div>
         </div>
 
-        <div class="flex items-start gap-2">
-          <i class="fas fa-hand-holding-usd text-blue-500 mt-1"></i>
+        <!-- Deadline -->
+        <div class="flex items-start gap-3">
+          <i class="fa-2x far fa-calendar-check text-red-500 mt-1"></i>
           <div>
-            <strong class="block">Budget</strong>
-            <span>{{ formatCurrency(project?.budget) }}</span>
+            <strong class="block label">Deadline</strong>
+            <span class="text-xs">{{ formatDate(project?.deadline) }}</span>
           </div>
         </div>
 
-        <div v-if="user.role == 'freelance'" class="flex items-start gap-2 md:col-span-2">
+        <!-- Client Info -->
+        <div
+          v-if="user.role === 'freelance'"
+          class="flex items-start gap-2 md:col-span-2"
+        >
           <i class="fas fa-user-circle text-blue-500 mt-1"></i>
           <div>
             <strong class="block">Client</strong>
@@ -55,25 +71,32 @@
 
       <!-- Skills Section -->
       <section>
-        <h3 class="text-sm font-semibold text-gray-700 mb-2">Required Skills:</h3>
+        <h3 class="text-sm font-semibold text-gray-700 mb-2">
+          Required Skills:
+        </h3>
         <div class="flex flex-wrap gap-2">
           <span
-                v-if="project.category"
-                class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
-              >
-                {{ formatSkills(project?.category) }}
+            v-for="category in formatSkills(project.category)"
+            :key="category"
+            class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
+          >
+            {{ category }}
           </span>
-          <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-            {{ formatSkills(project?.skills) }}
+          <span
+            v-for="skills in formatSkills(project?.skills)"
+            :key="skills"
+            class="px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+          >
+            {{ skills }}
           </span>
         </div>
       </section>
 
       <!-- Apply Button -->
-      <div v-if="user.role == 'freelance'" class="flex justify-center">
+      <div v-if="user.role === 'freelance'" class="flex justify-center">
         <button
           @click="applyForProject(project)"
-          class="w-full md:w-56 lg:w-64 bg-[#334EAC] text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+          class="w-full md:w-56 lg:w-64 bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
         >
           Apply Now
         </button>
@@ -82,22 +105,21 @@
   </div>
 </template>
 
-
 <script setup>
 import { defineProps, defineEmits } from 'vue';
-import { formatDate } from '../../utils/datetimeUtils';
-import { formatSkills } from '../../utils/stringUtils';
-import { formatCurrency } from '../../utils/numberUtils';
-import { usePage } from '@inertiajs/vue3'
+import { formatDate } from '@/utils/datetimeUtils';
+import { formatSkills } from '@/utils/stringUtils';
+import { formatCurrency } from '@/utils/numberUtils';
+import { usePage } from '@inertiajs/vue3';
 
-const { user } = usePage().props
+const { user } = usePage().props;
 
 const props = defineProps({
   show: {
     type: Boolean,
     default: false,
   },
-  project: { 
+  project: {
     type: Object,
     default: null,
   },
@@ -105,9 +127,7 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'openApplyModal']);
 
-/**
- * Emits a 'close' event to the parent to hide the modal.
- */
+// Emits a 'close' event to the parent to hide the modal.
 function closeModal() {
   emit('close');
 }
