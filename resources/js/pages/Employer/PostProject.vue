@@ -147,7 +147,7 @@
             </div>
 
             <!-- Title -->
-            <h2 class="text-lg font-bold text-gray-800 mb-3 line-clamp-1">
+            <h2 class="text-lg font-bold text-blue-800 mb-3 line-clamp-1">
               {{ project.title }}
             </h2>
 
