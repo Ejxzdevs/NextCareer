@@ -13,5 +13,5 @@ export function formatCurrency(amount) {
   }
   // Convert to number once
   const numAmount = Number(amount);
-  return numAmount === 0 ? '$0' : `$${numAmount.toLocaleString()}`;
+  return numAmount === 0 ? '0' : `${numAmount.toLocaleString()}`;
 }
