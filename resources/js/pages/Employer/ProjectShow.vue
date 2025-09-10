@@ -148,19 +148,12 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
 import { usePage } from '@inertiajs/vue3'
-import { formatTimeAgo, formatDate } from '../../utils/datetimeUtils'
-import { formatSkills } from '../../utils/stringUtils'
-import { formatCurrency } from '../../utils/numberUtils'
+import { formatTimeAgo, formatDate } from '@/utils/datetimeUtils'
+import { formatSkills } from '@/utils/stringUtils'
+import { formatCurrency } from '@/utils/numberUtils'
 
 const { project, error, userApplication, user } = usePage().props
-
-onMounted(() => {
-  console.log('User Application:', userApplication)
-})
-
-
 
 function previewPage() {
   window.history.back()
