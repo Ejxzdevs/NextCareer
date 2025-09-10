@@ -1,16 +1,16 @@
 <template>
   <!-- Modal container -->
-  <div v-if="show" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-    <div class="bg-white max-w-lg w-full p-6 rounded-sm shadow-xl animate-fade-in-scale relative">
-      
+  <div v-if="show" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 sm:p-6">
+    <div class="bg-white w-full sm:w-4/5 md:w-3/5 lg:w-2/5 xl:w-1/3 h-auto px-4 sm:px-6 py-6 sm:py-12 rounded-lg shadow-xl animate-fade-in-scale relative">
+
       <!-- Close button -->
-      <button @click="closeModal" class="absolute top-1 right-3 text-red-400 hover:text-red-700 text-2xl cursor-pointer">
+      <button @click="closeModal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-lg cursor-pointer">
         <i class="fas fa-times"></i>
       </button>
 
       <!-- Modal Title -->
-      <h2 class="text-lg font-bold my-3">
-        Apply for <span class="text-[#334EAC]">{{ projectTitle }}</span>
+      <h2 class="text-center text-lg sm:text-xl font-bold mb-6">
+        <span class="!text-blue-900">{{ projectTitle }}</span>
       </h2>
 
       <!-- Application Form -->
@@ -21,30 +21,28 @@
 
         <!-- Portfolio Link Field -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Portfolio Link</label>
+          <label class="block font-medium text-gray-700 mb-1 text-sm sm:text-base">Portfolio Link</label>
           <input
             v-model="form.link_portfolio"
             type="url"
             required
-            class="w-full p-3 border rounded-md"
+            class="w-full p-2 sm:p-3 border rounded-md focus:outline focus:outline-blue-500"
             placeholder="https://yourportfolio.com"
           />
         </div>
 
         <!-- Resume Upload Field -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Upload Resume</label>
-          <!-- Styled label as file input -->
+          <label class="block font-medium text-gray-700 mb-1 text-sm sm:text-base">Upload Resume</label>
           <label
             for="resumeUpload"
-            class="flex items-center justify-between w-full px-4 py-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition"
+            class="flex items-center justify-between w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition"
           >
             <span class="text-gray-600 truncate">
               {{ selectedFileName || 'Choose a file (PDF, DOC, DOCX)' }}
             </span>
             <i class="fas fa-upload text-gray-500"></i>
           </label>
-          <!-- Actual hidden input -->
           <input
             id="resumeUpload"
             type="file"
@@ -58,11 +56,11 @@
 
         <!-- Message Textarea -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+          <label class="block text-sm sm:text-base font-medium text-gray-700 mb-1">Message</label>
           <textarea
             v-model="form.message"
             rows="4"
-            class="w-full p-3 border rounded-md"
+            class="w-full p-2 sm:p-3 border rounded-md focus:outline focus:outline-blue-500"
             placeholder="Why are you a good fit?"
           ></textarea>
           <p v-if="form.errors.message" class="text-red-500 text-sm mt-1">{{ form.errors.message }}</p>
@@ -72,14 +70,15 @@
         <button
           type="submit"
           :disabled="form.processing"
-          class="w-full bg-[#334EAC] text-white py-3 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full bg-blue-500 text-white py-2 sm:py-3 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
         >
-          {{ form.processing ? 'Submitting...' : 'Submit Now' }}
+          {{ form.processing ? 'Submitting...' : 'Submit' }}
         </button>
       </form>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, watch, computed } from 'vue';
