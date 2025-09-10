@@ -17,6 +17,23 @@
         <i class="fas fa-times text-lg"></i>
       </button>
 
+
+        <!-- Client Info -->
+        <div
+          v-if="user.role === 'freelance'"
+          class="flex items-center gap-2 md:col-span-2"
+        >
+          <img
+              :src="project.user.profile.profile_picture ? project.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+              alt="profile"
+              class="h-12 w-12 rounded-full object-center object-cover"
+            />
+          <div class="flex flex-col gap-0">
+            <p class="block text-xs text-gray-500 ">Client</p>
+            <span class="name text-sm text-gray-800">{{ formatNameFromEmail(project?.user?.email) || 'Unknown Client' }}</span>
+          </div>
+        </div>
+        
       <!-- Project Title -->
       <header>
         <h2 class="text-2xl font-bold text-blue-900 title mb-2">
@@ -55,18 +72,6 @@
             <span class="text-xs">{{ formatDate(project?.deadline) }}</span>
           </div>
         </div>
-
-        <!-- Client Info -->
-        <div
-          v-if="user.role === 'freelance'"
-          class="flex items-start gap-2 md:col-span-2"
-        >
-          <i class="fas fa-user-circle text-blue-500 mt-1"></i>
-          <div>
-            <strong class="block">Client</strong>
-            <span>{{ project?.user?.email || 'Unknown Client' }}</span>
-          </div>
-        </div>
       </section>
 
       <!-- Skills Section -->
@@ -96,7 +101,7 @@
       <div v-if="user.role === 'freelance'" class="flex justify-center">
         <button
           @click="applyForProject(project)"
-          class="w-full md:w-56 lg:w-64 bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+          class="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
         >
           Apply Now
         </button>
@@ -108,7 +113,7 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 import { formatDate } from '@/utils/datetimeUtils';
-import { formatSkills } from '@/utils/stringUtils';
+import { formatSkills , formatNameFromEmail } from '@/utils/stringUtils';
 import { formatCurrency } from '@/utils/numberUtils';
 import { usePage } from '@inertiajs/vue3';
 
