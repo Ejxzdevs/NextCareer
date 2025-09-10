@@ -26,7 +26,7 @@ class ProjectController extends Controller
             ]);
         } elseif (Auth::user()->account_type == 'freelance') {
             // Fetch all projects for freelancers, ordered by latest
-            $projects = Project::with('user')
+            $projects = Project::with('user.profile')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
