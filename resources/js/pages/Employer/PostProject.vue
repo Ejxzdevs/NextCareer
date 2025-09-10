@@ -195,13 +195,13 @@
         <!-- Close Button -->
         <button
           @click="closeEditCreateModal"
-          class="absolute top-3 right-3 text-gray-400 hover:text-red-600 text-3xl font-bold"
+          class="absolute cursor-pointer top-2 right-4 text-gray-500 hover:text-gray-800 font-bold"
         >
-          &times;
+           <i class="fas fa-times text-lg"></i>
         </button>
 
-        <h3 class="text-2xl text-center font-bold text-gray-800 mb-6">
-          {{ form.id ? 'Update Project' : 'Post a New Project' }}
+        <h3 class="text-2xl text-center font-bold text-gray-600 mb-6 title">
+          {{ form.id ? 'Update Project' : 'New Project' }}
         </h3>
 
         <form @submit.prevent="submitForm" class="space-y-5">
@@ -209,13 +209,16 @@
 
           <!-- Title -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="flex flex-row item-center gap-2">
+            <i class="fas fa-thumbtack text-red-500"></i>
+            <label class="block text-xs font-medium text-gray-800 mb-1 label">
               Project Title
             </label>
+            </div>
             <input
               type="text"
               v-model="form.title"
-              placeholder="e.g: Build an E-commerce Site"
+              placeholder="Example: E-commerce Site"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -223,13 +226,16 @@
 
           <!-- Description -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="flex flex-row item-center gap-2">
+            <i class="fas fa-file-alt text-[#30d2e4d5]"></i>
+            <label class="block text-xs font-medium text-gray-700 mb-1 label">
               Description
             </label>
+            </div>
             <textarea
               v-model="form.description"
               rows="4"
-              placeholder="Project details..."
+              placeholder="Describe your project"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
             ></textarea>
@@ -237,9 +243,12 @@
 
           <!-- Category -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="flex flex-row item-center gap-2">
+            <i class="fas fa-tags bg-gray-100 text-purple-500"></i>
+            <label class="block text-xs font-medium text-gray-700 mb-1 label">
               Category
             </label>
+            </div>
             <select
               v-model="form.category"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -264,26 +273,32 @@
 
           <!-- Skills -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <div class="flex flex-row item-center gap-2"> 
+            <i class="fas fa-laptop-code text-green-500"></i>         
+            <label class="block text-xs font-medium text-gray-700 mb-1 label">
               Skills
             </label>
+            </div>
             <input
               type="text"
               v-model="form.skills"
-              placeholder="e.g: PHP, HTML, CSS, JavaScript"
+              placeholder="E.g: React, AWS, NODE JS"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <!-- Budget -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-              Budget ($)
+            <div class="flex flex-row item-center gap-2">
+            <i class="fas fa-coins text-yellow-500"></i>
+            <label class="block text-xs font-medium text-gray-700 mb-1 label">
+              Budget
             </label>
+            </div>
             <input
               type="number"
               v-model="form.budget"
-              placeholder="Enter amount"
+              placeholder="Enter amount:"
               class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -292,20 +307,27 @@
           <!-- Dates -->
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
+              <div class="flex flex-row item-center gap-2">
+              <i class="far fa-calendar-alt text-green-500"></i>
+              <label class="block text-xs font-medium text-gray-700 mb-1 label">
                 Start Date
               </label>
+              </div>
               <input
                 type="date"
                 v-model="form.start_date"
                 class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                 required
               />
+              
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
+              <div class="flex flex-row item-center gap-2">
+              <i class="far fa-calendar-check text-red-500 "></i>
+              <label class="block text-xs font-medium text-gray-700 mb-1 label">
                 Deadline
               </label>
+              </div>
               <input
                 type="date"
                 v-model="form.deadline"
@@ -319,9 +341,9 @@
           <div class="pt-4">
             <button
               type="submit"
-              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
+              class="w-full py-3 cursor-pointer bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
             >
-              {{ form.id ? 'Update Project' : 'Post Project' }}
+              {{ form.id ? 'Update' : 'Submit' }}
             </button>
           </div>
         </form>
