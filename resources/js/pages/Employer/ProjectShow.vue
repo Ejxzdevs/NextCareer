@@ -7,7 +7,6 @@
 
         <!-- Back Button -->
         <div class="h-16 flex items-center ms-3 lg:ms-5 mb-4 lg:mb-0">
-
           <button @click="previewPage()" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 cursor-pointer">
             <i class="fas fa-arrow-left mr-2"></i>
             <span class="font-medium">Back</span>
@@ -20,59 +19,100 @@
         </div>
 
         <!-- Project Content -->
-        <div v-else-if="project" class="flex flex-grow overflow-hidden justify-center py-4 sm:py-12 lg:py-16">
-          <div class="bg-white rounded-xl shadow-lg p-3 sm:p-5 border border-gray-100 flex flex-col relative w-full max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-1xl custom-scrollbar transition-all duration-300 ease-in-out">
+        <div v-else-if="project" class="flex overflow-hidden justify-center py-4">
+          <div class="bg-white rounded-xl shadow-lg p-3 sm:p-5 border border-gray-100 flex flex-col relative max-w-2xl custom-scrollbar transition-all duration-300 ease-in-out">
 
             <!-- User Info -->
             <div class="flex items-center mb-5 sm:mb-6">
-                <img :src="project.user.profile.profile_picture ? project.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'" 
-                alt="profile" class="h-13 w-13 rounded-full object-center object-cover mt-2">
-              <div class="ms-1 sm:ms-2">
-                <p class="text-md sm:text-lg font-semibold text-gray-800">{{ user?.email || 'Unknown User' }}</p>
-                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Posted {{ formatTimeAgo(project.created_at) }}</p>
+              <img
+                :src="project.user.profile.profile_picture ? project.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+                alt="profile"
+                class="h-13 w-13 rounded-full object-center object-cover mt-2"
+              >
+              <div class="ms-1 flex flex-col gap-0 sm:ms-2">
+                <p class="text-sm font-semibold text-gray-800 name">{{ user.username }}</p>
+                <p class="text-xs text-gray-500 mt-0.5">Posted {{ formatTimeAgo(project.created_at) }}</p>
               </div>
             </div>
 
             <!-- Project Title -->
-            <h2 class="text-1xl sm:text-2xl font-extrabold text-gray-900 mb-4 leading-tight">
-              {{ project.title }}
-            </h2>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 mb-5 sm:mb-6">
-              <span
-                v-if="project.category"
-                class="px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs sm:text-sm font-medium rounded-full shadow-xs"
-              >
-                {{ formatSkills(project.category) }}
-              </span>
-              <span
-                v-if="project.skills"
-                class="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-medium rounded-full shadow-xs"
-              >
-                {{ formatSkills(project.skills) }}
-              </span>
+            <div class="flex flex-row items-center gap-2 mb-8">
+              <i class="fa-1x fas fa-thumbtack text-red-500 mt-1"></i>
+              <p class="text-xl font-extrabold text-blue-900 leading-tight title">
+                {{ project.title }}
+              </p>
             </div>
 
             <!-- Description -->
-            <p class="text-sm sm:text-base text-gray-600 leading-relaxed flex-grow">
-              {{ project.description }}
-            </p>
+            <div class="mb-4">
+              <div class="flex flex-row items-center gap-2 mb-2">
+                <i class="fas fa-file-alt text-[#30d2e4d5]"></i>
+                <label class="label text-xs">Description</label>
+              </div>
+              <p class="text-gray-600 text-sm mt-2">
+                {{ project?.description || 'No description available.' }}
+              </p>
+            </div>
 
             <!-- Details -->
-            <div class="grid grid-cols-2 text-sm text-gray-700 gap-2 mb-4 mt-auto pt-4 border-t border-gray-100">
-              <div>
-                <strong>Budget: </strong>
-                <span class="font-semibold text-gray-900">{{ formatCurrency(project.budget) }}</span>
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800 text-sm mt-2 mb-4">
+
+              <!-- Budget -->
+              <div class="flex items-center gap-3 md:col-span-2">
+                <i class="fa-2x fas fa-coins text-yellow-500 mt-1"></i>
+                <div class="flex flex-col gap-0">
+                  <strong class="block label text-xs">Budget</strong>
+                  <span class="text-xs">{{ formatCurrency(project?.budget) }}</span>
+                </div>
               </div>
-              <div>
-                <strong>Start Date: </strong>
-                <span class="font-semibold text-gray-900">{{ formatDate(project.start_date) }}</span>
+
+              <!-- Start Date -->
+              <div class="flex items-center gap-3">
+                <i class="fa-2x far fa-calendar-alt text-green-500 mt-1"></i>
+                <div class="flex flex-col gap-0">
+                  <label class="block label text-xs">Start Date</label>
+                  <span class="text-xs">{{ formatDate(project?.start_date) }}</span>
+                </div>
               </div>
-              <div class="col-span-2">
-                <strong>Deadline: </strong>
-                <span class="font-semibold text-gray-900">{{ formatDate(project.deadline) }}</span>
+
+              <!-- Deadline -->
+              <div class="flex items-center gap-3">
+                <i class="fa-2x far fa-calendar-check text-red-500 mt-1"></i>
+                <div class="flex flex-col gap-0">
+                  <label class="block label text-xs">Deadline</label>
+                  <span class="text-xs">{{ formatDate(project?.deadline) }}</span>
+                </div>
               </div>
+
+            </section>
+
+            <!-- Tags -->
+            <div class="flex flex-col gap-1 mb-2 mt-4 sm:mb-6">
+
+              <!-- Label Row -->
+              <div class="flex flex-row items-center gap-2 mb-1">
+                <i class="fas fa-laptop-code text-green-500"></i>
+                <label class="label text-xs">Requirements</label>
+              </div>
+
+              <!-- Categories and Skills -->
+              <div class="flex flex-wrap gap-2 rounded">
+                <span
+                  v-for="category in formatSkills(project.category)"
+                  :key="category"
+                  class="px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs sm:text-sm font-medium rounded-full shadow-xs"
+                >
+                  {{ category }}
+                </span>
+                <span
+                  v-for="skills in formatSkills(project.skills)"
+                  :key="skills"
+                  class="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-medium rounded-full shadow-xs"
+                >
+                  {{ skills }}
+                </span>
+              </div>
+
             </div>
 
           </div>
@@ -87,8 +127,11 @@
 
       <!-- Right Sidebar (Applications) -->
       <div class="border border-gray-300 bg-white shadow-sm overflow-y-auto max-h-[calc(100vh-6rem)] lg:max-h-screen lg:col-span-2">
-        <div class="p-4 border-b border-gray-200 bg-gray-50">
-          <h3 class="text-lg font-semibold text-gray-800">Application List</h3>
+        <div class="p-4 border-b border-gray-200 ">
+          <label class="text-lg font-semibold flex flex-row items-center gap-3 ">
+            <i class="fas fa-user-tie text-gray-500 "></i>
+            <span class="!text-blue-600 label">Application List</span>
+          </label>
         </div>
 
         <ul v-if="userApplication && userApplication.length" class="divide-y divide-gray-200">
@@ -104,14 +147,18 @@
             </div>
 
             <p class="text-base font-bold text-gray-700 mb-3 flex items-center gap-2 truncate">
-                <img :src="application.user.profile.profile_picture ? application.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'" 
-                alt="profile" class="h-9 w-9 rounded-full object-center object-cover">
-                <div class="flex flex-col">
-                  <p>{{ application.user.email || 'Untitled Application' }}  </p>
-                  <div class="cursor-pointer font-normal text-xs flex items-center gap-1  text-gray-500" :href="route('userProfile.show', application.user.id)">Profile
-                      <Link :href="route('userProfile.show', application.user.id)" class="text-blue-500 underline">visit here</Link>
-                  </div>
+              <img
+                :src="application.user.profile.profile_picture ? application.user.profile.profile_picture : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+                alt="profile"
+                class="h-9 w-9 rounded-full object-center object-cover"
+              >
+              <div class="flex flex-col">
+                <p class="name">{{ application.user.username || 'Untitled Application' }}</p>
+                <div class="cursor-pointer font-normal text-xs flex items-center gap-1 text-gray-500">
+                  Profile
+                  <Link :href="route('userProfile.show', application.user.id)" class="text-blue-500 underline">visit here</Link>
                 </div>
+              </div>
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
@@ -135,12 +182,15 @@
                 </a>
               </div>
             </div>
+
           </li>
+          
         </ul>
 
         <div v-else class="p-6 text-center text-gray-500 text-base">
           <p>No applications submitted yet.</p>
         </div>
+
       </div>
 
     </div>
