@@ -108,9 +108,9 @@
                 alt="profile" class="h-9 w-9 rounded-full object-center object-cover">
                 <div class="flex flex-col">
                   <p>{{ application.user.email || 'Untitled Application' }}  </p>
-                  <p class="cursor-pointer font-normal text-xs flex items-center gap-1  text-gray-500" :href="route('userProfile.show', application.user.id)">Profile
+                  <div class="cursor-pointer font-normal text-xs flex items-center gap-1  text-gray-500" :href="route('userProfile.show', application.user.id)">Profile
                       <Link :href="route('userProfile.show', application.user.id)" class="text-blue-500 underline">visit here</Link>
-                  </p>
+                  </div>
                 </div>
             </p>
 
