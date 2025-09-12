@@ -1,111 +1,158 @@
 <template>
   <MainLayout>
-    <div class="container mx-auto px-4 py-6">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-3">
-          Find Your Next <span class="text-[#334EAC]">Client</span>
-        </h1>
-        <p class="text-md text-gray-600 max-w-2xl mx-auto">
-          Explore a diverse range of available projects and discover exciting opportunities to
-          showcase your skills.
-        </p>
-      </div>
+    <!-- Lock body scroll and take full screen -->
+    <div class="h-screen overflow-hidden">
+      <div class="container h-full w-full">
+        <!-- Responsive grid: sidebar collapses below md -->
+        <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 md:gap-8 lg:gap-12 h-full">
+          
+          <!-- Sidebar Filters -->
+          <aside
+            class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 h-full overflow-y-auto flex-none sm:h-auto"
+          >
+            <h2 class="text-xl font-bold text-gray-800 mb-6">🔍 Filters</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-[30%_70%] gap-4 lg:gap-0 sm:px-4 md:px-8 lg:px-16 xl:px-32">
-        <!-- Sidebar Filters -->
-        <aside class="bg-white p-4 rounded-xl shadow h-full md:h-screen overflow-y-auto sticky top-6">
-          <h2 class="text-lg font-semibold text-gray-800 mb-4">Filters</h2>
-
-          <!-- Search -->
-          <input
-            v-model="searchTitle"
-            type="text"
-            placeholder="Search title"
-            class="w-full border border-gray-300 rounded-md p-2 mb-4"
-          />
-
-          <!-- Category -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-            <select
-              v-model="category"
-              class="w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="">All</option>
-              <option value="web-dev">Web Development</option>
-              <option value="mobile-dev">Mobile Development</option>
-              <option value="software-dev">Software Development</option>
-              <option value="game-dev">Game Development</option>
-              <option value="data-science">Data Science</option>
-              <option value="ai-ml">AI / Machine Learning</option>
-              <option value="cybersecurity">Cybersecurity</option>
-              <option value="devops">DevOps</option>
-              <option value="cloud-computing">Cloud Computing</option>
-              <option value="blockchain">Blockchain</option>
-              <option value="design">UI/UX Design</option>
-              <option value="marketing">Marketing</option>
-              <option value="writing">Content Writing</option>
-            </select>
-          </div>
-
-          <!-- Budget -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
-            <input
-              v-model="budgetRange"
-              type="text"
-              placeholder="e.g. 100 - 1000"
-              class="w-full border border-gray-300 rounded-md p-2"
-            />
-            <small class="text-xs text-gray-400">Format: min - max</small>
-          </div>
-        </aside>
-
-        <!-- Projects List -->
-        <section class="space-y-3 h-full md:h-screen overflow-y-auto pr-2">
-          <div v-if="projects.length > 0" class="space-y-4">
-            <div
-              v-for="project in projects"
-              :key="project.id"
-              class="max-w-full sm:max-w-xl mx-auto lg:mx-2 bg-white rounded-xl shadow-md p-4 flex items-center justify-between space-x-4"
-            >
-              <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <i class=" text-gray-700 fas fa-building"></i>
+            <!-- Search -->
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Search by title</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <i class="fas fa-search text-gray-400"></i>
                 </div>
-                <div>
-                  <h2 class="text-lg font-semibold text-gray-800">{{ project.title }}</h2>
-                  <div class="flex items-center text-sm text-gray-500 space-x-2">
-                    <button
-                      class="cursor-pointer underline text-blue-600"
-                      @click="openDetailsModal(project)"
-                    >
-                      See details
-                    </button>
+                <input
+                  v-model="searchTitle"
+                  type="text"
+                  placeholder="Type words"
+                  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                />
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <div class="relative">
+                <select
+                  v-model="category"
+                  class="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 bg-white"
+                >
+                  <option value="" selected>All</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Mobile Development">Mobile Development</option>
+                  <option value="Software Development">Software Development</option>
+                  <option value="Game Development">Game Development</option>
+                  <option value="Data Science">Data Science</option>
+                  <option value="AI / Machine Learning">AI / Machine Learning</option>
+                  <option value="Cybersecurity">Cybersecurity</option>
+                  <option value="DevOps">DevOps</option>
+                  <option value="Cloud Computing">Cloud Computing</option>
+                  <option value="Blockchain">Blockchain</option>
+                  <option value="UI/UX Design">UI/UX Design</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Content Writing">Content Writing</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <i class="fas fa-chevron-down text-gray-400"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Budget -->
+            <div class="mb-5">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Budget ($)</label>
+              <div class="grid grid-cols-2 gap-4">
+                <input
+                  v-model.number="minBudget"
+                  type="number"
+                  placeholder="Min"
+                  class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                />
+                <input
+                  v-model.number="maxBudget"
+                  type="number"
+                  placeholder="Max"
+                  class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                />
+              </div>
+            </div>
+          </aside>
+
+          <!-- Projects List (only this scrolls) -->
+          <section
+            class="space-y-6 overflow-y-auto pr-2 py-5 h-full w-full max-w-5xl mx-auto"
+          >
+            <div v-if="filteredProjects.length > 0" class="space-y-6 pb-20">
+              <div
+                v-for="project in filteredProjects"
+                :key="project.id"
+                class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative"
+              >
+                <!-- Left: User + Project Info -->
+                <div class="flex flex-col w-full sm:w-auto flex-grow">
+                  <div class="flex items-center gap-3">
+                    <img
+                      :src="project.user.profile.profile_picture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
+                      alt="profile photo"
+                      class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm"
+                    />
+                    <div>
+                      <p class="text-gray-900 font-semibold text-sm">
+                        {{ project.user.username }}
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                        <i class="fas fa-clock"></i>
+                        {{ formatTimeAgo(project.created_at) }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-6">
+                    <!-- Title + Skills -->
+                    <div class="flex flex-col items-center gap-2 mt-3">
+                      <h2 class="text-lg sm:text-xl font-bold text-blue-800 line-clamp-1">
+                        {{ project.title }}
+                      </h2>
+                      <div class="flex flex-wrap gap-2">
+                        <span
+                          v-for="skill in formatSkills(project.skills)"
+                          :key="skill"
+                          class="inline-flex items-center px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full"
+                        >
+                          {{ skill }}
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Right: Actions -->
+                    <div class="flex flex-row justify-center gap-3">
+                      <button
+                        @click="openApplyModal(project)"
+                        class="rounded-md bg-[#FD0585] hover:bg-[#dc4e98cc] cursor-pointer py-2 px-5 text-white text-sm font-medium"
+                      >
+                        Quick Apply
+                      </button>
+                      <button
+                        @click="openDetailsModal(project)"
+                        class="text-blue-600 cursor-pointer hover:underline text-sm hover:text-blue-800 transition"
+                      >
+                        See details
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div class="text-right space-y-1">
-                <button
-                  @click="openApplyModal(project)"
-                  class="text-xs font-semibold bg-blue-100 text-green-700 px-6 py-2 rounded-full cursor-pointer"
-                >
-                  Apply
-                </button>
-                <div class="text-sm text-gray-400">{{ formatTimeAgo(project.created_at) }}</div>
-              </div>
             </div>
-          </div>
 
-          <div v-else class="text-center bg-white rounded-xl shadow p-10 mt-10">
-            <i class="fas fa-folder-open text-6xl text-gray-300 mb-6"></i>
-            <p class="text-2xl font-bold text-gray-800 mb-3">No projects available</p>
-            <p class="text-gray-600 text-lg">
-              We’re constantly adding new opportunities. Please check back soon!
-            </p>
-          </div>
-        </section>
+            <!-- No Projects -->
+            <div v-else class="text-center bg-white rounded-xl shadow p-10 mt-10">
+              <i class="fas fa-folder-open text-6xl text-gray-300 mb-6"></i>
+              <p class="text-2xl font-bold text-gray-800 mb-3">No projects available</p>
+              <p class="text-gray-600 text-lg">
+                We’re constantly adding new opportunities. Please check back soon!
+              </p>
+            </div>
+          </section>
+        </div>
       </div>
 
       <!-- Modals -->
@@ -126,12 +173,14 @@
   </MainLayout>
 </template>
 
+
 <script setup>
-import { ref, computed } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-import { formatTimeAgo } from '../../utils/datetimeUtils';
-import ApplyModal from '../../components/modals/ApplyForm.vue';
-import ProjectDetailsModal from '../../components/modals/ShowProjectDetails.vue';
+import { ref, computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import { formatTimeAgo } from "@/utils/datetimeUtils";
+import ApplyModal from "@/components/modals/ApplyForm.vue";
+import ProjectDetailsModal from "@/components/modals/ShowProjectDetails.vue";
+import { formatSkills } from "@/utils/stringUtils";
 
 const showApplyModal = ref(false);
 const showDetailsModal = ref(false);
@@ -140,27 +189,31 @@ const selectedProject = ref(null);
 const { projects: allProjects } = usePage().props;
 
 // Filters
-const searchTitle = ref('');
-const category = ref('');
-const budgetRange = ref('');
+const searchTitle = ref("");
+const category = ref("");
+const minBudget = ref(null);
+const maxBudget = ref(null);
 
 // Filtered Projects
-const projects = computed(() => {
-  return allProjects.filter(project => {
-    const matchesTitle = project.title?.toLowerCase().includes(searchTitle.value.toLowerCase());
-
-    const matchesCategory = category.value === '' || project.category === category.value;
-
+const filteredProjects = computed(() => {
+  return allProjects.filter((project) => {
+    const matchesTitle = project.title
+      ?.toLowerCase()
+      .includes(searchTitle.value?.toLowerCase() || "");
+    const matchesCategory =
+      category.value === "" || project.category === category.value;
     const matchesBudget = (() => {
-      if (!budgetRange.value.includes('-')) return true;
-
-      const [minStr, maxStr] = budgetRange.value.split('-').map(s => s.trim());
-      const min = parseFloat(minStr);
-      const max = parseFloat(maxStr);
-      if (isNaN(min) || isNaN(max)) return true;
-
       const budget = parseFloat(project.budget);
       if (isNaN(budget)) return false;
+
+      const min =
+        minBudget.value === null || isNaN(minBudget.value)
+          ? -Infinity
+          : parseFloat(minBudget.value);
+      const max =
+        maxBudget.value === null || isNaN(maxBudget.value)
+          ? Infinity
+          : parseFloat(maxBudget.value);
 
       return budget >= min && budget <= max;
     })();
@@ -182,7 +235,7 @@ function closeApplyModal() {
 }
 
 function handleApplicationSubmitted() {
-  alert('Your application has been submitted successfully!');
+  alert("Your application has been submitted successfully!");
   window.location.reload();
 }
 
