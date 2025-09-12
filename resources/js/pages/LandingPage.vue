@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-screen ">
-        <div class="absolute top-0 left-0 w-full">
+    <div class="h-screen overflow-y-scroll">
+        <div class="absolute top-0 left-0 w-full z-10">
             <Navigational />
         </div>
         
@@ -226,7 +226,7 @@
 </template>
 
 <script setup>
-import Navigational from '../components/NavGuest.vue';
+import Navigational from '@/components/NavGuest.vue';
 
 const getImageUrl = (path) => {
     return path;
