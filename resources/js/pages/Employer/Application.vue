@@ -1,21 +1,16 @@
 <template>
   <MainLayout>
     <div class="min-h-screen p-4 sm:p-6 lg:p-8">
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center title">
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center">
         All Applicants
       </h1>
 
       <!-- Filters Section -->
-      <div
-        class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-6xl mx-auto"
-      >
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Filter by Job Post -->
           <div v-if="projects && projects.length > 0">
-            <label
-              for="job-filter"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="job-filter" class="block text-sm font-medium text-gray-700 mb-1">
               Filter by Job Post
             </label>
             <select
@@ -26,11 +21,7 @@
                      sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Job Posts</option>
-              <option
-                v-for="project in projects"
-                :key="project.id"
-                :value="project.title"
-              >
+              <option v-for="project in projects" :key="project.id" :value="project.title">
                 {{ project.title }}
               </option>
             </select>
@@ -38,10 +29,7 @@
 
           <!-- Filter by Status -->
           <div>
-            <label
-              for="status-filter"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-1">
               Filter by Status
             </label>
             <select
@@ -52,9 +40,7 @@
                      sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Statuses</option>
-              <option value="pending">Pending</option>
               <option value="viewed">Viewed</option>
-              <option value="reviewed">Reviewed</option>
               <option value="scheduled">Scheduled</option>
               <option value="hired">Hired</option>
               <option value="rejected">Rejected</option>
@@ -63,10 +49,7 @@
 
           <!-- Search Applicants -->
           <div class="md:col-span-2 lg:col-span-1">
-            <label
-              for="search-applicant"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="search-applicant" class="block text-sm font-medium text-gray-700 mb-1">
               Search Applicants
             </label>
             <input
@@ -83,37 +66,22 @@
       </div>
 
       <!-- Applicants List -->
-      <div
-        class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto"
-      >
-        <h2 class="label mb-6">
-          Applicant List
-        </h2>
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto">
+        <h2 class="text-lg font-semibold mb-6">Applicant List</h2>
 
         <!-- Applications -->
-        <div
-          v-if="applications.data && applications.data.length > 0"
-          class="space-y-6"
-        >
+        <div v-if="applications.data && applications.data.length > 0" class="space-y-6">
           <div
             v-for="application in filteredApplications"
             :key="application.id"
             class="border-b border-gray-200 pb-6 last:border-b-0"
           >
-            <div
-              class="flex flex-col sm:flex-row justify-between items-start sm:items-center"
-            >
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <!-- Applicant Info -->
-              <div
-                class="flex items-start gap-4 flex-1 min-w-0 mb-4 sm:mb-0"
-              >
+              <div class="flex items-start gap-4 flex-1 min-w-0 mb-4 sm:mb-0">
                 <div class="flex-shrink-0">
                   <img
-                    :src="
-                      application.user.profile.profile_picture
-                        ? application.user.profile.profile_picture
-                        : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-                    "
+                    :src="application.user.profile.profile_picture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
                     class="h-16 w-16 rounded-full object-cover border-2 border-gray-300"
                     alt="profile photo"
                   />
@@ -121,7 +89,7 @@
                 <div class="flex-1 min-w-0">
                   <Link
                     :href="route('userProfile.show', application.user.id)"
-                    class="block name font-semibold text-blue-700 hover:underline Poppins truncate"
+                    class="block font-semibold text-blue-700 hover:underline truncate"
                   >
                     {{ capitalizeFirstLetter(application.user.username) }}
                   </Link>
@@ -134,13 +102,18 @@
                   <p class="text-xs text-gray-500">
                     Applied: {{ formatDate(application.created_at) }}
                   </p>
+
+                  <button
+                    @click="openDetailsModal(application.project)"
+                    class="text-blue-600 cursor-pointer hover:underline text-sm hover:text-blue-800 transition mt-1"
+                  >
+                    View Project Details
+                  </button>
                 </div>
               </div>
 
               <!-- Actions -->
-              <div
-                class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto"
-              >
+              <div class="mt-4 sm:mt-0 flex flex-col sm:flex-row items-stretch sm:items-center sm:gap-4 gap-2 w-full sm:w-auto">
                 <!-- Status Dropdown -->
                 <select
                   v-model="application.application_status"
@@ -149,9 +122,7 @@
                          text-sm rounded-lg shadow-sm focus:outline-none 
                          focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="pending">Pending</option>
                   <option value="viewed">Viewed</option>
-                  <option value="reviewed">Reviewed</option>
                   <option value="scheduled">Scheduled</option>
                   <option value="hired">Hired</option>
                   <option value="rejected">Rejected</option>
@@ -165,58 +136,34 @@
                          px-3 py-2 border border-blue-200 rounded-md bg-blue-50 
                          hover:bg-blue-100 transition-colors"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 
-                         012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 
-                         1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
                   Resume
                 </a>
 
-                <!-- Message -->
-                <MessageModal
-                  :username="application.user.username"
-                  :id="application.user.id"
-                  :profile_picture="application.user.profile.profile_picture"
-                />
-
-                <!-- View Profile -->
-                <Link
-                  :href="route('userProfile.show', application.user.id)"
-                  class="px-5 py-2 bg-blue-600 text-white text-sm font-medium 
-                         rounded-lg hover:bg-blue-700 transition-colors 
-                         shadow-md text-center"
+                <!-- Portfolio Button -->
+                <a
+                  v-if="application.link_portfolio"
+                  :href="application.link_portfolio"
+                  target="_blank"
+                  class="inline-flex items-center text-sm font-medium text-white bg-green-600 
+                         hover:bg-green-700 px-3 py-2 rounded-md shadow transition-colors"
                 >
-                  View Profile
-                </Link>
+                  View Portfolio
+                </a>
               </div>
             </div>
           </div>
 
+          <!-- Project Details Modal -->
+          <ProjectDetailsModal
+            :show="showDetailsModal"
+            :project="selectedProject"
+            @close="closeDetailsModal"
+          />
+
           <!-- Pagination -->
-          <div
-            class="flex justify-center mt-8"
-            v-if="applications.links && applications.links.length > 0"
-          >
-            <nav
-              class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-              aria-label="Pagination"
-            >
-              <template
-                v-for="(link, key) in applications.links"
-                :key="key"
-              >
+          <div v-if="applications.links && applications.links.length > 0" class="flex justify-center mt-8">
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+              <template v-for="(link, key) in applications.links" :key="key">
                 <div
                   v-if="link.url === null"
                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 
@@ -252,49 +199,39 @@ import { ref, computed } from 'vue';
 import { usePage, Link } from '@inertiajs/vue3';
 import { formatDate } from '@/utils/datetimeUtils';
 import { capitalizeFirstLetter } from '@/utils/stringUtils';
-import MessageModal from '@/components/shared/MessageModal.vue';
-import { updateStatusApi } from '@/services/ApplicationServices'
+import ProjectDetailsModal from "@/components/modals/ShowProjectDetails.vue";
+import { updateStatusApi } from '@/services/ApplicationServices';
 
 const { applications, projects } = usePage().props;
 
 const searchName = ref('');
 const selectedProjectTitle = ref('');
 const selectedStatus = ref('');
-const fetchError = ref(null);
+const selectedProject = ref(null);
+const showDetailsModal = ref(false);
 
-// Display applications filtered by name, project, and status; if no filter is applied, show the current state
-const filteredApplications = computed(() => {
-  return applications.data.filter((app) => {
-    const matchesName = app.user?.username
-      ?.toLowerCase()
-      .includes(searchName.value.toLowerCase());
-    const matchesProject =
-      selectedProjectTitle.value === '' ||
-      app.project?.title === selectedProjectTitle.value;
-    const matchesStatus =
-      selectedStatus.value === '' ||
-      app.application_status === selectedStatus.value;
-
+const filteredApplications = computed(() =>
+  applications.data.filter((app) => {
+    const matchesName = app.user?.username?.toLowerCase().includes(searchName.value.toLowerCase());
+    const matchesProject = selectedProjectTitle.value === '' || app.project?.title === selectedProjectTitle.value;
+    const matchesStatus = selectedStatus.value === '' || app.application_status === selectedStatus.value;
     return matchesName && matchesProject && matchesStatus;
-  });
-});
+  })
+);
 
-// Updates application status and reloads page on success
 const updateStatus = async (application) => {
-  const { success, error } = await updateStatusApi(
-    application.application_status,
-    application.id
-  );
-
-  fetchError.value = null;
-
-  if (error) {
-    fetchError.value = error;
-  }
-
-  if (success) {
-    window.location.reload();    
-  }
+  const { success, error } = await updateStatusApi(application.application_status, application.id);
+  if (error) return;
+  if (success) window.location.reload();
 };
 
+function openDetailsModal(project) {
+  selectedProject.value = project;
+  showDetailsModal.value = true;
+}
+
+function closeDetailsModal() {
+  selectedProject.value = null;
+  showDetailsModal.value = false;
+}
 </script>
