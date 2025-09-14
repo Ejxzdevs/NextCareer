@@ -125,13 +125,13 @@
                   >
                     {{ capitalizeFirstLetter(application.user.username) }}
                   </Link>
-                  <p class="text-sm text-gray-700 mt-1">
+                  <p class="text-xs text-gray-700 mt-1">
                     Applied for:
-                    <span class="font-medium text-gray-900">
+                    <span class="font-medium text-blue-900">
                       {{ application.project.title }}
                     </span>
                   </p>
-                  <p class="text-sm text-gray-500">
+                  <p class="text-xs text-gray-500">
                     Applied: {{ formatDate(application.created_at) }}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ const fetchError = ref(null);
 // Display applications filtered by name, project, and status; if no filter is applied, show the current state
 const filteredApplications = computed(() => {
   return applications.data.filter((app) => {
-    const matchesName = app.user?.email
+    const matchesName = app.user?.username
       ?.toLowerCase()
       .includes(searchName.value.toLowerCase());
     const matchesProject =
