@@ -2,7 +2,7 @@
   <MainLayout>
     <div class=" max-h-screen overflow-y-auto p-4 sm:p-6 lg:pb-32 lg:pt-8">
       <h1 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center">
-        All Applicants
+        All Applicantions
         <span class="block text-sm text-gray-500 mt-2">
           View and manage your applications
         </span>
