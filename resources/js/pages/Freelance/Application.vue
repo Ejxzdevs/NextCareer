@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class=" max-h-screen overflow-y-auto p-4 sm:p-6 lg:pb-32 lg:pt-8">
       <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center title">
         All Applicants
       </h1>
@@ -140,6 +140,16 @@
                    <p class="text-xs text-gray-500">
                     Status: <span class="label text-gray-800">{{ capitalizeFirstLetter(application.application_status) }}</span>
                   </p>
+                  
+                  <p
+                    @click="openDetailsModal(application.project)"
+                    class="text-blue-600 cursor-pointer hover:underline text-xs hover:text-blue-800 transition"
+                    role="button"
+                    tabindex="0"
+                    @keyup.enter="openDetailsModal(application.project)"
+                    >
+                    View Project Details
+                  </p>
                 </div>
               </div>
 
@@ -174,22 +184,24 @@
                   Resume
                 </a>
 
-                <!-- Message -->
-                <MessageModal
-                  :username="application.project.user.username"
-                  :id="application.project.user.id"
-                  :profile_picture="application.project.user.profile.profile_picture"
-                />
-
-                <!-- View Profile -->
-                <Link
-                  :href="route('userProfile.show', application.project.user.id)"
-                  class="px-5 py-2 bg-blue-600 text-white text-sm font-medium 
-                         rounded-lg hover:bg-blue-700 transition-colors 
-                         shadow-md text-center"
+                 <!-- Portfolio Button -->
+                <a
+                  v-if="application.link_portfolio"
+                  :href="application.link_portfolio"
+                  target="_blank"
+                  class="inline-flex items-center text-sm font-medium text-white bg-green-600 
+                         hover:bg-green-700 px-3 py-2 rounded-md shadow transition-colors"
                 >
-                  View Profile
-                </Link>
+                  View Portfolio
+                </a>
+
+                 <!-- Project Details Modal -->
+                <ProjectDetailsModal
+                :show="showDetailsModal"
+                :project="selectedProject"
+                :hideBtnApply="hideBtn"
+                @close="closeDetailsModal"
+                />
               </div>
             </div>
           </div>
@@ -238,8 +250,8 @@
 </template>
 <script setup>
 import { usePage, Link } from '@inertiajs/vue3';
-import { onMounted, ref ,computed} from 'vue';
-import MessageModal from '@/components/shared/MessageModal.vue';
+import { ref ,computed} from 'vue';
+import ProjectDetailsModal from "@/components/modals/ShowProjectDetails.vue";
 import { formatDate } from '@/utils/datetimeUtils';
 import { capitalizeFirstLetter } from '@/utils/stringUtils';
 
@@ -247,6 +259,9 @@ const { applications } = usePage().props;
 const selectedCategory = ref('')
 const selectedStatus = ref('')
 const searchTitle = ref('')
+const selectedProject = ref(null);
+const showDetailsModal = ref(false);
+const hideBtn = ref(null)
 
 const filteredApplications = computed(() => {
   return applications.data.filter((app) => {
@@ -259,17 +274,18 @@ const filteredApplications = computed(() => {
       || app.application_status === selectedStatus.value
     return matchTitle && matchCategory && matchStatus
   })
-
-
-
 })
 
 
-function updateStatus(application) {
-  console.log('Update status:', application.id, application.application_status);
+
+function openDetailsModal(project) {
+  selectedProject.value = project;
+  hideBtn.value = true;
+  showDetailsModal.value = true;
 }
 
-onMounted (()=>{
-  console.log(applications.data)  
-})
+function closeDetailsModal() {
+  selectedProject.value = null;
+  showDetailsModal.value = false;
+}
 </script>
