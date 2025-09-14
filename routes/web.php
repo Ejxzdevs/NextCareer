@@ -34,7 +34,8 @@ Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('em
 // freelance
 Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
 Route::get('freelance/browse', [ProjectController::class, 'index'])->name('freelance.browse');
-Route::post('freelance/application', [ApplicationController::class, 'store'])->name('freelance.application');
+Route::get('freelance/Application', [ApplicationController::class, 'index'])->name('freelance.application');
+Route::post('freelance/application', [ApplicationController::class, 'store'])->name('freelance.application.store');
 
 // shared routes
 // go to all notifications page
