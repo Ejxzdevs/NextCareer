@@ -1,9 +1,13 @@
 <template>
   <MainLayout>
     <div class=" max-h-screen overflow-y-auto p-4 sm:p-6 lg:pb-32 lg:pt-8">
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center title">
+      <h1 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center">
         All Applicants
+        <span class="block text-sm text-gray-500 mt-2">
+          View and manage your applications
+        </span>
       </h1>
+
 
       <!-- Filters Section -->
       <div
@@ -57,7 +61,7 @@
               <option value="" selected>All Statuses</option>
               <option value="pending">Pending</option>
               <option value="viewed">Viewed</option>
-              <option value="reviewed">Reviewed</option>
+              <option value="cancelled">Cancelled</option>
               <option value="scheduled">Scheduled</option>
               <option value="hired">Hired</option>
               <option value="rejected">Rejected</option>
@@ -161,26 +165,11 @@
                 <a
                   :href="`/storage/${application.resume}`"
                   target="_blank"
-                  class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline 
+                  class="inline-flex gap-2 cursor-pointer items-center text-sm font-medium text-blue-600 hover:underline 
                          px-3 py-2 border border-blue-200 rounded-md bg-blue-50 
                          hover:bg-blue-100 transition-colors"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 
-                         012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 
-                         1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
+                 <i class="fas fa-file-download"></i>
                   Resume
                 </a>
 
@@ -189,10 +178,21 @@
                   v-if="application.link_portfolio"
                   :href="application.link_portfolio"
                   target="_blank"
-                  class="inline-flex items-center text-sm font-medium text-white bg-green-600 
-                         hover:bg-green-700 px-3 py-2 rounded-md shadow transition-colors"
+                  class="inline-flex gap-2 cursor-pointer items-center text-sm font-medium border border-green-200 text-green-600 bg-green-200 
+                         hover:bg-green-100 px-3 py-2 rounded-md shadow transition-colors"
                 >
+                  <i class="fas fa-eye"></i>
                   View Portfolio
+                </a>
+
+                <a v-show="application.application_status === 'cancelled'"
+                  @click="updateStatus(application)"
+                  target="_blank"
+                  class="inline-flex flex-row gap-2 cursor-pointer items-center text-sm font-medium border border-red-200 text-red-800 bg-red-200 
+                         hover:bg-red-100 px-3 py-2 rounded-md shadow transition-colors"
+                >
+                <i class="fas fa-times-circle"></i>
+                  Cancel
                 </a>
 
                  <!-- Project Details Modal -->
@@ -254,6 +254,7 @@ import { ref ,computed} from 'vue';
 import ProjectDetailsModal from "@/components/modals/ShowProjectDetails.vue";
 import { formatDate } from '@/utils/datetimeUtils';
 import { capitalizeFirstLetter } from '@/utils/stringUtils';
+import { updateStatusApi } from '@/services/ApplicationServices';
 
 const { applications } = usePage().props;
 const selectedCategory = ref('')
@@ -262,6 +263,7 @@ const searchTitle = ref('')
 const selectedProject = ref(null);
 const showDetailsModal = ref(false);
 const hideBtn = ref(null)
+const application_status = ref('cancelled')
 
 const filteredApplications = computed(() => {
   return applications.data.filter((app) => {
@@ -276,15 +278,20 @@ const filteredApplications = computed(() => {
   })
 })
 
+const updateStatus = async (application) => {
+  const { success, error } = await updateStatusApi(application_status.value, application.id);
+  if (error) return;
+  if (success) window.location.reload();
+};
 
 
-function openDetailsModal(project) {
+const openDetailsModal = (project) => {
   selectedProject.value = project;
   hideBtn.value = true;
   showDetailsModal.value = true;
 }
 
-function closeDetailsModal() {
+const closeDetailsModal = () => {
   selectedProject.value = null;
   showDetailsModal.value = false;
 }
