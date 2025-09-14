@@ -26,7 +26,7 @@
           </li>
            <li>
             <Link 
-              :href="userRole === 'freelance' ? route('freelance.browse') : route('employer.application')" 
+              :href="userRole === 'freelance' ? route('freelance.application') : route('employer.application')" 
               class="hover:text-gray-300 nav-link">
                 Applications
             </Link>
