@@ -71,7 +71,7 @@ class ApplicationController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-        'application_status' => 'required|string|in:pending,viewed,reviewed,scheduled,hired,rejected'
+        'application_status' => 'required|string|in:pending,viewed,cancelled,scheduled,hired,rejected'
     ]);
 
         $application = Application::findOrFail($id);
