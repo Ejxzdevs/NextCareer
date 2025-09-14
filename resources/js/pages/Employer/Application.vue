@@ -40,6 +40,7 @@
                      sm:text-sm rounded-md shadow-sm"
             >
               <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
               <option value="viewed">Viewed</option>
               <option value="scheduled">Scheduled</option>
               <option value="hired">Hired</option>
@@ -103,12 +104,15 @@
                     Applied: {{ formatDate(application.created_at) }}
                   </p>
 
-                  <button
+                  <p
                     @click="openDetailsModal(application.project)"
-                    class="text-blue-600 cursor-pointer hover:underline text-sm hover:text-blue-800 transition mt-1"
-                  >
+                    class="text-blue-600 cursor-pointer hover:underline text-xs hover:text-blue-800 transition"
+                    role="button"
+                    tabindex="0"
+                    @keyup.enter="openDetailsModal(application.project)"
+                    >
                     View Project Details
-                  </button>
+                  </p>
                 </div>
               </div>
 
