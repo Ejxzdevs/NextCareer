@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="max-h-screen overflow-y-auto p-4 sm:p-6 lg:pt-8 lg:pb-32 ">
       <h1 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center">
         All Applicants
         <span class="block text-sm text-gray-500 mt-2">
@@ -45,6 +45,7 @@
               <option value="">All Statuses</option>
               <option value="pending">Pending</option>
               <option value="viewed">Viewed</option>
+              <option value="cancelled">Cancelled</option>
               <option value="scheduled">Scheduled</option>
               <option value="hired">Hired</option>
               <option value="rejected">Rejected</option>
@@ -130,6 +131,7 @@
                          focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="viewed">Viewed</option>
+                  <option value="cancelled" disabled>Cancelled</option>
                   <option value="scheduled">Scheduled</option>
                   <option value="hired">Hired</option>
                   <option value="rejected">Rejected</option>
