@@ -119,7 +119,8 @@
       </section>
 
       <!-- Apply Button -->
-      <div v-if="user.role === 'freelance'" class="flex justify-center">
+
+        <div v-if="user.role === 'freelance' && !hideBtnApply" class="flex justify-center">
         <button
           @click="applyForProject(project)"
           class="flex items-center gap-3 px-6 py-1 border-2 border-gray-700 rounded-full
@@ -148,6 +149,10 @@ const props = defineProps({
   show: {
     type: Boolean,
     default: false,
+  },
+  hideBtnApply: {
+    type: Boolean,
+    default: false
   },
   project: {
     type: Object,
