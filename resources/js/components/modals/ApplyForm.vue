@@ -145,7 +145,7 @@ function submitApplication() {
     return;
   }
 
-  form.post(route('freelance.application'), {
+  form.post(route('freelance.application.store'), {
     onSuccess: () => {
       closeModal();
       emit('submitted');
