@@ -1,8 +1,11 @@
 <template>
   <MainLayout>
     <div class="min-h-screen p-4 sm:p-6 lg:p-8">
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-8 text-center">
+      <h1 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center">
         All Applicants
+        <span class="block text-sm text-gray-500 mt-2">
+          View and manage applications
+        </span>
       </h1>
 
       <!-- Filters Section -->
