@@ -12,11 +12,11 @@ class ApplicationController extends Controller
 {
     public function index()
     {
+        $user_role = Auth::user()->account_type;
         $userId = auth::id();
+        if($user_role === 'employer'){
         $get_all_projects = Project::where('user_id', $userId)->get();
         $project_ids = $get_all_projects->pluck('id');
-
-        $applications = Application::whereIn('project_id', $project_ids)->get();
 
         $applications = Application::whereIn('project_id', $project_ids)
             ->with(['user.profile','project'])
@@ -27,6 +27,18 @@ class ApplicationController extends Controller
             'applications' => $applications,
             'projects' =>  $get_all_projects,
         ]);
+        }
+        else{
+      $get_all_applications = Application::where('applications.user_id', $userId)
+        ->with('project.user.profile')
+        ->orderBy('applications.created_at', 'desc')
+        ->paginate(3);
+
+
+            return Inertia::render('Freelance/Application',[
+                'applications' => $get_all_applications
+            ]);
+        }
     }
     public function create()
     {
