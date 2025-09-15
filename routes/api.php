@@ -9,7 +9,7 @@ use App\Http\Controllers\ApplicationController;
 Route::middleware('web')->group(function () {
 
 // Notification Routes
-Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.read');
+Route::get('Employer/notifications', [NotificationController::class, 'getEmployerNotifications'])->name('employer.notifications.read');
 Route::put('/notifications/mark-all-as-viewed', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsViewed');
 
 // Messaging Routes
