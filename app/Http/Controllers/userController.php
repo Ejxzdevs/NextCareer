@@ -51,12 +51,9 @@ class userController extends Controller
         Session::put('user_email', Auth::user()->email);
         Session::put('user_id', Auth::id());
         Session::put('user_role', Auth::user()->account_type);
-
-        if(Auth::user()->account_type == 'employer'){
-            return redirect()->route('employer.dashboard');
-        } elseif(Auth::user()->account_type == 'freelance'){
-            return redirect()->route('freelance.home');
-        }
+        
+        return redirect()->route('userProfile.show',['id' => Auth::id()]);
+        
     } else {
         return redirect()->back()->with('error', 'Invalid credentials!');
     }
