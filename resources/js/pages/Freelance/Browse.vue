@@ -1,16 +1,14 @@
 <template>
   <MainLayout>
-    <!-- Lock body scroll and take full screen -->
     <div class="h-screen overflow-hidden">
-      <div class="container h-full w-full">
-        <!-- Responsive grid: sidebar collapses below md -->
+      <div class="container-fluid h-full w-full">
         <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 md:gap-8 lg:gap-12 h-full">
           
           <!-- Sidebar Filters -->
           <aside
-            class="bg-white p-6 shadow-lg rounded-xl border border-gray-200 h-full overflow-y-auto flex-none sm:h-auto"
+            class="bg-white p-6 shadow-lg border border-gray-200 hidden sm:block"
           >
-            <h2 class="text-xl font-bold text-gray-800 mb-6">🔍 Filters</h2>
+            <h2 class="text-xl text-gray-800 mb-6">Filters</h2>
 
             <!-- Search -->
             <div class="mb-5">
@@ -78,22 +76,27 @@
           </aside>
 
           <!-- Projects List (only this scrolls) -->
-          <section
-            class="space-y-6 overflow-y-auto pr-2 py-5 h-full w-full max-w-5xl mx-auto"
-          >
+          <section class="space-y-6 overflow-y-auto pr-2 py-5 h-full w-full px-4 sm:px-0 ">
+            <h1 class="text-2xl hidden sm:block title text-gray-800 my-6 mb-8 text-center">
+              Browse Projects
+              <span class="block text-sm text-gray-500 mt-2">
+                Explore opportunities and send your applications 
+              </span>
+            </h1>
+
             <div v-if="filteredProjects.length > 0" class="space-y-6 pb-20">
               <div
                 v-for="project in filteredProjects"
                 :key="project.id"
-                class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 relative"
+                class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 p-5 flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto w-full"
               >
                 <!-- Left: User + Project Info -->
-                <div class="flex flex-col w-full sm:w-auto flex-grow">
+                <div class="flex flex-col flex-grow w-full">
                   <div class="flex items-center gap-3">
                     <img
                       :src="project.user.profile.profile_picture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'"
                       alt="profile photo"
-                      class="h-10 w-10 rounded-full object-cover border border-gray-300 shadow-sm"
+                      class="h-12 w-12 rounded-full object-cover border border-gray-300 shadow-sm"
                     />
                     <div>
                       <p class="text-gray-900 font-semibold text-sm">
@@ -106,17 +109,20 @@
                     </div>
                   </div>
 
-                  <div class="flex flex-col gap-6">
+                  <div class="flex flex-col gap-3 mt-4">
                     <!-- Title + Skills -->
-                    <div class="flex flex-col items-center gap-2 mt-3">
+                    <div class="flex flex-col gap-3">
                       <h2 class="text-lg sm:text-xl font-bold text-blue-800 line-clamp-1">
                         {{ project.title }}
                       </h2>
+                      <p class="text-gray-500 text-sm sm:text-base line-clamp-3">
+                        {{ project.description }}
+                      </p>
                       <div class="flex flex-wrap gap-2">
                         <span
                           v-for="skill in formatSkills(project.skills)"
                           :key="skill"
-                          class="inline-flex items-center px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full"
+                          class="inline-flex items-center px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-300"
                         >
                           {{ skill }}
                         </span>
@@ -124,10 +130,10 @@
                     </div>
 
                     <!-- Right: Actions -->
-                    <div class="flex flex-row justify-center gap-3">
+                    <div class="flex flex-wrap justify-center sm:justify-start gap-3 mt-4">
                       <button
                         @click="openApplyModal(project)"
-                        class="rounded-md bg-[#FD0585] hover:bg-[#dc4e98cc] cursor-pointer py-2 px-5 text-white text-sm font-medium"
+                        class="rounded-md bg-[#FD0585] hover:bg-[#dc4e98cc] cursor-pointer py-2 px-5 text-white text-sm font-medium transition"
                       >
                         Quick Apply
                       </button>
@@ -172,7 +178,6 @@
     </div>
   </MainLayout>
 </template>
-
 
 <script setup>
 import { ref, computed } from "vue";
@@ -255,8 +260,8 @@ function closeDetailsModal() {
 .project-description {
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
   line-clamp: 3;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
