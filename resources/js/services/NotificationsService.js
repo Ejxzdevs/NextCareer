@@ -12,7 +12,7 @@ const API_ENDPOINTS = {
  * This method directly interacts with the API endpoint for raw notifications.
  * @returns {Promise<{ data: Array | null, error: string | null }>}
  */
-export const fetchUserNotifications = async () => {
+export const fetchEmployerNotifications = async () => {
     try {
         const response = await axios.get(API_ENDPOINTS.FETCH_NOTIFICATIONS);
         return { data: response.data.notifications || [], error: null };
