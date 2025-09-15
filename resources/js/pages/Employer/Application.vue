@@ -262,7 +262,7 @@ import { ref, computed } from "vue";
 import { usePage, Link } from "@inertiajs/vue3";
 import { formatDate } from "@/utils/datetimeUtils";
 import { capitalizeFirstLetter } from "@/utils/stringUtils";
-import ProjectDetailsModal from "@/components/shared/ShowProjectDetails.vue";
+import ProjectDetailsModal from "@/components/Modal/Shared/ShowProjectDetails.vue";
 import { updateStatusApi } from "@/services/ApplicationServices";
 
 const { applications, projects } = usePage().props;

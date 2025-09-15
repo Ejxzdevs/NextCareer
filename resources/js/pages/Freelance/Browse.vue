@@ -249,8 +249,8 @@
 import { ref, computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
-import ApplyModal from "@/components/modals/Freelancer/ApplyForm.vue";
-import ProjectDetailsModal from "@/components/shared/ShowProjectDetails.vue";
+import ApplyModal from "@/components/Modal/Freelancer/ApplyForm.vue";
+import ProjectDetailsModal from "@/components/Modal/Shared/ShowProjectDetails.vue";
 import { formatSkills } from "@/utils/stringUtils";
 
 const showApplyModal = ref(false);

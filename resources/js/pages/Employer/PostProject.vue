@@ -261,7 +261,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
 import { formatNameFromEmail } from "@/utils/stringUtils";
-import ProjectDetailsModal from "@/components/shared/ShowProjectDetails.vue";
+import ProjectDetailsModal from "@/components/Modal/Shared/ShowProjectDetails.vue";
 
 const showEditCreateModal = ref(false);
 const showDetailsModal = ref(false);

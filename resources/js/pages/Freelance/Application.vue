@@ -303,7 +303,7 @@
 <script setup>
 import { usePage, Link } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
-import ProjectDetailsModal from "@/components/shared/ShowProjectDetails.vue";
+import ProjectDetailsModal from "@/components/Modal/Shared/ShowProjectDetails.vue";
 import { formatDate } from "@/utils/datetimeUtils";
 import { capitalizeFirstLetter } from "@/utils/stringUtils";
 import { updateStatusApi } from "@/services/ApplicationServices";
