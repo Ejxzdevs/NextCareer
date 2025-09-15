@@ -115,7 +115,7 @@
 
                     <!-- Projects List -->
                     <section
-                        class="space-y-6 overflow-y-auto pr-2 py-5 h-full w-full px-4 sm:px-0"
+                        class="flex space-y-6 overflow-y-auto pr-2 pt-5 pb-20 h-screen w-full px-4 sm:px-0"
                     >
                         <div
                             v-if="filteredProjects.length > 0"
@@ -210,7 +210,7 @@
                         <!-- No Projects -->
                         <div
                             v-else
-                            class="text-center bg-white rounded-xl shadow p-10 mt-10"
+                            class="text-center bg-white rounded-sm shadow p-10 mx-auto"
                         >
                             <i
                                 class="fas fa-folder-open text-6xl text-gray-300 mb-6"
