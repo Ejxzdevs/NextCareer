@@ -87,32 +87,46 @@ class NotificationController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function markAllAsRead(Request $request)
-    {
-        $userId = auth::id();
+{
+    $userId = Auth::id();
+    $userRole = Auth::user()->account_type;
 
-        try {
-            $user_project_id = Project::where('user_id', $userId)->pluck('id');
+    try {
+        if ($userRole == 'employer') {
+            $user_project_ids = Project::where('user_id', $userId)->pluck('id');
 
-            if ($user_project_id->isEmpty()) {
+            if ($user_project_ids->isEmpty()) {
                 return response()->json([
                     'message' => 'No applications to update for your projects.',
                     'updated_count' => 0,
                 ]);
             }
-            $updatedCount = Application::whereIn('project_id',     $user_project_id)
-                                      ->where('application_status', 'pending')
-                                      ->update(['application_status' => 'viewed']);
+
+            $updatedCount = Application::whereIn('project_id', $user_project_ids)
+                ->where('application_status', 'pending')
+                ->update(['application_status' => 'viewed']);
 
             return response()->json([
                 'message' => 'Applications marked as viewed successfully.',
                 'updated_count' => $updatedCount,
             ]);
+        } else {
+            // For freelancers / other users
+            $updatedCount = Application::where('user_id', $userId)
+                ->where('is_read', false) // Boolean instead of string
+                ->update(['is_read' => true]);
 
-        } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to mark applications as viewed.',
-                'details' => $e->getMessage(),
-            ], 500);
+                'message' => 'Applications marked as read successfully.',
+                'updated_count' => $updatedCount,
+            ]);
         }
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Failed to mark applications as read/viewed.',
+            'details' => $e->getMessage(),
+        ], 500);
     }
+}
+
 }
