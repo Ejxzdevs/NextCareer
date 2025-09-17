@@ -3,7 +3,8 @@ import axios from "axios";
 
 // Since Ziggy is global, 'route()' is available here without explicit import.
 const API_ENDPOINTS = {
-    FETCH_NOTIFICATIONS: route("employer.notifications.read"),
+    FETCH_EMPLOYER_NOTIFICATIONS: route("employer.notifications.read"),
+    FETCH_FREELANCER_NOTIFICATIONS: route("freelancer.notifications.read"),
     MARK_ALL_AS_READ: route("notifications.markAllAsViewed"),
 };
 
@@ -12,9 +13,39 @@ const API_ENDPOINTS = {
  * This method directly interacts with the API endpoint for raw notifications.
  * @returns {Promise<{ data: Array | null, error: string | null }>}
  */
+export const fetchFreelancerNotifications = async () => {
+    try {
+        const response = await axios.get(
+            API_ENDPOINTS.FETCH_FREELANCER_NOTIFICATIONS
+        );
+        return { data: response.data.notifications || [], error: null };
+    } catch (err) {
+        console.error(
+            "NotificationService Error: Failed to fetch notifications (fetchApiData):",
+            err
+        );
+        let errorMessage =
+            "Failed to load notifications due to a network error.";
+
+        if (err.response) {
+            console.error("Response Data:", err.response.data);
+            console.error("Response Status:", err.response.status);
+            errorMessage = `Failed to load notifications: ${
+                err.response.status
+            } - ${err.response.data?.message || "Server error"}`;
+        } else if (err.request) {
+            errorMessage =
+                "No response from server. Please check your internet connection.";
+        }
+        return { data: null, error: errorMessage };
+    }
+};
+
 export const fetchEmployerNotifications = async () => {
     try {
-        const response = await axios.get(API_ENDPOINTS.FETCH_NOTIFICATIONS);
+        const response = await axios.get(
+            API_ENDPOINTS.FETCH_EMPLOYER_NOTIFICATIONS
+        );
         return { data: response.data.notifications || [], error: null };
     } catch (err) {
         console.error(
