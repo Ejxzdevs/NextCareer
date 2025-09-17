@@ -1,184 +1,226 @@
 <template>
-    <div class="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
-        <h1
-            class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-8 text-center"
-        >
-            User Profile
+    <div class="h-screen overflow-y-auto p-4 sm:p-6 lg:px-20 lg:pb-20">
+        <h1 class="text-3xl font-bold text-center !text-gray-700 my-6 title">
+            WELCOME TO YOUR PROFILE
         </h1>
-
-        <!-- Profile Card -->
-        <div
-            class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8"
-        >
+        <div class="bg-white py-10 rounded-sm">
+            <!-- Profile Card -->
             <div
-                class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6"
+                class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6 mb-8"
             >
-                <div class="flex-shrink-0">
-                    <img
-                        v-if="!isEditing"
-                        :src="userProfile.profile_picture"
-                        alt="Profile Picture"
-                        class="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-200 shadow-md"
-                    />
-
-                    <!-- Editing mode -->
-                    <div v-else class="relative w-24 h-24 sm:w-32 sm:h-32">
-                        <label
-                            for="profile-upload"
-                            class="cursor-pointer w-full h-full flex items-center justify-center rounded-full border-4 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 shadow-md transition"
+                <div
+                    class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6"
+                >
+                    <!-- Profile picture container -->
+                    <div class="relative h-32 w-32">
+                        <!-- View mode -->
+                        <div
+                            v-if="!isEditing"
+                            class="w-full h-full p-3 rounded-sm shadow-lg bg-gradient-to-br from-[#4A5B41] via-[#6D7C5F] to-[#2F3A28]"
                         >
                             <img
-                                v-if="
-                                    previewImage || userProfile.profile_picture
-                                "
-                                :src="
-                                    previewImage || userProfile.profile_picture
-                                "
-                                alt="Profile Preview"
-                                class="w-full h-full rounded-full object-cover"
+                                :src="userProfile.profile_picture"
+                                alt="Profile Picture"
+                                class="w-full h-full rounded-full object-cover border-4 border-[#E8F0E3] shadow-md"
                             />
-                            <i
-                                v-else
-                                class="fas fa-camera text-gray-500 text-xl"
-                            ></i>
-                        </label>
-                        <input
-                            type="file"
-                            id="profile-upload"
-                            class="hidden"
-                            accept="image/*"
-                            @change="handleFileChange"
-                        />
-                    </div>
-                </div>
+                        </div>
 
-                <div class="flex-grow text-center sm:text-left">
-                    <div v-if="!isEditing">
-                        <h2 class="text-3xl font-extrabold text-gray-800">
-                            {{ userProfile.username }}
-                        </h2>
-                        <p class="text-xl text-gray-600 mt-1">
-                            {{ userProfile.occupation }}
-                        </p>
-                        <p class="text-md text-gray-500 mt-2">
-                            📍 {{ userProfile.address }}
-                        </p>
+                        <!-- Editing mode -->
+                        <div
+                            v-else
+                            class="w-full h-full p-3 rounded-sm shadow-lg bg-gradient-to-br from-[#4A5B41] via-[#6D7C5F] to-[#2F3A28]"
+                        >
+                            <label
+                                for="profile-upload"
+                                class="cursor-pointer w-full h-full flex items-center justify-center rounded-full border-4 border-[#E8F0E3] overflow-hidden group relative"
+                            >
+                                <!-- Preview if available -->
+                                <img
+                                    v-if="
+                                        previewImage ||
+                                        userProfile.profile_picture
+                                    "
+                                    :src="
+                                        previewImage ||
+                                        userProfile.profile_picture
+                                    "
+                                    alt="Profile Preview"
+                                    class="w-full h-full rounded-full object-cover transition-transform duration-200 group-hover:scale-105"
+                                />
+
+                                <!-- Default icon -->
+                                <i
+                                    v-else
+                                    class="fas fa-camera text-blue-500 text-2xl group-hover:text-blue-600 transition-colors"
+                                ></i>
+
+                                <!-- Overlay on hover -->
+                                <div
+                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                    <i
+                                        class="fas fa-camera text-white text-xl"
+                                    ></i>
+                                </div>
+                            </label>
+
+                            <!-- File input -->
+                            <input
+                                type="file"
+                                id="profile-upload"
+                                class="hidden"
+                                accept="image/*"
+                                @change="handleFileChange"
+                            />
+                        </div>
                     </div>
 
-                    <div v-else>
-                        <h2 class="text-3xl font-extrabold text-gray-800 mb-2">
-                            {{ userProfile.email }}
-                        </h2>
-                        <input
-                            v-model="form.occupation"
-                            class="border rounded p-2 w-full mb-2"
-                            placeholder="Occupation"
-                        />
-                        <input
-                            v-model="form.address"
-                            class="border rounded p-2 w-full mb-2"
-                            placeholder="Address"
-                        />
-                    </div>
-                </div>
+                    <!-- Profile Info -->
+                    <div class="flex-grow text-center sm:text-left">
+                        <div v-if="!isEditing">
+                            <h2
+                                class="text-3xl font-extrabold text-gray-800 name"
+                            >
+                                {{ userProfile.username }}
+                            </h2>
+                            <p class="text-md !text-gray-600 mt-1 label">
+                                {{ userProfile.occupation }}
+                            </p>
+                            <p class="text-xs !text-gray-500 mt-2 label">
+                                📍{{ userProfile.address }}
+                            </p>
+                        </div>
 
-                <div
-                    class="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0"
-                >
-                    <MessageModal
-                        v-show="authId !== userProfile.user_id"
-                        :username="userProfile.username"
-                        :id="userProfile.user_id"
-                        :profile_picture="userProfile.profile_picture"
-                    />
-                    <button
-                        v-show="authId === userProfile.user_id"
-                        v-if="!isEditing"
-                        @click="editMode"
-                        class="flex items-center gap-2 cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                        <div v-else>
+                            <h2
+                                class="text-3xl font-extrabold text-gray-800 mb-2"
+                            >
+                                {{ userProfile.email }}
+                            </h2>
+                            <input
+                                v-model="form.occupation"
+                                class="label text-sm !text-gray-600 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Occupation"
+                            />
+                            <input
+                                v-model="form.address"
+                                class="label text-sm !text-gray-600 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Address"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div
+                        class="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0"
                     >
-                        <i class="fas fa-edit"></i>
-                        <span>Edit Profile</span>
-                    </button>
-                    <template v-else>
+                        <MessageModal
+                            v-show="authId !== userProfile.user_id"
+                            :username="userProfile.username"
+                            :id="userProfile.user_id"
+                            :profile_picture="userProfile.profile_picture"
+                        />
                         <button
-                            @click="saveProfile"
-                            class="px-5 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors shadow-md"
+                            v-show="authId === userProfile.user_id"
+                            v-if="!isEditing"
+                            @click="editMode"
+                            class="flex items-center gap-2 cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
                         >
-                            Save
+                            <i class="fas fa-edit"></i>
+                            <span>Edit Profile</span>
                         </button>
-                        <button
-                            @click="cancelEdit"
-                            class="px-5 py-2 border border-gray-400 text-gray-700 text-sm rounded-lg hover:bg-gray-100 transition-colors shadow-sm"
-                        >
-                            Cancel
-                        </button>
-                    </template>
+                        <template v-else>
+                            <!-- Save Button -->
+                            <button
+                                @click="saveProfile"
+                                class="flex items-center gap-2 cursor-pointer px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                            >
+                                <i class="fas fa-save"></i>
+                                <span>Save</span>
+                            </button>
+
+                            <!-- Cancel Button -->
+                            <button
+                                @click="cancelEdit"
+                                class="flex items-center gap-2 cursor-pointer px-5 py-2 border border-gray-400 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-sm"
+                            >
+                                <i class="fas fa-times"></i>
+                                <span>Cancel</span>
+                            </button>
+                        </template>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- About Section -->
-        <div
-            class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 p-6 mb-8"
-        >
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">About</h2>
-            <p v-if="!isEditing" class="text-gray-700 leading-relaxed">
-                {{ userProfile.about }}
-            </p>
-            <textarea
-                v-else
-                v-model="form.about"
-                class="border rounded p-2 w-full"
-                rows="4"
-            ></textarea>
-        </div>
-
-        <!-- Skills Section -->
-        <div
-            class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 p-6"
-        >
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Skills</h2>
-
-            <div v-if="!isEditing" class="flex flex-wrap gap-2">
-                <span
-                    v-for="skill in userProfile.skills"
-                    :key="skill"
-                    class="px-4 py-1 bg-gray-200 text-gray-700 text-sm rounded-full font-medium"
+            <!-- About Section -->
+            <div
+                class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6 mb-8"
+            >
+                <h2 class="text-1xl font-medium !text-gray-600 mb-2 label">
+                    About
+                </h2>
+                <p
+                    v-if="!isEditing"
+                    class="text-gray-700 leading-relaxed text-sm"
                 >
-                    {{ skill }}
-                </span>
+                    {{ userProfile.about }}
+                </p>
+                <textarea
+                    v-else
+                    v-model="form.about"
+                    class="label text-sm !text-gray-600 border rounded p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    rows="4"
+                ></textarea>
             </div>
 
-            <div v-else class="space-y-3">
-                <div class="flex flex-wrap gap-2">
+            <!-- Skills Section -->
+            <div
+                class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6"
+            >
+                <h2 class="text-1xl font-medium !text-gray-600 mb-2 label">
+                    Skills
+                </h2>
+
+                <div v-if="!isEditing" class="flex flex-wrap gap-2">
                     <span
-                        v-for="(skill, index) in userProfile.skills"
-                        :key="index"
-                        class="flex items-center gap-1 px-4 py-1 bg-gray-200 text-gray-700 text-sm rounded-full font-medium"
+                        v-for="skill in userProfile.skills"
+                        :key="skill"
+                        class="px-4 py-1 border border-green-500 bg-green-200 text-green-700 text-sm rounded-full font-medium"
                     >
                         {{ skill }}
-                        <button
-                            @click="removeSkill(index)"
-                            class="text-red-500 hover:text-red-700"
-                        >
-                            ×
-                        </button>
                     </span>
                 </div>
-                <div class="flex gap-2">
-                    <input
-                        v-model="newSkill"
-                        @keyup.enter="addSkill"
-                        placeholder="Add a skill and press Enter"
-                        class="border rounded p-2 flex-grow"
-                    />
-                    <button
-                        @click="addSkill"
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    >
-                        Add
-                    </button>
+
+                <div v-else class="space-y-3">
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            v-for="(skill, index) in userProfile.skills"
+                            :key="index"
+                            class="flex items-center gap-1 px-4 py-1 border border-green-500 bg-green-200 text-green-700 text-sm rounded-full font-medium"
+                        >
+                            {{ skill }}
+                            <button
+                                @click="removeSkill(index)"
+                                class="text-red-500 hover:text-red-700 cursor-pointer"
+                            >
+                                ×
+                            </button>
+                        </span>
+                    </div>
+                    <div class="flex gap-2">
+                        <input
+                            v-model="newSkill"
+                            @keyup.enter="addSkill"
+                            placeholder="Enter your skill"
+                            class="border text-sm rounded p-2 flex-grow focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        />
+                        <button
+                            @click="addSkill"
+                            class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
+                        >
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
