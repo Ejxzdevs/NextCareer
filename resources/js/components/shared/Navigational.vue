@@ -9,7 +9,8 @@
                     class="hidden md:flex item-center space-x-3 text-white items-center font-medium text-sm"
                 >
                     <div class="flex flex-row gap-2">
-                        <NotificationDropdown />
+                        <FreelancerDropdown v-if="userRole === 'freelance'" />
+                        <EmployerDropdown v-else-if="userRole === 'employer'" />
                         <MessageDropdown />
                         <UserDropdown />
                     </div>
@@ -61,7 +62,8 @@
                     <ul
                         class="flex flex-row gap-1 me-3 text-white items-center"
                     >
-                        <NotificationDropdown />
+                        <FreelancerDropdown v-if="userRole === 'freelance'" />
+                        <EmployerDropdown v-else-if="userRole === 'employer'" />
                         <MessageDropdown />
                         <UserDropdown />
                     </ul>
@@ -124,7 +126,8 @@
 import { ref, watch } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import UserDropdown from "@/Components/Shared/UserDropdown.vue";
-import NotificationDropdown from "@/Components/Employer/NotifDropdown.vue";
+import EmployerDropdown from "@/Components/Employer/NotifDropdown.vue";
+import FreelancerDropdown from "@/Components/Freelancer/NotifDropdown.vue";
 import MessageDropdown from "@/Components/Shared/MessageDropdown.vue";
 
 const page = usePage();
