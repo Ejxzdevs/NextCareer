@@ -49,6 +49,36 @@ class NotificationController extends Controller
         ]);
     }
 
+    public function getFreelancerNotifications(Request $request)
+    {
+        $userId = Auth::id();
+
+        if (!$userId) {
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], 401);
+        }
+
+        $userData = Application::where('applications.user_id', 9)
+            ->join('projects', 'applications.project_id', '=', 'projects.id')
+            ->join('users', 'projects.user_id', '=', 'users.id')
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->select(
+                'users.*',
+                'projects.*',
+                'applications.*',
+                'user_profiles.*',
+                'applications.updated_at AS application_updated_at',
+                DB::raw('(SELECT username FROM users WHERE users.id = applications.user_id) as applicant_username')
+            )
+            ->orderBy('applications.created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'notifications' => $userData,
+        ]);
+    }
+
     /**
      * Mark all applications for the authenticated user's projects as 'view'.
      * Only applications with 'pending' status will be updated.
