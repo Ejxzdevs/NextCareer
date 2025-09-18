@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Hand:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;600&display=swap');
-@import 'tailwindcss';
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+SA+Hand:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Poppins:wght@400;600&display=swap");
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -12,61 +11,59 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 }
 
-
 .title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
 }
 
 .label {
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  color: #6b7280;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    color: #6b7280;
 }
 
 .name {
-  font-family: 'Poppins', sans-serif;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+    font-family: "Poppins", sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 500;
 }
 
 .count-label {
-  font-family: 'Poppins', sans-serif;
-  color: #1f2937; 
+    font-family: "Poppins", sans-serif;
+    color: #1f2937;
 }
 
 .nav-link {
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff;     /* white */
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
+    font-family: "Poppins", sans-serif;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
 }
 
 .nav-link:hover {
-  color: #93c5fd;     /* light blue (Tailwind blue-300) */
+    color: #93c5fd;
 }
 
-
 .roboto-mono-medium {
-  font-family: "Roboto Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 .edu-sa-hand-medium {
-  font-family: "Edu SA Hand", cursive;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+    font-family: "Edu SA Hand", cursive;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }
 
 body {
-    /* background-color: #EFF4FF; */
-    background-color: #E6E3E7;
+    background-color: #eff4ff;
     overflow: hidden;
 }
