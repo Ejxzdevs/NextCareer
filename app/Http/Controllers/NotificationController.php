@@ -66,6 +66,7 @@ class NotificationController extends Controller
             ->select(
                 'users.*',
                 'projects.*',
+                'applications.id as application_id',
                 'applications.*',
                 'user_profiles.*',
                 'applications.updated_at AS application_updated_at',
