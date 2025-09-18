@@ -187,8 +187,9 @@
                                 <a
                                     :href="`/storage/${application.resume}`"
                                     target="_blank"
-                                    class="inline-flex items-center text-sm font-medium text-blue-600 hover:underline px-3 py-2 border border-blue-200 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
+                                    class="inline-flex gap-2 cursor-pointer items-center text-sm font-medium text-blue-600 hover:underline px-3 py-2 border border-blue-200 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
                                 >
+                                    <i class="fas fa-file-download"></i>
                                     Resume
                                 </a>
 
@@ -197,8 +198,9 @@
                                     v-if="application.link_portfolio"
                                     :href="application.link_portfolio"
                                     target="_blank"
-                                    class="inline-flex items-center text-sm font-medium text-white bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md shadow transition-colors"
+                                    class="inline-flex gap-2 cursor-pointer items-center text-sm font-medium border border-green-200 text-green-600 bg-green-200 hover:bg-green-100 px-3 py-2 rounded-md shadow transition-colors"
                                 >
+                                    <i class="fas fa-eye"></i>
                                     View Portfolio
                                 </a>
                             </div>
