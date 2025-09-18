@@ -49,23 +49,24 @@
             <!-- Project Title -->
             <header class="flex flex-col gap-3">
                 <div>
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-thumbtack text-red-500"></i>
-                        <span class="text-sm font-medium">Title</span>
-                    </div>
                     <h2
                         class="text-xl sm:text-2xl font-bold text-blue-900 mt-1"
                     >
+                        <i class="fas fa-thumbtack text-red-500"></i>
                         {{ project?.title || "Project Details" }}
                     </h2>
                 </div>
 
-                <div>
+                <hr class="border-gray-200 mb-2" />
+
+                <div class="mb-2">
                     <div class="flex items-center gap-2">
                         <i class="fas fa-file-alt text-cyan-500"></i>
-                        <span class="text-sm font-medium">Description</span>
+                        <span class="text-sm font-medium label"
+                            >Description</span
+                        >
                     </div>
-                    <p class="text-gray-600 text-sm mt-2 leading-relaxed">
+                    <p class="text-gray-600 text-sm label mt-2 leading-relaxed">
                         {{
                             project?.description || "No description available."
                         }}
@@ -79,10 +80,10 @@
             >
                 <!-- Budget -->
                 <div class="flex items-center gap-3 sm:col-span-2">
-                    <i class="fas fa-coins text-yellow-500 text-xl"></i>
+                    <i class="fas fa-coins text-yellow-500 text-3xl"></i>
                     <div>
-                        <p class="text-xs font-medium">Budget</p>
-                        <p class="text-sm">
+                        <p class="text-xs font-medium label">Budget</p>
+                        <p class="text-xs">
                             {{ formatCurrency(project?.budget) }}
                         </p>
                     </div>
@@ -90,10 +91,10 @@
 
                 <!-- Start Date -->
                 <div class="flex items-center gap-3">
-                    <i class="far fa-calendar-alt text-green-500 text-xl"></i>
+                    <i class="far fa-calendar-alt text-green-500 text-3xl"></i>
                     <div>
-                        <p class="text-xs font-medium">Start Date</p>
-                        <p class="text-sm">
+                        <p class="text-xs font-medium label">Start Date</p>
+                        <p class="text-xs">
                             {{ formatDate(project?.start_date) }}
                         </p>
                     </div>
@@ -101,21 +102,23 @@
 
                 <!-- Deadline -->
                 <div class="flex items-center gap-3">
-                    <i class="far fa-calendar-check text-red-500 text-xl"></i>
+                    <i class="far fa-calendar-check text-red-500 text-3xl"></i>
                     <div>
-                        <p class="text-xs font-medium">Deadline</p>
-                        <p class="text-sm">
+                        <p class="text-xs font-medium label">Deadline</p>
+                        <p class="text-xs">
                             {{ formatDate(project?.deadline) }}
                         </p>
                     </div>
                 </div>
             </section>
 
+            <hr class="border-gray-200 mb-4" />
+
             <!-- Skills Section -->
             <section>
                 <div class="flex items-center gap-2 mb-3">
                     <i class="fas fa-laptop-code text-green-500"></i>
-                    <span class="text-sm font-semibold text-gray-700">
+                    <span class="text-sm font-semibold text-gray-700 label">
                         Required Skills
                     </span>
                 </div>
@@ -144,7 +147,7 @@
             >
                 <button
                     @click="applyForProject(project)"
-                    class="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-[#FD0585] hover:from-pink-600 hover:to-[#dc4e98] cursor-pointer py-2.5 px-6 text-white text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                    class="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-500 to-[#FD0585] hover:from-pink-600 hover:to-[#dc4e98] cursor-pointer py-2.5 px-6 my-2 text-white text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
                 >
                     <i class="fas fa-paper-plane"></i>
                     Apply Now
