@@ -124,16 +124,23 @@ class ProjectController extends Controller
     
         $project = Project::with('user.profile')->find($id);
 
-        // Mark this project as 'viewed'
+   
         if ($application_id) {
         $application = Application::where('id', $application_id)
             ->where('project_id', $id)
             ->first();
 
         if ($application) {
-            $application->update(['application_status' => 'viewed']);
+             if(Auth::user()->account_type === 'employer'){
+                // For employers: update the application status to 'viewed'
+                $application->update(['application_status' => 'viewed']);
+             }else{
+                 // For freelancers: set 'is_read' to true
+                $application->update(['is_read' => true]);
+             }
             }
         }
+
 
         // Load all applications with associated user data
         $userApplication = Application::with('user.profile')->where('project_id', $id)->get();
@@ -141,14 +148,6 @@ class ProjectController extends Controller
         if (!$project) {
             return Inertia::render('Employer/ViewProject', [
                 'error' => 'Project not found.',
-                'project' => null,
-            ]);
-        }
-
-        // Prevent employers from viewing others' projects
-        if (Auth::user()->account_type === 'employer' && $project->user_id !== Auth::id()) {
-            return Inertia::render('Employer/ViewProject', [
-                'error' => 'You do not have permission to view this project.',
                 'project' => null,
             ]);
         }
