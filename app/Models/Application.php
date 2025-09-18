@@ -23,7 +23,8 @@ class Application extends Model
         'resume',           
         'link_portfolio', 
         'message',
-        'application_status'
+        'application_status',
+        'is_read'
     ];
 
     /**
