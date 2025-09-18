@@ -1,6 +1,6 @@
 <template>
     <div @click.self="isMenuOpen = false">
-        <nav class="bg-[#334EAC] p-4">
+        <nav class="bg-[#145EEE] p-4">
             <div class="flex justify-between items-center">
                 <div class="hidden md:flex text-white text-lg font-semibold">
                     <Link :href="route('landing.page')">Next Career</Link>
@@ -123,8 +123,8 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { Link, usePage } from "@inertiajs/vue3";
+import { ref, onMounted } from "vue";
+import { usePage, Link } from "@inertiajs/vue3";
 import UserDropdown from "@/Components/Shared/UserDropdown.vue";
 import EmployerDropdown from "@/Components/Employer/NotifDropdown.vue";
 import FreelancerDropdown from "@/Components/Freelancer/NotifDropdown.vue";
@@ -137,25 +137,18 @@ const userRole = ref("guest");
 
 // Function to update userRole based on page props
 const updateUserRole = () => {
-    const checkRole = page.props.user?.role;
-    if (checkRole === "freelance") {
-        userRole.value = "freelance";
-    } else if (checkRole === "employer") {
-        userRole.value = "employer";
-    } else {
-        userRole.value = "guest";
-    }
+    const role = page.props.user?.role;
+    userRole.value =
+        role === "freelance"
+            ? "freelance"
+            : role === "employer"
+            ? "employer"
+            : "guest";
 };
 
-updateUserRole();
-
-watch(
-    () => page.props.user,
-    (newVal) => {
-        updateUserRole();
-    },
-    { immediate: true }
-);
+onMounted(() => {
+    updateUserRole();
+});
 
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
