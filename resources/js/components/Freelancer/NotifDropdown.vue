@@ -61,10 +61,15 @@
                         v-else
                         v-for="notification in notifications"
                         :key="notification.id"
-                        @click="viewNotification(notification.id)"
+                        @click="
+                            viewNotification(
+                                notification.id,
+                                notification.application_id
+                            )
+                        "
                         :class="[
                             'p-2.5 mb-1 border border-gray-200 rounded flex items-center gap-2.5 cursor-pointer',
-                            notification.read
+                            notification.is_read
                                 ? 'hover:bg-gray-50'
                                 : 'bg-blue-100 font-semibold',
                         ]"
@@ -99,7 +104,7 @@
                         </div>
 
                         <div
-                            v-if="!notification.read"
+                            v-if="!notification.is_read"
                             class="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"
                         ></div>
                     </li>
@@ -185,7 +190,6 @@ const notifications = computed(() =>
             time: formatDateTime(
                 project.application_updated_at || application_updated_at
             ),
-            // Keep the is_read value from your data
             is_read: project.is_read,
             profile_picture: project.profile_picture,
         }))
@@ -204,13 +208,13 @@ const countNotificationsCount = computed(
  * @param {number} id - Project ID
  * @param {number} application_id - Application ID
  */
-function viewNotification(id) {
-    if (!id) {
+function viewNotification(id, application_id) {
+    if (!id || !application_id) {
         alert("Invalid project or application ID.");
         return;
     }
     Inertia.get(
-        route("project.show", { id: id }),
+        route("project.show", { id: id, application_id: application_id }),
         {},
         {
             onError: (errors) => {
