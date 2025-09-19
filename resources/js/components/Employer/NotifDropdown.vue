@@ -113,13 +113,18 @@
                     v-if="notifications.length > 0 && !isLoading && !fetchError"
                     class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
                 >
-                    <Link
-                        :href="route('user.allNotifications.index')"
-                        class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    <button
+                        @click="openSlidingNotif()"
+                        class="text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer"
                     >
                         View All Notifications
-                    </Link>
+                    </button>
                 </div>
+                <showAllNotifModal
+                    :show="showModalAllNotif"
+                    @hide="closeSlidingNotif"
+                    :notifications="rawProjectData"
+                />
             </div>
         </transition>
     </li>
@@ -132,11 +137,11 @@ import {
     markAllAsRead,
 } from "@/services/NotificationsService";
 import { Inertia } from "@inertiajs/inertia";
+import showAllNotifModal from "@/components/Modal/Employer/AllNotif.vue";
 
 // Dropdown state and handlers from the custom useDropdown composable
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } =
     useDropdown();
-
 const rawProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
@@ -196,18 +201,16 @@ function viewNotification(id, application_id) {
         alert("Invalid project or application ID.");
         return;
     }
-    Inertia.get(
-        route("project.show", { id: id, application_id: application_id }),
-        {},
-        {
-            onError: (errors) => {
-                alert(
-                    "Could not load project. It may not exist or you do not have permission."
-                );
-            },
-        }
-    );
-    closeDropdown();
+    Inertia.visit(route("project.show", { id, application_id }), {
+        onError: () => {
+            alert(
+                "Could not load project. It may not exist or you do not have permission."
+            );
+        },
+        onFinish: () => {
+            closeDropdown();
+        },
+    });
 }
 
 // count pending status
@@ -215,6 +218,16 @@ const pendingNotificationsCount = computed(
     () =>
         notifications.value.filter((notification) => !notification.read).length
 );
+
+// show all notif
+const showModalAllNotif = ref(false);
+const openSlidingNotif = () => {
+    showModalAllNotif.value = true;
+};
+
+const closeSlidingNotif = () => {
+    showModalAllNotif.value = false;
+};
 
 onMounted(() => {
     loadNotifications();
