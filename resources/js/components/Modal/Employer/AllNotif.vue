@@ -88,13 +88,13 @@ import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
     show: Boolean,
-    notifications: { type: Array, default: () => [] },
+    data: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits(["hide"]);
 
 const notifications = computed(() =>
-    props.notifications.map((project) => ({
+    props.data.map((project) => ({
         id: project.project_id,
         application_id: project.application_id,
         username: project.applicant_username,

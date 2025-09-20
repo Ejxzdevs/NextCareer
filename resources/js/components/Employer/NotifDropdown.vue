@@ -123,7 +123,7 @@
                 <showAllNotifModal
                     :show="showModalAllNotif"
                     @hide="closeSlidingNotif"
-                    :notifications="rawProjectData"
+                    :data="ProjectData"
                 />
             </div>
         </transition>
@@ -142,7 +142,7 @@ import showAllNotifModal from "@/components/Modal/Employer/AllNotif.vue";
 // Dropdown state and handlers from the custom useDropdown composable
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } =
     useDropdown();
-const rawProjectData = ref([]);
+const ProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
 
@@ -155,9 +155,9 @@ const loadNotifications = async () => {
 
     if (error) {
         fetchError.value = error;
-        rawProjectData.value = [];
+        ProjectData.value = [];
     } else {
-        rawProjectData.value = data;
+        ProjectData.value = data;
     }
 
     isLoading.value = false;
@@ -178,7 +178,7 @@ const callMarkAllAsRead = async () => {
 
 // Transform raw project data into a list of notification objects for the UI
 const notifications = computed(() =>
-    rawProjectData.value.map((project) => ({
+    ProjectData.value.map((project) => ({
         id: project.project_id,
         application_id: project.application_id,
         username: project.applicant_username,
