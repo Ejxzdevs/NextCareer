@@ -72,7 +72,7 @@
 
                         <!-- Message content -->
                         <div class="flex-grow">
-                            <p class="text-sm font-semibold">
+                            <p class="text-sm font-semibold text-blue-500">
                                 {{ message.sender }}
                             </p>
                             <p class="text-xs text-gray-600 truncate">
@@ -98,13 +98,18 @@
                     v-if="userWithLastMessages.length > 0"
                     class="px-4 py-3 border-t border-gray-200 text-center bg-gray-50"
                 >
-                    <Link
-                        :href="route('user.AllMessages.index')"
-                        class="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    <button
+                        @click="openAllMessage()"
+                        class="text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer"
                     >
                         View All Messages
-                    </Link>
+                    </button>
                 </div>
+                <showAllMessageModal
+                    :show="showModalAllMessage"
+                    @hide="closeSlidingMessage"
+                    :data="data"
+                />
             </div>
         </transition>
     </li>
@@ -112,14 +117,21 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useDropdown } from "../../composables/useToggleVisibility";
+import { useDropdown } from "@/composables/useToggleVisibility";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
-import { getInboxApi, markAllAsReadApi } from "../../services/MessageServices";
+import { getInboxApi, markAllAsReadApi } from "@/services/MessageServices";
+import showAllMessageModal from "@/components/Modal/Shared/AllMessage.vue";
 
 // Dropdown state
 const { isDropdownOpen, toggleDropdown, dropdownRef } = useDropdown();
 const data = ref([]);
-
+const showModalAllMessage = ref(false);
+const openAllMessage = () => {
+    showModalAllMessage.value = true;
+};
+const closeSlidingMessage = () => {
+    showModalAllMessage.value = false;
+};
 // Load inbox messages
 const loadInbox = async () => {
     const { data: inboxData, error } = await getInboxApi();
