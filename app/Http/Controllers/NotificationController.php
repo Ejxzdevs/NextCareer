@@ -18,9 +18,10 @@ class NotificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getEmployerNotifications(Request $request)
+    public function getUserNotifications(Request $request)
     {
         $userId = Auth::id();
+        $userRole = Auth::user()->account_type;
 
         if (!$userId) {
             return response()->json([
@@ -28,9 +29,9 @@ class NotificationController extends Controller
             ], 401);
         }
 
+        if($userRole ==='employer'){
         $userData = User::where('users.id', $userId)
             ->join('projects', 'users.id', '=', 'projects.user_id')
-            
             ->join('applications', 'projects.id', '=', 'applications.project_id')
             ->join('user_profiles', 'applications.user_id', '=', 'user_profiles.user_id')
             ->select(
@@ -43,23 +44,8 @@ class NotificationController extends Controller
             )
             ->orderBy('applications.created_at', 'desc')
             ->get();
-
-        return response()->json([
-            'notifications' => $userData,
-        ]);
-    }
-
-    public function getFreelancerNotifications(Request $request)
-    {
-        $userId = Auth::id();
-
-        if (!$userId) {
-            return response()->json([
-                'error' => 'Unauthorized',
-            ], 401);
-        }
-
-        $userData = Application::where('applications.user_id', 9)
+        }else{
+             $userData = Application::where('applications.user_id', $userId )
             ->join('projects', 'applications.project_id', '=', 'projects.id')
             ->join('users', 'projects.user_id', '=', 'users.id')
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
@@ -74,6 +60,7 @@ class NotificationController extends Controller
             )
             ->orderBy('applications.created_at', 'desc')
             ->get();
+        }
 
         return response()->json([
             'notifications' => $userData,
@@ -93,7 +80,8 @@ class NotificationController extends Controller
     $userRole = Auth::user()->account_type;
 
     try {
-        if ($userRole == 'employer') {
+        if($userRole == 'employer') {
+            // employer
             $user_project_ids = Project::where('user_id', $userId)->pluck('id');
 
             if ($user_project_ids->isEmpty()) {
@@ -112,9 +100,9 @@ class NotificationController extends Controller
                 'updated_count' => $updatedCount,
             ]);
         } else {
-            // For freelancers / other users
+            // freelancer
             $updatedCount = Application::where('user_id', $userId)
-                ->where('is_read', false) // Boolean instead of string
+                ->where('is_read', false)
                 ->update(['is_read' => true]);
 
             return response()->json([
