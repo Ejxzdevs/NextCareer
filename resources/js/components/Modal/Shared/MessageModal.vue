@@ -29,7 +29,9 @@
                             class="h-12 w-12 rounded-full object-center object-cover"
                         />
                         <div>
-                            <h2 class="text-sm font-semibold text-gray-900">
+                            <h2
+                                class="text-sm font-semibold text-gray-900 name"
+                            >
                                 {{ username }}
                             </h2>
                             <p class="text-xs text-gray-500">

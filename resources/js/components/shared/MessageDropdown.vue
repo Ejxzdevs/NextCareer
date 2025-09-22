@@ -32,7 +32,10 @@
                 <div
                     class="px-4 py-3 border-b border-gray-200 flex justify-between items-center bg-gray-50"
                 >
-                    <h3 class="text-lg font-semibold">Messages</h3>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fa-regular fa-envelope text-green-500"></i>
+                        <h3 class="text-1xl font-semibold label">Messages</h3>
+                    </div>
                     <button
                         @click="markAllAsRead"
                         class="cursor-pointer text-sm text-blue-600 hover:text-blue-800 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
@@ -56,7 +59,7 @@
                         v-for="message in userWithLastMessages"
                         :key="message.id"
                         :class="[
-                            'flex items-center gap-3 p-3 cursor-pointer border-gray-200',
+                            'p-2.5 mb-1 border border-gray-200 rounded flex items-center gap-2.5 cursor-pointer',
                             message.read
                                 ? 'bg-blue-100 font-semibold'
                                 : 'hover:bg-gray-50',
@@ -72,7 +75,7 @@
 
                         <!-- Message content -->
                         <div class="flex-grow">
-                            <p class="text-sm font-semibold text-blue-500">
+                            <p class="text-sm font-semibold text-blue-500 name">
                                 {{ message.sender }}
                             </p>
                             <p class="text-xs text-gray-600 truncate">
