@@ -1,19 +1,24 @@
 <template>
+    <!-- Parent wrapper; clicking outside closes mobile menu -->
     <div @click.self="isMenuOpen = false">
         <nav class="bg-[#145EEE] p-4">
             <div class="flex justify-between items-center">
+                <!-- Logo (desktop) -->
                 <div class="hidden md:flex text-white text-lg font-semibold">
                     <Link :href="route('landing.page')">Next Career</Link>
                 </div>
+
+                <!-- Desktop navigation links -->
                 <ul
                     class="hidden md:flex item-center space-x-3 text-white items-center font-medium text-sm"
                 >
                     <div class="flex flex-row gap-2">
-                        <FreelancerDropdown v-if="userRole === 'freelance'" />
-                        <EmployerDropdown v-else-if="userRole === 'employer'" />
+                        <UserNotificationDropdown />
                         <MessageDropdown />
                         <UserDropdown />
                     </div>
+
+                    <!-- Employer-only dashboard link -->
                     <li>
                         <Link
                             v-if="userRole === 'employer'"
@@ -23,6 +28,8 @@
                             Dashboard
                         </Link>
                     </li>
+
+                    <!-- Find Jobs / Job Posts depending on role -->
                     <li>
                         <Link
                             :href="
@@ -39,6 +46,8 @@
                             }}
                         </Link>
                     </li>
+
+                    <!-- Applications (role-based) -->
                     <li>
                         <Link
                             :href="
@@ -54,19 +63,24 @@
                 </ul>
             </div>
 
+            <!-- Mobile navigation header -->
             <div class="md:hidden flex flex-row justify-between">
+                <!-- Logo (mobile) -->
                 <div class="text-white text-lg font-semibold">
                     <Link :href="route('landing.page')">Next Career</Link>
                 </div>
+
+                <!-- Right section: dropdowns + menu toggle button -->
                 <div class="flex flex-row">
                     <ul
                         class="flex flex-row gap-1 me-3 text-white items-center"
                     >
-                        <FreelancerDropdown v-if="userRole === 'freelance'" />
-                        <EmployerDropdown v-else-if="userRole === 'employer'" />
+                        <UserNotificationDropdown />
                         <MessageDropdown />
                         <UserDropdown />
                     </ul>
+
+                    <!-- Mobile menu toggle button (hamburger icon) -->
                     <button
                         @click="toggleMenu"
                         class="text-white cursor-pointer"
@@ -89,6 +103,7 @@
                 </div>
             </div>
 
+            <!-- Mobile dropdown menu (visible when toggled) -->
             <ul
                 v-if="isMenuOpen"
                 class="md:hidden text-white bg-[#5b72c6] p-4 space-y-2"
@@ -124,18 +139,22 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { usePage, Link } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
+
+// Dropdown components
 import UserDropdown from "@/Components/Shared/UserDropdown.vue";
-import EmployerDropdown from "@/Components/Employer/NotifDropdown.vue";
-import FreelancerDropdown from "@/Components/Freelancer/NotifDropdown.vue";
 import MessageDropdown from "@/Components/Shared/MessageDropdown.vue";
+import UserNotificationDropdown from "@/Components/Shared/NotificationDropdown.vue";
 
 const page = usePage();
 
+// State for mobile menu toggle
 const isMenuOpen = ref(false);
+
+// Default role set as guest
 const userRole = ref("guest");
 
-// Function to update userRole based on page props
+// Determine user role from Inertia props
 const updateUserRole = () => {
     const role = page.props.user?.role;
     userRole.value =
@@ -146,10 +165,12 @@ const updateUserRole = () => {
             : "guest";
 };
 
+// Initialize role when component mounts
 onMounted(() => {
     updateUserRole();
 });
 
+// Toggle mobile menu
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 };
