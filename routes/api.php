@@ -9,8 +9,7 @@ use App\Http\Controllers\ApplicationController;
 Route::middleware('web')->group(function () {
 
 // Notification Routes
-Route::get('Employer/notifications', [NotificationController::class, 'getEmployerNotifications'])->name('employer.notifications.read');
-Route::get('Freelancer/notifications', [NotificationController::class, 'getFreelancerNotifications'])->name('freelancer.notifications.read');
+Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.read');
 Route::put('/notifications/mark-all-as-viewed', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsViewed');
 
 // Messaging Routes
@@ -21,5 +20,4 @@ Route::put('/messages/mark-all-as-read', [MessageController::class, 'markAllAsRe
 
 // Applications routes
 Route::patch('applications/{application_id}',[ApplicationController::class, 'updateStatus'])->name('application.update');
-
 });
