@@ -28,22 +28,32 @@
             v-if="show"
             class="fixed top-0 right-0 h-full bg-white shadow-lg py-4 w-full sm:w-1/2 lg:w-1/4 z-50"
         >
-            <div class="mb-4 flex flex-row justify-between items-center px-4">
-                <h2 class="text-lg font-bold">All Messages</h2>
+            <div
+                class="mb-4 flex flex-row justify-between items-center px-4 pe-4"
+            >
+                <h2 class="flex flex-row gap-1.5 items-center">
+                    <i class="fa-regular fa-envelope text-green-500"></i>
+                    <span class="text-1xl !font-normal !text-gray-800 label"
+                        >All Messages</span
+                    >
+                </h2>
+
                 <button
                     class="cursor-pointer text-gray-400 hover:text-gray-700"
                     @click="closeModal"
                 >
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark text-1xl"></i>
                 </button>
             </div>
 
-            <ul class="space-y-2 overflow-auto h-screen">
+            <ul
+                class="space-y-2 overflow-auto h-screen border-1 border-gray-300"
+            >
                 <a
                     v-for="msg in formattedMessages"
                     :key="msg.id"
                     :class="[
-                        'flex items-center gap-3 p-3 cursor-pointer border-gray-200',
+                        'p-2.5 mb-1 border border-gray-200 rounded flex items-center gap-2.5 cursor-pointer',
                         msg.read
                             ? 'bg-blue-100 font-semibold'
                             : 'hover:bg-gray-50',
@@ -59,7 +69,7 @@
 
                     <!-- msg content -->
                     <div class="flex-grow">
-                        <p class="text-sm font-semibold text-blue-500">
+                        <p class="text-sm font-semibold text-blue-500 name">
                             {{ msg.sender }}
                         </p>
                         <p class="text-xs text-gray-600 truncate">
