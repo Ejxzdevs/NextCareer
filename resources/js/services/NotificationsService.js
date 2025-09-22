@@ -1,98 +1,63 @@
 // services/NotificationService.js
+// -----------------------------------
+// Notification Service
+// Manages fetching and updating notifications
+// -----------------------------------
+
 import axios from "axios";
 
-// Since Ziggy is global, 'route()' is available here without explicit import.
+// API endpoints
 const API_ENDPOINTS = {
-    FETCH_EMPLOYER_NOTIFICATIONS: route("employer.notifications.read"),
-    FETCH_FREELANCER_NOTIFICATIONS: route("freelancer.notifications.read"),
+    FETCH_USER_NOTIFICATIONS: route("notifications.read"),
     MARK_ALL_AS_READ: route("notifications.markAllAsViewed"),
 };
 
 /**
- * Fetches raw notification data from the API.
- * This method directly interacts with the API endpoint for raw notifications.
+ * Fetch notifications for the current user
  * @returns {Promise<{ data: Array | null, error: string | null }>}
  */
-export const fetchFreelancerNotifications = async () => {
+export const fetchUserNotifications = async () => {
     try {
         const response = await axios.get(
-            API_ENDPOINTS.FETCH_FREELANCER_NOTIFICATIONS
+            API_ENDPOINTS.FETCH_USER_NOTIFICATIONS
         );
         return { data: response.data.notifications || [], error: null };
     } catch (err) {
-        console.error(
-            "NotificationService Error: Failed to fetch notifications (fetchApiData):",
-            err
-        );
-        let errorMessage =
-            "Failed to load notifications due to a network error.";
+        console.error("Error fetching notifications:", err);
 
+        let errorMessage = "Network error while loading notifications.";
         if (err.response) {
-            console.error("Response Data:", err.response.data);
-            console.error("Response Status:", err.response.status);
-            errorMessage = `Failed to load notifications: ${
-                err.response.status
-            } - ${err.response.data?.message || "Server error"}`;
+            errorMessage = `Error ${err.response.status}: ${
+                err.response.data?.message || "Server error"
+            }`;
         } else if (err.request) {
-            errorMessage =
-                "No response from server. Please check your internet connection.";
+            errorMessage = "No response from server. Check connection.";
         }
-        return { data: null, error: errorMessage };
-    }
-};
 
-export const fetchEmployerNotifications = async () => {
-    try {
-        const response = await axios.get(
-            API_ENDPOINTS.FETCH_EMPLOYER_NOTIFICATIONS
-        );
-        return { data: response.data.notifications || [], error: null };
-    } catch (err) {
-        console.error(
-            "NotificationService Error: Failed to fetch notifications (fetchApiData):",
-            err
-        );
-        let errorMessage =
-            "Failed to load notifications due to a network error.";
-
-        if (err.response) {
-            console.error("Response Data:", err.response.data);
-            console.error("Response Status:", err.response.status);
-            errorMessage = `Failed to load notifications: ${
-                err.response.status
-            } - ${err.response.data?.message || "Server error"}`;
-        } else if (err.request) {
-            errorMessage =
-                "No response from server. Please check your internet connection.";
-        }
         return { data: null, error: errorMessage };
     }
 };
 
 /**
- * Sends a request to the API to mark all applications as viewed.
- * This method directly interacts with the API endpoint for marking as read.
- * @returns {Promise<{ success: boolean, error: string | null }>} - Returns an object indicating success or an error message.
+ * Mark all notifications as read
+ * @returns {Promise<{ success: boolean, error: string | null }>}
  */
 export const markAllAsRead = async () => {
     try {
         await axios.put(API_ENDPOINTS.MARK_ALL_AS_READ);
         return { success: true, error: null };
     } catch (error) {
-        console.error(
-            "NotificationService Error: Failed to mark all as read (markAllAsRead):",
-            error
-        );
-        let errorMessage = "Failed to mark all as read. Please try again.";
+        console.error("Error marking notifications as read:", error);
 
+        let errorMessage = "Failed to mark all as read.";
         if (error.response) {
-            errorMessage = `Failed to mark all as read: ${
-                error.response.status
-            } - ${error.response.data?.message || "Server error"}`;
+            errorMessage = `Error ${error.response.status}: ${
+                error.response.data?.message || "Server error"
+            }`;
         } else if (error.request) {
-            errorMessage =
-                "No response from server. Please check your internet connection.";
+            errorMessage = "No response from server. Check connection.";
         }
+
         return { success: false, error: errorMessage };
     }
 };
