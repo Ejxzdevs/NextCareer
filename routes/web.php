@@ -40,7 +40,7 @@ Route::post('freelance/application', [ApplicationController::class, 'store'])->n
 // shared routes
 // go to all notifications page
 Route::inertia('user/all/notifications', 'Employer/AllNotifications')->name('user.allNotifications.index');
-Route::inertia('user/all/messages','Employer/AllMessages')->name('user.AllMessages.index');
+Route::inertia('user/all/messages','Shared/AllMessages')->name('user.allMessages.index');
 
 // user profile routes
 Route::get('user/profile/{id}', [ProfileController::class,'showProfile'])->name('userProfile.show');
