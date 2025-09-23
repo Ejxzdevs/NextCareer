@@ -1,6 +1,8 @@
 <template>
     <MainLayout>
-        <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+        <div
+            class="h-screen overflow-y-auto pt-4 pb-20 px-8 sm:p-6 lg:pt-8 lg:pb-30"
+        >
             <!-- Welcome Header -->
             <h1
                 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center"
