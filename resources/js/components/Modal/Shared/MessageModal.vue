@@ -2,7 +2,7 @@
     <div>
         <button
             @click="openMessageModal"
-            class="px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
+            class="px-5 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg bg-white transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
         >
             <i class="fa-solid fa-envelope"></i> Message
         </button>
@@ -34,14 +34,12 @@
                             >
                                 {{ username }}
                             </h2>
-                            <p class="text-xs text-gray-500">
-                                User Profile
-                                <Link
-                                    :href="route('userProfile.show', id)"
-                                    class="text-blue-500 underline"
-                                    >visit here</Link
-                                >
-                            </p>
+                            <div class="flex items-center gap-1">
+                                <span
+                                    class="w-2 h-2 bg-green-500 rounded-full"
+                                ></span>
+                                <p class="text-xs text-gray-500">Online</p>
+                            </div>
                         </div>
                         <button
                             @click="closeMessageModal"
