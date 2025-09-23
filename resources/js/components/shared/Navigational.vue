@@ -106,8 +106,17 @@
             <!-- Mobile dropdown menu (visible when toggled) -->
             <ul
                 v-if="isMenuOpen"
-                class="md:hidden text-white bg-[#5b72c6] p-4 space-y-2"
+                class="md:hidden !text-white bg-[#5b72c6] p-4 space-y-2 text-sm label"
             >
+                <li>
+                    <Link
+                        v-if="userRole === 'employer'"
+                        :href="route('employer.dashboard')"
+                        class="hover:text-gray-300 nav-link"
+                    >
+                        Dashboard
+                    </Link>
+                </li>
                 <li>
                     <Link
                         :href="
@@ -117,7 +126,9 @@
                         "
                         class="hover:text-gray-300 nav-link"
                     >
-                        Dashboard
+                        {{
+                            userRole === "freelance" ? "Find Jobs" : "Job Posts"
+                        }}
                     </Link>
                 </li>
                 <li>
