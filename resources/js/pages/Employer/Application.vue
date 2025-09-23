@@ -1,7 +1,7 @@
 <template>
     <MainLayout>
         <div
-            class="max-h-screen overflow-y-auto p-4 sm:p-6 lg:pt-8 lg:pb-32 lg:"
+            class="max-h-screen overflow-y-auto p-4 pb-20 sm:p-6 lg:pt-8 lg:pb-32 lg:"
         >
             <div class="mb-6 text-center">
                 <h1
