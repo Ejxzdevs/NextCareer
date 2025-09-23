@@ -135,8 +135,8 @@
                     <Link
                         :href="
                             userRole === 'freelance'
-                                ? route('freelance.browse')
-                                : route('employer.project')
+                                ? route('freelance.application')
+                                : route('employer.application')
                         "
                         class="nav-link"
                     >
