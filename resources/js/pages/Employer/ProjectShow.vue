@@ -14,11 +14,12 @@
                     class="h-16 items-center ms-3 lg:ms-5 mb-1 sm:mb-4 lg:mb-0 flex"
                 >
                     <button
-                        @click="previewPage()"
-                        class="items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 cursor-pointer"
+                        onclick="history.back()"
+                        aria-label="Go back"
+                        class="flex items-center gap-2 px-4 py-2 my-3 cursor-pointer rounded-lg shadow-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
                     >
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        <span class="font-medium">Back</span>
+                        <i class="fas fa-long-arrow-alt-left"></i>
+                        <span class="font-medium text-sm">Back</span>
                     </button>
                 </div>
 
@@ -303,10 +304,6 @@ import { formatSkills } from "@/utils/stringUtils";
 import { formatCurrency } from "@/utils/numberUtils";
 
 const { project, error, userApplication, user } = usePage().props;
-
-function previewPage() {
-    window.history.back();
-}
 </script>
 
 <style scoped>
