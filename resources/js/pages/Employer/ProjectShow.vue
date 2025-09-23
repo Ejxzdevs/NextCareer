@@ -37,7 +37,7 @@
                     class="flex custom-overflow-hidden justify-center"
                 >
                     <div
-                        class="bg-white rounded-md px-8 py-6 sm:px-12 sm:py-8 shadow-lg border border-gray-300 flex flex-col relative w-full max-w-4xl h-fit sm:h-[85vh] custom-scrollbar transition-all duration-300 ease-in-out"
+                        class="bg-white rounded-md px-8 py-6 sm:px-12 sm:py-4 shadow-lg border border-gray-300 flex flex-col relative w-full max-w-4xl h-fit sm:h-auto custom-scrollbar transition-all duration-300 ease-in-out"
                     >
                         <!-- User Info -->
                         <div class="flex items-center mb-5 sm:mb-6">
