@@ -1,41 +1,32 @@
 <template>
     <MainLayout>
-        <div class="h-screen overflow-y-auto p-4 sm:p-6 lg:px-20 lg:pb-20">
-            <h1
-                class="text-3xl font-bold text-center !text-gray-700 my-6 title"
+        <div class="h-screen overflow-y-auto px-20">
+            <div
+                class="h-auto rounded-sm border-l border-r border-gray-300 pb-30 pt-15 bg-white"
             >
-                WELCOME TO YOUR PROFILE
-            </h1>
-            <div class="bg-white py-10 rounded-sm">
                 <!-- Profile Card -->
                 <div
-                    class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6 mb-8"
+                    class="max-w-6xl mx-auto bg-[#234C6A] rounded-lg shadow-sm border border-gray-200 p-6 mb-8"
                 >
                     <div
-                        class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6"
+                        class="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-2"
                     >
                         <!-- Profile picture container -->
                         <div class="relative h-32 w-32">
                             <!-- View mode -->
-                            <div
-                                v-if="!isEditing"
-                                class="w-full h-full p-3 rounded-sm shadow-lg bg-gradient-to-br from-[#4A5B41] via-[#6D7C5F] to-[#2F3A28]"
-                            >
+                            <div v-if="!isEditing" class="w-full h-full p-3">
                                 <img
                                     :src="userProfile.profile_picture"
                                     alt="Profile Picture"
-                                    class="w-full h-full rounded-full object-cover border-4 border-[#E8F0E3] shadow-md"
+                                    class="w-full h-full rounded-lg object-cover border-1 border-gray-300"
                                 />
                             </div>
 
                             <!-- Editing mode -->
-                            <div
-                                v-else
-                                class="w-full h-full p-3 rounded-sm shadow-lg bg-gradient-to-br from-[#4A5B41] via-[#6D7C5F] to-[#2F3A28]"
-                            >
+                            <div v-else class="w-full h-full p-3">
                                 <label
                                     for="profile-upload"
-                                    class="cursor-pointer w-full h-full flex items-center justify-center rounded-full border-4 border-[#E8F0E3] overflow-hidden group relative"
+                                    class="cursor-pointer w-full h-full flex items-center justify-center rounded-lg p-1 border-1 border-gray-300 overflow-hidden group relative"
                                 >
                                     <!-- Preview if available -->
                                     <img
@@ -48,7 +39,7 @@
                                             userProfile.profile_picture
                                         "
                                         alt="Profile Preview"
-                                        class="w-full h-full rounded-full object-cover transition-transform duration-200 group-hover:scale-105"
+                                        class="w-full h-full rounded-lg object-cover transition-transform duration-200 group-hover:scale-105"
                                     />
 
                                     <!-- Default icon -->
@@ -79,17 +70,17 @@
                         </div>
 
                         <!-- Profile Info -->
-                        <div class="flex-grow text-center sm:text-left">
+                        <div class="flex-grow text-center sm:text-left sm:pt-4">
                             <div v-if="!isEditing">
                                 <h2
-                                    class="text-3xl font-extrabold text-gray-800 name"
+                                    class="text-3xl font-extrabold text-white name"
                                 >
                                     {{ userProfile.username }}
                                 </h2>
-                                <p class="text-md !text-gray-600 mt-1 label">
+                                <p class="text-md !text-white mt-1 label">
                                     {{ userProfile.occupation }}
                                 </p>
-                                <p class="text-xs !text-gray-500 mt-2 label">
+                                <p class="text-xs !text-gray-300 mt-2 label">
                                     📍{{ userProfile.address }}
                                 </p>
                             </div>
@@ -102,12 +93,12 @@
                                 </h2>
                                 <input
                                     v-model="form.occupation"
-                                    class="label text-sm !text-gray-600 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    class="label text-sm !text-gray-300 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Occupation"
                                 />
                                 <input
                                     v-model="form.address"
-                                    class="label text-sm !text-gray-600 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                    class="label text-sm !text-gray-300 border rounded p-2 w-full mb-2 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Address"
                                 />
                             </div>
@@ -136,7 +127,7 @@
                                 <!-- Save Button -->
                                 <button
                                     @click="saveProfile"
-                                    class="flex items-center gap-2 cursor-pointer px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                                    class="ms-10 flex items-center gap-2 cursor-pointer px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
                                 >
                                     <i class="fas fa-save"></i>
                                     <span>Save</span>
@@ -145,7 +136,7 @@
                                 <!-- Cancel Button -->
                                 <button
                                     @click="cancelEdit"
-                                    class="flex items-center gap-2 cursor-pointer px-5 py-2 border border-gray-400 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-100 transition-colors shadow-sm"
+                                    class="flex items-center gap-2 cursor-pointer px-5 py-2 border border-gray-400 text-sm font-medium rounded-lg bg-red-500 hover:bg-red-400 transition-colors shadow-sm !text-white"
                                 >
                                     <i class="fas fa-times"></i>
                                     <span>Cancel</span>
@@ -157,7 +148,7 @@
 
                 <!-- About Section -->
                 <div
-                    class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6 mb-8"
+                    class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-sm shadow-sm border border-gray-200 p-6 mb-8"
                 >
                     <h2 class="text-1xl font-medium !text-gray-600 mb-2 label">
                         About
@@ -172,13 +163,13 @@
                         v-else
                         v-model="form.about"
                         class="label text-sm !text-gray-600 border rounded p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-                        rows="4"
+                        rows="1"
                     ></textarea>
                 </div>
 
                 <!-- Skills Section -->
                 <div
-                    class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-md shadow-lg border border-gray-200 p-6"
+                    class="max-w-6xl mx-auto bg-[#FBFBFB] rounded-sm shadow-sm border border-gray-200 p-6"
                 >
                     <h2 class="text-1xl font-medium !text-gray-600 mb-2 label">
                         Skills
