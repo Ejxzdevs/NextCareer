@@ -1,6 +1,16 @@
 <template>
     <MainLayout>
         <div class="h-screen overflow-y-auto px-20">
+            <button
+                v-show="authId !== userProfile.user_id"
+                onclick="history.back()"
+                aria-label="Go back"
+                class="flex items-center gap-2 px-4 py-2 my-3 cursor-pointer rounded-lg shadow-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
+            >
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <span class="font-medium text-sm">Back</span>
+            </button>
+
             <div
                 class="h-auto rounded-sm border-l border-r border-gray-300 pb-30 pt-15 bg-white"
             >
@@ -26,7 +36,7 @@
                             <div v-else class="w-full h-full p-3">
                                 <label
                                     for="profile-upload"
-                                    class="cursor-pointer w-full h-full flex items-center justify-center rounded-lg p-1 border-1 border-gray-300 overflow-hidden group relative"
+                                    class="cursor-pointer w-full h-full flex items-center justify-center rounded-lg border-1 border-gray-300 overflow-hidden group relative"
                                 >
                                     <!-- Preview if available -->
                                     <img
@@ -219,6 +229,7 @@
                 </div>
             </div>
         </div>
+        <!-- Closing tag added for the outermost div -->
     </MainLayout>
 </template>
 
