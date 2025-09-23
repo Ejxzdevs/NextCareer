@@ -1,6 +1,6 @@
 <template>
     <MainLayout>
-        <div class="h-screen overflow-y-auto px-20">
+        <div class="h-screen overflow-y-auto px-5 sm:px-20">
             <button
                 v-show="authId !== userProfile.user_id"
                 onclick="history.back()"
@@ -12,7 +12,7 @@
             </button>
 
             <div
-                class="h-auto rounded-sm border-l border-r border-gray-300 pb-30 pt-15 bg-white"
+                class="h-auto px-5 pb-20 pt-10 sm:px-0 sm:pb-30 sm:pt-15 rounded-sm border-l border-r border-gray-300 bg-white"
             >
                 <!-- Profile Card -->
                 <div
@@ -116,28 +116,34 @@
 
                         <!-- Actions -->
                         <div
-                            class="flex-shrink-0 flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0"
+                            class="flex flex-col sm:flex-row flex-wrap gap-3 mt-4 sm:mt-0 items-start sm:items-center"
                         >
+                            <!-- Message Modal (only visible for other users) -->
                             <MessageModal
                                 v-show="authId !== userProfile.user_id"
                                 :username="userProfile.username"
                                 :id="userProfile.user_id"
                                 :profile_picture="userProfile.profile_picture"
+                                class="w-full sm:w-auto"
                             />
+
+                            <!-- Edit Button (only for owner, if not editing) -->
                             <button
                                 v-show="authId === userProfile.user_id"
                                 v-if="!isEditing"
                                 @click="editMode"
-                                class="flex items-center gap-2 cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                                class="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
                             >
                                 <i class="fas fa-edit"></i>
                                 <span>Edit Profile</span>
                             </button>
+
+                            <!-- Editing Mode -->
                             <template v-else>
                                 <!-- Save Button -->
                                 <button
                                     @click="saveProfile"
-                                    class="ms-10 flex items-center gap-2 cursor-pointer px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                                    class="flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-md"
                                 >
                                     <i class="fas fa-save"></i>
                                     <span>Save</span>
@@ -146,7 +152,7 @@
                                 <!-- Cancel Button -->
                                 <button
                                     @click="cancelEdit"
-                                    class="flex items-center gap-2 cursor-pointer px-5 py-2 border border-gray-400 text-sm font-medium rounded-lg bg-red-500 hover:bg-red-400 transition-colors shadow-sm !text-white"
+                                    class="flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2 border border-gray-400 text-sm font-medium rounded-lg bg-red-500 hover:bg-red-400 transition-colors shadow-sm text-white"
                                 >
                                     <i class="fas fa-times"></i>
                                     <span>Cancel</span>
@@ -172,7 +178,7 @@
                     <textarea
                         v-else
                         v-model="form.about"
-                        class="label text-sm !text-gray-600 border rounded p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                        class="min-h-[120px] sm:min-h-[40px] label text-sm !text-gray-600 border rounded p-2 w-full focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         rows="1"
                     ></textarea>
                 </div>
