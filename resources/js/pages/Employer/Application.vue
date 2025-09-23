@@ -1,18 +1,22 @@
 <template>
     <MainLayout>
-        <div class="max-h-screen overflow-y-auto p-4 sm:p-6 lg:pt-8 lg:pb-32">
-            <h1
-                class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center"
-            >
-                All Applicants
-                <span class="block text-sm text-gray-500 mt-2">
-                    View and manage applications
-                </span>
-            </h1>
+        <div
+            class="max-h-screen overflow-y-auto p-4 sm:p-6 lg:pt-8 lg:pb-32 lg:"
+        >
+            <div class="mb-6 text-center">
+                <h1
+                    class="text-2xl sm:text-3xl font-extrabold text-gray-800 text-center title"
+                >
+                    Applications
+                </h1>
+                <p class="text-lg text-gray-600 mt-2">
+                    Manage and view the applications.
+                </p>
+            </div>
 
             <!-- Filters Section -->
             <div
-                class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-6xl mx-auto"
+                class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8 max-w-7xl mx-auto"
             >
                 <div
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -85,7 +89,7 @@
 
             <!-- Applicants List -->
             <div
-                class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-6xl mx-auto"
+                class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-7xl mx-auto"
             >
                 <h2 class="text-lg font-semibold mb-6">Applicant List</h2>
 
