@@ -58,7 +58,7 @@
                             ? 'bg-blue-100 font-semibold'
                             : 'hover:bg-gray-50',
                     ]"
-                    :href="route('user.AllMessages.index', msg.id)"
+                    :href="route('user.allMessages.index', msg.id)"
                 >
                     <!-- Avatar -->
                     <img
