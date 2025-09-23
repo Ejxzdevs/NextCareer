@@ -13,19 +13,22 @@
             <li>
                 <Link
                     :href="route('userProfile.show', page.props.user.id)"
-                    class="block px-4 py-2 hover:bg-gray-100"
-                    >Profile</Link
+                    class="flex items-center gap-2 !text-gray-600 px-4 py-2 hover:bg-gray-100"
                 >
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </Link>
             </li>
             <li>
                 <Link
                     as="button"
                     :href="route('logout')"
                     method="post"
-                    class="w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    class="flex items-center gap-2 w-full !text-gray-600 px-4 py-2 hover:bg-gray-100 cursor-pointer"
                     @click="closeDropdown"
                 >
-                    Sign out
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log out</span>
                 </Link>
             </li>
         </ul>
