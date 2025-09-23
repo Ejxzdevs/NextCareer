@@ -31,7 +31,9 @@
                 >
                     <div class="flex items-center gap-1.5">
                         <i class="fa-regular fa-bell text-blue-500"></i>
-                        <h3 class="text-1xl font-semibold label">Messages</h3>
+                        <h3 class="text-1xl font-semibold label">
+                            Notifications
+                        </h3>
                     </div>
                     <button
                         @click="callMarkAllAsRead"
