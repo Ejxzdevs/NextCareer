@@ -8,7 +8,7 @@
         </button>
         <ul
             v-if="isDropdownOpen"
-            class="absolute right-0 mt-2 w-40 bg-white text-black shadow-md rounded-md z-50"
+            class="absolute right-0 mt-2 w-40 bg-white text-black shadow-md rounded-md z-50 border-1 border-gray-200"
         >
             <li>
                 <Link
