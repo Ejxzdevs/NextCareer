@@ -1,16 +1,48 @@
 <template>
     <!-- Parent wrapper; clicking outside closes mobile menu -->
     <div @click.self="isMenuOpen = false">
-        <nav class="bg-[#145EEE] p-4">
+        <nav class="bg-white shadow-md p-4 !text-gray-600">
             <div class="flex justify-between items-center">
                 <!-- Logo (desktop) -->
-                <div class="hidden md:flex text-white text-lg font-semibold">
-                    <Link :href="route('landing.page')">Next Career</Link>
+                <div class="hidden md:flex text-gray-600 text-lg font-semibold">
+                    <Link
+                        :href="
+                            userRole === 'freelance' || userRole === 'employer'
+                                ? '#'
+                                : route('landing.page')
+                        "
+                        >Next Career</Link
+                    >
                 </div>
 
                 <!-- Desktop navigation links -->
+                <!-- Guest Routes -->
                 <ul
-                    class="hidden md:flex item-center space-x-3 text-white items-center font-medium text-sm"
+                    v-show="
+                        userRole !== 'employer' && userRole !== 'freelancer'
+                    "
+                    class="hidden md:flex item-center space-x-3 text-gray-600 items-center font-medium text-sm"
+                >
+                    <li>
+                        <Link class="text-gray-600" :href="route('login')"
+                            >Login
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            class="cursor-pointer text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded border border-gray-300 shadow-md transition duration-200"
+                            :href="route('register')"
+                        >
+                            Register
+                        </Link>
+                    </li>
+                </ul>
+                <!-- Authenticated User Route -->
+                <ul
+                    v-show="
+                        userRole === 'employer' || userRole === 'freelancer'
+                    "
+                    class="hidden md:flex item-center space-x-3 text-gray-600 items-center font-medium text-sm"
                 >
                     <div class="flex flex-row gap-2">
                         <UserNotificationDropdown />
@@ -23,7 +55,7 @@
                         <Link
                             v-if="userRole === 'employer'"
                             :href="route('employer.dashboard')"
-                            class="hover:text-gray-300 nav-link"
+                            class="!text-gray-600 nav-link"
                         >
                             Dashboard
                         </Link>
@@ -37,7 +69,7 @@
                                     ? route('freelance.browse')
                                     : route('employer.project')
                             "
-                            class="hover:text-gray-300 nav-link"
+                            class="!text-gray-600 nav-link"
                         >
                             {{
                                 userRole === "freelance"
@@ -55,7 +87,7 @@
                                     ? route('freelance.application')
                                     : route('employer.application')
                             "
-                            class="hover:text-gray-300 nav-link"
+                            class="!text-gray-600 nav-link"
                         >
                             Applications
                         </Link>
@@ -66,14 +98,24 @@
             <!-- Mobile navigation header -->
             <div class="md:hidden flex flex-row justify-between">
                 <!-- Logo (mobile) -->
-                <div class="text-white text-lg font-semibold">
-                    <Link :href="route('landing.page')">Next Career</Link>
+                <div class="text-gray-600 text-lg font-semibold">
+                    <Link
+                        :href="
+                            userRole === 'freelance' || userRole === 'employer'
+                                ? '#'
+                                : route('landing.page')
+                        "
+                        >Lumnaire</Link
+                    >
                 </div>
 
                 <!-- Right section: dropdowns + menu toggle button -->
                 <div class="flex flex-row">
                     <ul
-                        class="flex flex-row gap-1 me-3 text-white items-center"
+                        v-show="
+                            userRole === 'employer' || userRole === 'freelancer'
+                        "
+                        class="flex flex-row gap-1 me-3 text-gray-600 items-center"
                     >
                         <UserNotificationDropdown />
                         <MessageDropdown />
@@ -83,7 +125,7 @@
                     <!-- Mobile menu toggle button (hamburger icon) -->
                     <button
                         @click="toggleMenu"
-                        class="text-white cursor-pointer"
+                        class="text-gray-600 cursor-pointer"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -105,14 +147,15 @@
 
             <!-- Mobile dropdown menu (visible when toggled) -->
             <ul
+                v-show="userRole === 'employer' || userRole === 'freelancer'"
                 v-if="isMenuOpen"
-                class="md:hidden !text-white bg-[#5b72c6] p-4 space-y-2 text-sm label"
+                class="md:hidden rounded-sm mt-2 inset-0 bg-gray-600 backdrop-blur-lg p-4 space-y-2 text-sm label"
             >
                 <li>
                     <Link
                         v-if="userRole === 'employer'"
                         :href="route('employer.dashboard')"
-                        class="hover:text-gray-300 nav-link"
+                        class="nav-link"
                     >
                         Dashboard
                     </Link>
@@ -124,7 +167,7 @@
                                 ? route('freelance.browse')
                                 : route('employer.project')
                         "
-                        class="hover:text-gray-300 nav-link"
+                        class="nav-link"
                     >
                         {{
                             userRole === "freelance" ? "Find Jobs" : "Job Posts"
@@ -141,6 +184,20 @@
                         class="nav-link"
                     >
                         Applications
+                    </Link>
+                </li>
+            </ul>
+            <ul
+                v-show="userRole !== 'employer' && userRole !== 'freelancer'"
+                v-if="isMenuOpen"
+                class="md:hidden rounded-sm mt-2 inset-0 bg-gray-600 backdrop-blur-lg p-4 space-y-2 text-sm label"
+            >
+                <li>
+                    <Link :href="route('login')" class="nav-link"> Login </Link>
+                </li>
+                <li>
+                    <Link :href="route('register')" class="nav-link">
+                        Register
                     </Link>
                 </li>
             </ul>
