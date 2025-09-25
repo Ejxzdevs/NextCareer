@@ -25,7 +25,7 @@
         >
             <div
                 v-if="isDropdownOpen"
-                class="absolute right-0 mt-3 w-96 bg-white text-gray-800 shadow-xl rounded-lg border border-gray-200 z-50 overflow-x-hidden"
+                class="fixed inset-x-0 top-[60px] mx-auto sm:ms-0 w-[calc(100%-20%)] max-h-[70vh] bg-white text-gray-800 shadow-xl rounded-t-lg border-t border-gray-200 z-50 overflow-y-auto sm:absolute sm:right-0 sm:mt-3 sm:w-96 sm:rounded-lg sm:border sm:border-gray-200 sm:inset-auto sm:max-h-80"
                 @click.stop
             >
                 <!-- Header -->
