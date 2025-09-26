@@ -18,9 +18,7 @@
                 <!-- Desktop navigation links -->
                 <!-- Guest Routes -->
                 <ul
-                    v-show="
-                        userRole !== 'employer' && userRole !== 'freelancer'
-                    "
+                    v-show="userRole === 'guest'"
                     class="hidden md:flex item-center space-x-3 text-gray-600 items-center font-medium text-sm"
                 >
                     <li>
@@ -39,9 +37,7 @@
                 </ul>
                 <!-- Authenticated User Route -->
                 <ul
-                    v-show="
-                        userRole === 'employer' || userRole === 'freelancer'
-                    "
+                    v-show="userRole === 'employer' || userRole === 'freelance'"
                     class="hidden md:flex item-center space-x-3 text-gray-600 items-center font-medium text-sm"
                 >
                     <div class="flex flex-row gap-2">
@@ -113,7 +109,7 @@
                 <div class="flex flex-row">
                     <ul
                         v-show="
-                            userRole === 'employer' || userRole === 'freelancer'
+                            userRole === 'employer' || userRole === 'freelance'
                         "
                         class="flex flex-row gap-1 me-3 text-gray-600 items-center"
                     >
@@ -188,7 +184,7 @@
                 </li>
             </ul>
             <ul
-                v-show="userRole !== 'employer' && userRole !== 'freelancer'"
+                v-show="userRole === 'guest'"
                 v-if="isMenuOpen"
                 class="md:hidden rounded-sm mt-2 inset-0 bg-gray-600 backdrop-blur-lg p-4 space-y-2 text-sm label"
             >
