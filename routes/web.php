@@ -12,8 +12,15 @@ use App\Http\Controllers\ProfileController;
 Route::inertia('/', 'LandingPage')->name('landing.page');
 
 // show login and register pages
-Route::inertia('/Login', 'Auth/Login')->name('login');
+Route::inertia('/login', 'Auth/Login')->name('login');
 Route::inertia('/register', 'Auth/Register')->name('register');
+
+// Google Auth Routes
+Route::middleware('web')->group(function () {
+    Route::get('/auth/google', [UserController::class,'googleLogin'])->name('auth.google');
+    Route::get('/auth/google/callback', [UserController::class, 'googleAuthentication'])
+        ->name('auth.google-callback');
+});
 
 // logout route
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
@@ -23,27 +30,27 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate'])->nam
 Route::post('/users/create', [UserController::class, 'store'])->name('users.store');
 
 // employer
-Route::get('employer/dashboard', [DashboardController::class, 'index'])->name('employer.dashboard');
+Route::get('/employer/dashboard', [DashboardController::class, 'index'])->name('employer.dashboard');
 Route::get('/employer/project', [ProjectController::class, 'index'])->name('employer.project');
-Route::get('employer/application', [ApplicationController::class, 'index'])->name('employer.application');
+Route::get('/employer/application', [ApplicationController::class, 'index'])->name('employer.application');
 Route::post('/employer/create', [ProjectController::class, 'store'])->name('employer.store');
 Route::get('/employer/project/{id}/{application_id?}', [ProjectController::class, 'show'])->name('project.show');
 Route::put('/employer/{id}', [ProjectController::class, 'update'])->name('employer.update');
 Route::delete('/employer/{id}', [ProjectController::class, 'destroy'])->name('employer.destroy');
 
 // freelance
-Route::inertia('freelance/home', 'Freelance/Home')->name('freelance.home');
-Route::get('freelance/browse', [ProjectController::class, 'index'])->name('freelance.browse');
-Route::get('freelance/Application', [ApplicationController::class, 'index'])->name('freelance.application');
-Route::post('freelance/application', [ApplicationController::class, 'store'])->name('freelance.application.store');
+Route::inertia('/freelance/home', 'Freelance/Home')->name('freelance.home');
+Route::get('/freelance/browse', [ProjectController::class, 'index'])->name('freelance.browse');
+Route::get('/freelance/Application', [ApplicationController::class, 'index'])->name('freelance.application');
+Route::post('/freelance/application', [ApplicationController::class, 'store'])->name('freelance.application.store');
 
 // shared routes
 // go to all notifications page
-Route::inertia('user/all/notifications', 'Employer/AllNotifications')->name('user.allNotifications.index');
-Route::inertia('user/all/messages','Shared/AllMessages')->name('user.allMessages.index');
+Route::inertia('/user/all/notifications', 'Employer/AllNotifications')->name('user.allNotifications.index');
+Route::inertia('/user/all/messages','Shared/AllMessages')->name('user.allMessages.index');
 
 // user profile routes
-Route::get('user/profile/{id}', [ProfileController::class,'showProfile'])->name('userProfile.show');
+Route::get('/user/profile/{id}', [ProfileController::class,'showProfile'])->name('userProfile.show');
 Route::put('/user/profile', [ProfileController::class, 'updateProfile'])->name('userProfile.update');
 
 
