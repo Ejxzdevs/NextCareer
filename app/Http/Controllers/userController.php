@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -53,7 +52,6 @@ class userController extends Controller
         if ($user) {
             return redirect()->route('login')->with('success', 'Account created successfully!');
         } else {
-            // Redirect to landing page
             return redirect()->back();
         }
     }
@@ -68,10 +66,8 @@ class userController extends Controller
 
         // Attempt authentication with validated data
         if (Auth::attempt($validatedData)) {
-            Session::put('user_email', Auth::user()->email);
-            Session::put('user_id', Auth::id());
-            Session::put('user_role', Auth::user()->account_type);
-
+            $request->session()->regenerate();
+    
             return redirect()->route('userProfile.show', ['id' => Auth::id()]);
         } else {
             return redirect()->back()->with('error', 'Invalid credentials!');
@@ -87,20 +83,4 @@ class userController extends Controller
         return redirect()->route('login');
     }
 
-    public function googleLogin()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    public function googleAuthentication()
-    {
-        $userData = Socialite::driver('google')->user();
-
-        return redirect()->route('register', [
-            'google_id' => $userData->id,
-            'email' => $userData->email,
-            'name' => $userData->name,
-            'avatar' => $userData->avatar,
-        ]);
-    }
 }
