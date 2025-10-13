@@ -41,13 +41,14 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
-            'user' => function () {
-                return [
-                    'email' => Session::get('user_email'),
-                    'id' => Session::get('user_id'),
-                    'role' => Session::get('user_role'),
-                ];
-            },
+            'user' => function () use ($request) {
+                $user = $request->user(); 
+                return $user ? [
+                'email' => $user->email,
+                'id'    => $user->id,
+                'role'  => $user->account_type,
+            ] : null;
+        },
         ]);
     }
 }
