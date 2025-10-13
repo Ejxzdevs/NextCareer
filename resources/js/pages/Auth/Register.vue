@@ -265,7 +265,7 @@
 
                 <!-- Google Button -->
                 <a
-                    :href="route('auth.google')"
+                    :href="route('auth.google', { type: 'register' })"
                     class="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 shadow-sm transition duration-150 ease-in-out"
                 >
                     <!-- Google SVG Logo -->
@@ -348,7 +348,7 @@ function submit() {
             form.reset();
         },
         onError: (errors) => {
-            console.log("error", errors);
+            console.error("Error occurred:", errors);
         },
     });
 }
