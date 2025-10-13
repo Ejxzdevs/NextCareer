@@ -242,7 +242,138 @@
 
                 <!-- Form -->
                 <form @submit.prevent="submitForm" class="space-y-5">
-                    <!-- all form fields here -->
+                    <!-- Title -->
+                    <div>
+                        <label
+                            for="title"
+                            class="block text-sm font-medium text-gray-700"
+                            >Title</label
+                        >
+                        <input
+                            v-model="form.title"
+                            type="text"
+                            id="title"
+                            placeholder="e.g. Build a web app"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            required
+                        />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label
+                            for="description"
+                            class="block text-sm font-medium text-gray-700"
+                            >Description</label
+                        >
+                        <textarea
+                            v-model="form.description"
+                            id="description"
+                            rows="4"
+                            placeholder="Describe the project..."
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Category -->
+                    <div>
+                        <label
+                            for="category"
+                            class="block text-sm font-medium text-gray-700"
+                        >
+                            Category
+                        </label>
+                        <select
+                            v-model="form.category"
+                            id="category"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            required
+                        >
+                            <option value="" disabled>Select Category</option>
+                            <option
+                                v-for="category in categories"
+                                :key="category"
+                                :value="category"
+                            >
+                                {{ category }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Skills -->
+                    <div>
+                        <label
+                            for="skills"
+                            class="block text-sm font-medium text-gray-700"
+                            >Skills</label
+                        >
+                        <input
+                            v-model="form.skills"
+                            type="text"
+                            id="skills"
+                            placeholder="e.g. Vue, Tailwind, Laravel"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                    </div>
+
+                    <!-- Budget -->
+                    <div>
+                        <label
+                            for="budget"
+                            class="block text-sm font-medium text-gray-700"
+                            >Budget (USD)</label
+                        >
+                        <input
+                            v-model="form.budget"
+                            type="number"
+                            id="budget"
+                            min="0"
+                            placeholder="e.g. 1000"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                    </div>
+
+                    <!-- Start Date -->
+                    <div>
+                        <label
+                            for="start_date"
+                            class="block text-sm font-medium text-gray-700"
+                            >Start Date</label
+                        >
+                        <input
+                            v-model="form.start_date"
+                            type="date"
+                            id="start_date"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                    </div>
+
+                    <!-- Deadline -->
+                    <div>
+                        <label
+                            for="deadline"
+                            class="block text-sm font-medium text-gray-700"
+                            >Deadline</label
+                        >
+                        <input
+                            v-model="form.deadline"
+                            type="date"
+                            id="deadline"
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        />
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button
+                            type="submit"
+                            :disabled="form.processing"
+                            class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                        >
+                            {{ form.id ? "Update Project" : "Create Project" }}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -298,6 +429,19 @@ const form = useForm({
     start_date: "",
     deadline: "",
 });
+
+const categories = [
+    "Web Development",
+    "Mobile Development",
+    "Software Development",
+    "UI/UX Design",
+    "DevOps",
+    "Data Science",
+    "Machine Learning",
+    "QA/Testing",
+    "Cybersecurity",
+    "Project Management",
+];
 
 const openModalForCreate = () => {
     form.reset();
