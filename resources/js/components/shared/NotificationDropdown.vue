@@ -175,7 +175,6 @@ const loadNotifications = async () => {
         ProjectData.value = [];
     } else {
         ProjectData.value = data;
-        console.log(ProjectData.value);
     }
 
     isLoading.value = false;
