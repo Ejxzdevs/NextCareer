@@ -1,6 +1,8 @@
 <template>
     <MainLayout>
-        <div class="max-h-screen overflow-y-auto p-4 sm:p-6 lg:pb-32 lg:pt-8">
+        <div
+            class="max-h-screen overflow-y-auto p-4 pb-20 sm:p-6 lg:pb-32 lg:pt-8"
+        >
             <h1
                 class="text-2xl sm:text-3xl title text-gray-800 mb-8 text-center"
             >

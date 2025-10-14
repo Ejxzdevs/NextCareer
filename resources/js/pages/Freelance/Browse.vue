@@ -1,9 +1,10 @@
 <template>
     <MainLayout>
-        <div class="h-screen overflow-hidden">
-            <div class="container-fluid h-full w-full">
+        <!-- ✅ Changed from h-screen overflow-hidden to min-h-screen overflow-visible -->
+        <div class="min-h-screen overflow-visible">
+            <div class="container-fluid min-h-full w-full">
                 <div
-                    class="grid grid-cols-1 md:grid-cols-[370px_1fr] gap-6 md:gap-8 lg:gap-12 h-full"
+                    class="grid grid-cols-1 md:grid-cols-[370px_1fr] gap-6 md:gap-8 lg:gap-12 min-h-full"
                 >
                     <!-- Sidebar Filters -->
                     <aside
@@ -15,8 +16,9 @@
                         <div class="mb-5">
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-1"
-                                >Search by title</label
                             >
+                                Search by title
+                            </label>
                             <div class="relative">
                                 <div
                                     class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
@@ -36,8 +38,9 @@
                         <div class="mb-5">
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-1"
-                                >Category</label
                             >
+                                Category
+                            </label>
                             <div class="relative">
                                 <select
                                     v-model="category"
@@ -94,8 +97,9 @@
                         <div class="mb-5">
                             <label
                                 class="block text-sm font-medium text-gray-700 mb-1"
-                                >Budget ($)</label
                             >
+                                Budget ($)
+                            </label>
                             <div class="grid grid-cols-2 gap-4">
                                 <input
                                     v-model.number="minBudget"
@@ -115,11 +119,11 @@
 
                     <!-- Projects List -->
                     <section
-                        class="flex space-y-6 overflow-y-auto pr-2 pt-5 pb-20 h-screen w-full px-4 sm:px-0"
+                        class="flex-1 pt-2 pb-20 px-6 overflow-y-auto max-h-screen"
                     >
                         <div
                             v-if="filteredProjects.length > 0"
-                            class="space-y-6 pb-20"
+                            class="space-y-6"
                         >
                             <div
                                 v-for="project in filteredProjects"
