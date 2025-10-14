@@ -1,9 +1,16 @@
 <template>
-    <div class="h-screen sm:overflow-hidden overflow-y-auto flex flex-col">
+    <div
+        class="h-screen overflow-y-auto flex flex-col"
+        :class="
+            userRole === 'freelance'
+                ? 'lg:overflow-y-auto pb-10'
+                : 'lg:overflow-hidden pb-8 lg:pb-0'
+        "
+    >
         <div
             :class="
-                user.role === 'employer'
-                    ? 'flex-grow grid grid-cols-1 lg:grid-cols-7 gap-2 lg:gap-0 p-4 sm:p-6 lg:p-0'
+                userRole === 'employer'
+                    ? 'flex-grow grid grid-cols-1 lg:grid-cols-7 gap-2 lg:gap-4 p-4 sm:p-6 lg:p-0'
                     : 'flex-grow'
             "
         >
@@ -13,14 +20,7 @@
                 <div
                     class="h-16 items-center ms-3 lg:ms-5 mb-1 sm:mb-4 lg:mb-0 flex"
                 >
-                    <button
-                        onclick="history.back()"
-                        aria-label="Go back"
-                        class="flex items-center gap-2 px-4 py-2 my-3 cursor-pointer rounded-lg shadow-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
-                    >
-                        <i class="fas fa-long-arrow-alt-left"></i>
-                        <span class="font-medium text-sm">Back</span>
-                    </button>
+                    <backBtn />
                 </div>
 
                 <!-- Error Message -->
@@ -32,12 +32,9 @@
                 </div>
 
                 <!-- Project Content -->
-                <div
-                    v-else-if="project"
-                    class="flex custom-overflow-hidden justify-center"
-                >
+                <div v-else-if="project" class="flex justify-center">
                     <div
-                        class="bg-white rounded-md px-8 py-6 sm:px-12 sm:py-4 shadow-lg border border-gray-300 flex flex-col relative w-full max-w-4xl h-fit sm:h-auto custom-scrollbar transition-all duration-300 ease-in-out"
+                        class="bg-white rounded-md shadow-lg border border-gray-300 flex flex-col relative w-full max-w-4xl h-fit sm:h-auto custom-scrollbar transition-all duration-300 ease-in-out px-8 py-6 sm:px-12 sm:py-2"
                     >
                         <!-- User Info -->
                         <div class="flex items-center mb-5 sm:mb-6">
@@ -189,7 +186,7 @@
 
             <!-- Right Sidebar -->
             <div
-                v-show="user.role === 'employer'"
+                v-show="userRole === 'employer'"
                 class="border border-gray-300 bg-white shadow-sm overflow-y-auto max-h-full lg:max-h-screen col-span-1 lg:col-span-2"
             >
                 <div class="p-4 border-b border-gray-200">
@@ -300,30 +297,12 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
 import { formatTimeAgo, formatDate } from "@/utils/datetimeUtils";
+import backBtn from "@/components/UI/BackLink.vue";
 import { formatSkills } from "@/utils/stringUtils";
 import { formatCurrency } from "@/utils/numberUtils";
+import { getUserRole } from "@/utils/auth";
 
-const { project, error, userApplication, user } = usePage().props;
+const userRole = getUserRole();
+
+const { project, error, userApplication } = usePage().props;
 </script>
-
-<style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* renamed to avoid conflict with Tailwind’s overflow-hidden */
-.custom-overflow-hidden {
-    overflow: hidden;
-}
-</style>
