@@ -428,7 +428,7 @@
 </template>
 
 <script setup>
-import Navigational from "@/components/Shared/Navigational.vue";
+import Navigational from "@/components/Layout/Navigational.vue";
 
 const getImageUrl = (path) => {
     return path;
