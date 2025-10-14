@@ -2,14 +2,7 @@
     <div
         class="relative flex flex-col h-screen bg-gray-100 font-sans antialiased"
     >
-        <button
-            onclick="history.back()"
-            aria-label="Go back"
-            class="ms-5 mt-4 w-[6rem] flex items-center gap-2 px-4 py-2 my-3 cursor-pointer rounded-lg shadow-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
-        >
-            <i class="fas fa-long-arrow-alt-left"></i>
-            <span class="font-medium text-sm">Back</span>
-        </button>
+        <backBtn class="ms-5 mt-4 my-3" />
 
         <div class="flex flex-row h-screen pb-15">
             <div
@@ -245,6 +238,7 @@ import {
     getConversationApi,
 } from "../../services/MessageServices";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
+import backBtn from "@/components/UI/BackLink.vue";
 
 const page = usePage();
 const authId = page.props.user.id;
@@ -332,7 +326,7 @@ function scrollToBottom() {
 }
 
 function handleResize() {
-    isMobile.value = window.innerWidth < 768; // Tailwind's `md` breakpoint
+    isMobile.value = window.innerWidth < 768;
 }
 
 function closeConversation() {

@@ -1,18 +1,13 @@
 <template>
     <MainLayout>
         <div
-            class="h-screen overflow-y-auto px-4 sm:px-0 pt-28 pb-25 sm:pt-2 sm:pb-30"
+            class="h-screen overflow-y-auto px-4 sm:px-0 pt-20 pb-45 sm:pt-2 sm:pb-30"
         >
             <!-- Back Button -->
-            <button
+            <backBtn
                 v-show="authId !== userProfile.user_id"
-                onclick="history.back()"
-                aria-label="Go back"
-                class="flex items-center gap-2 px-4 py-2 my-3 cursor-pointer rounded-lg shadow-sm text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors duration-200"
-            >
-                <i class="fas fa-long-arrow-alt-left"></i>
-                <span class="font-medium text-sm">Back</span>
-            </button>
+                class="ms-5 mt-4 my-4"
+            />
 
             <!-- Profile Card -->
             <div class="relative bg-[#234C6A] h-[220px] mb-20">
@@ -221,13 +216,14 @@
 import { ref } from "vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 import MessageModal from "@/components/Modal/Shared/MessageModal.vue";
+import backBtn from "@/components/UI/BackLink.vue";
+import { getUserID } from "@/utils/auth.js";
 
 // get user profile data from the server
 const { profile } = usePage().props;
-const page = usePage();
 
 // get authenticated user id
-const authId = page.props.user.id;
+const authId = getUserID();
 
 const isEditing = ref(false);
 const newSkill = ref("");
@@ -278,7 +274,7 @@ function saveProfile() {
             window.location.reload();
         },
         onError: (errors) => {
-            console.log("Form update error:", errors);
+            console.error("Form update error:", errors);
         },
     });
     isEditing.value = false;
