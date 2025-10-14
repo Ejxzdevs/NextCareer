@@ -109,11 +109,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["hide"]);
-console.log(
-    role === "employer"
-        ? props.data[0].applicant_username
-        : props.data[0].username
-);
+
 const notifications = computed(() =>
     props.data.map((project) => ({
         id: project.project_id,
