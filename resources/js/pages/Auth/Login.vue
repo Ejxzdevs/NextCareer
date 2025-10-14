@@ -1,16 +1,10 @@
 <template>
     <div
-        class="h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-6 sm:py-8"
+        class="h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-6"
     >
         <!-- Back to Landing Page -->
-        <div class="mb-3">
-            <a
-                :href="route('landing.page')"
-                class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 text-sm sm:text-base"
-            >
-                <i class="fas fa-arrow-left mr-2"></i>
-                <span class="font-medium">Next Career</span>
-            </a>
+        <div class="mb-8">
+            <backBtn />
         </div>
 
         <!-- Login Card -->
@@ -18,12 +12,18 @@
             class="w-full max-w-sm mx-auto bg-white rounded-xl shadow-lg h-fit px-8 py-3"
         >
             <!-- Header -->
-            <div class="text-center mb-8">
-                <h1
-                    class="text-xl sm:text-1xl font-bold !text-gray-900 label text-center mb-2"
-                >
-                    NextCareer
+            <div class="flex flex-col items-center justify-center mb-8">
+                <Link :href="route('landing.page')" class="cursor-pointer"
+                    ><img
+                        :src="logoUrl"
+                        alt="NextCareer Logo"
+                        class="w-16 h-16"
+                /></Link>
+                <h1 class="text-2xl sm:text-3xl font-bold text-center">
+                    <span class="text-[#0C162C]">Next</span
+                    ><span class="text-[#5E17EB]">Career</span>
                 </h1>
+                <p class="text-sm text-gray-600">Login your account</p>
             </div>
 
             <!-- Success Message -->
@@ -83,8 +83,8 @@
                             type="email"
                             id="email"
                             required
-                            autocomplete="username"
-                            placeholder="Password:"
+                            autocomplete="email"
+                            placeholder="Email:"
                             class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white"
                         />
                     </div>
@@ -200,6 +200,11 @@
 
 <script setup>
 import { useForm, Link } from "@inertiajs/vue3";
+import backBtn from "@/components/UI/BackLink.vue";
+
+const logoFilename = "N.png";
+const logoUrl = `/storage/logo/${logoFilename}`;
+
 const params = new URLSearchParams(window.location.search);
 const googleEmail = params.get("email");
 const googleId = params.get("google_id");

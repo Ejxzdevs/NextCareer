@@ -1,27 +1,29 @@
 <template>
     <div
-        class="h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-6 sm:py-8"
+        class="h-screen overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-6"
     >
         <!-- Back to Landing Page -->
-        <div class="mb-3">
-            <a
-                :href="route('landing.page')"
-                class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200"
-            >
-                <i class="fas fa-arrow-left mr-2"></i>
-                <span class="font-medium">Next Career</span>
-            </a>
+        <div class="mb-8">
+            <backBtn />
         </div>
 
         <div class="w-full max-w-sm mx-auto">
             <!-- Register Form Card -->
             <div class="bg-white rounded-xl shadow-lg h-fit px-8 py-3">
                 <!-- Header -->
-                <h1
-                    class="text-xl sm:text-1xl font-bold !text-gray-900 label text-center mb-2"
-                >
-                    Create Account
-                </h1>
+                <div class="flex flex-col items-center justify-center mb-8">
+                    <Link :href="route('landing.page')" class="cursor-pointer"
+                        ><img
+                            :src="logoUrl"
+                            alt="NextCareer Logo"
+                            class="w-16 h-16"
+                    /></Link>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-center">
+                        <span class="text-[#0C162C]">Next</span
+                        ><span class="text-[#5E17EB]">Career</span>
+                    </h1>
+                    <p class="text-sm text-gray-600">Create your account</p>
+                </div>
                 <form @submit.prevent="submit">
                     <!-- Google ID -->
                     <div class="mb-2 hidden">
@@ -62,7 +64,7 @@
                                 id="username"
                                 autocomplete="username"
                                 class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white"
-                                placeholder="Choose a username"
+                                placeholder="Username:"
                                 required
                                 :class="{
                                     'border-red-500': form.errors.username,
@@ -94,7 +96,7 @@
                                 id="email"
                                 autocomplete="email"
                                 class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white"
-                                placeholder="Enter your email"
+                                placeholder="Email:"
                                 required
                                 :class="{ 'border-red-500': form.errors.email }"
                             />
@@ -124,7 +126,7 @@
                                 id="password"
                                 autocomplete="new-password"
                                 class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white"
-                                placeholder="Create a password"
+                                placeholder="Password:"
                                 :required="passwordRequired"
                                 @input="form.errors.password = null"
                             />
@@ -154,7 +156,7 @@
                                 id="retype_password"
                                 autocomplete="new-password"
                                 class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-white"
-                                placeholder="Confirm your password"
+                                placeholder="Confirm Password:"
                                 :required="passwordRequired"
                             />
                         </div>
@@ -309,11 +311,14 @@
 <script setup>
 import { computed } from "vue";
 import { useForm, Link } from "@inertiajs/vue3";
+import backBtn from "@/components/UI/BackLink.vue";
 
 // Get Google prefilled data from query string
 const params = new URLSearchParams(window.location.search);
 const googleEmail = params.get("email");
 const googleId = params.get("google_id");
+const logoFilename = "N.png";
+const logoUrl = `/storage/logo/${logoFilename}`;
 
 const form = useForm({
     google_id: googleId,
