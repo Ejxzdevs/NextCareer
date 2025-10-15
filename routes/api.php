@@ -10,8 +10,8 @@ Route::middleware(['web', 'auth:sanctum'])->group(function () {
 
 // Notification Routes
 Route::controller(NotificationController::class)->prefix('notifications')->name('notifications.')->group(function () {
-Route::get('/', 'getUserNotifications')->name('read');
-Route::put('/mark-all-as-viewed', 'markAllAsRead')->name('markAllAsViewed');
+    Route::get('/', 'getUserNotifications')->name('read');
+    Route::put('/mark-all-as-viewed', 'markAllAsRead')->name('markAllAsViewed');
 });
 
 // Messaging Routes
