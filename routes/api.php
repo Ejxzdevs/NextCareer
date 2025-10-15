@@ -6,17 +6,21 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ApplicationController;
 
 // Routes in api.php automatically get the '/api' prefix.
-Route::middleware('web')->group(function () {
+Route::middleware(['web', 'auth:sanctum'])->group(function () {
 
 // Notification Routes
-Route::get('/notifications', [NotificationController::class, 'getUserNotifications'])->name('notifications.read');
-Route::put('/notifications/mark-all-as-viewed', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsViewed');
+Route::controller(NotificationController::class)->prefix('notifications')->name('notifications.')->group(function () {
+Route::get('/', 'getUserNotifications')->name('read');
+Route::put('/mark-all-as-viewed', 'markAllAsRead')->name('markAllAsViewed');
+});
 
 // Messaging Routes
-Route::get('/messages', [MessageController::class, 'getMessageNotifications'])->name('messages.notifications.read');
-Route::get('/messages/conversation/{userId}', [MessageController::class, 'conversation'])->name('messages.conversation.read');
-Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.store');
-Route::put('/messages/mark-all-as-read', [MessageController::class, 'markAllAsRead'])->name('messages.markAllAsRead');
+Route::controller(MessageController::class)->prefix('messages')->name('messages.')->group(function () {
+    Route::get('/',  'getMessageNotifications')->name('notifications.read');
+    Route::get('/conversation/{userId}',  'conversation')->name('conversation.read');
+    Route::post('/send',  'sendMessage')->name('store');
+    Route::put('/mark-all-as-read',  'markAllAsRead')->name('markAllAsRead');
+});
 
 // Applications routes
 Route::patch('applications/{application_id}',[ApplicationController::class, 'updateStatus'])->name('application.update');
