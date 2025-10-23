@@ -124,6 +124,10 @@ import { useDropdown } from "@/composables/useToggleVisibility";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
 import { getInboxApi, markAllAsReadApi } from "@/services/MessageServices";
 import showAllMessageModal from "@/components/Modal/Shared/AllMessage.vue";
+import { getUserID } from "@/utils/auth";
+
+// get authenticated user id
+const authId = getUserID();
 
 // Dropdown state
 const { isDropdownOpen, toggleDropdown, dropdownRef } = useDropdown();
@@ -177,5 +181,8 @@ const markAllAsRead = () => {
 
 onMounted(() => {
     loadInbox();
+    Echo.private(`chat.${authId}`).listen("MessageSent", (e) => {
+        loadInbox();
+    });
 });
 </script>
