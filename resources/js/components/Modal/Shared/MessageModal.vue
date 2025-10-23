@@ -130,10 +130,8 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
-import { usePage } from "@inertiajs/vue3";
 import { sendMessageApi, getConversationApi } from "@/services/MessageServices";
 import { getUserID } from "@/utils/authUtils";
-const page = usePage();
 
 // get authenticated user id
 const authId = getUserID();

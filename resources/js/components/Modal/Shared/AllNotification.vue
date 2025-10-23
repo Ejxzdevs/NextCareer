@@ -98,10 +98,9 @@
 <script setup>
 import { computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
-import { usePage } from "@inertiajs/vue3";
+import { getUserRole } from "@/utils/auth";
 
-const page = usePage();
-const role = page.props.user?.role;
+const role = getUserRole();
 
 const props = defineProps({
     show: Boolean,

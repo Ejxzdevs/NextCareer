@@ -144,7 +144,6 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { usePage } from "@inertiajs/vue3";
 import { useDropdown } from "@/composables/useToggleVisibility";
 import {
     fetchUserNotifications,
@@ -153,6 +152,7 @@ import {
 import { Inertia } from "@inertiajs/inertia";
 import showAllNotifModal from "@/components/Modal/Shared/AllNotification.vue";
 import { formatDateTime } from "@/utils/datetimeUtils";
+import { getUserRole } from "@/utils/auth";
 
 // Dropdown state and handlers from the custom useDropdown composable
 const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } =
@@ -160,8 +160,7 @@ const { isDropdownOpen, toggleDropdown, closeDropdown, dropdownRef } =
 const ProjectData = ref([]);
 const isLoading = ref(false);
 const fetchError = ref(null);
-const page = usePage();
-const role = page.props.user?.role;
+const role = getUserRole();
 
 // load notifications
 const loadNotifications = async () => {
