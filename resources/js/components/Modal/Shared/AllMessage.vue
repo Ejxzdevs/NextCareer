@@ -93,8 +93,8 @@
 
 <script setup>
 import { computed } from "vue";
-import { Inertia } from "@inertiajs/inertia";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
+
 // Props
 const props = defineProps({
     show: Boolean,
@@ -106,7 +106,6 @@ const emit = defineEmits(["hide"]);
 const defaultAvatar =
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
-// ✅ Safer computed that transforms incoming messages
 const formattedMessages = computed(() => {
     return props.data.map((msg) => ({
         id: msg.sender_id,
@@ -117,24 +116,6 @@ const formattedMessages = computed(() => {
         avatar: msg.sender?.profile?.profile_picture || defaultAvatar,
     }));
 });
-
-function viewNotification(id, application_id) {
-    if (!id || !application_id) {
-        alert("Invalid project or application ID.");
-        return;
-    }
-    Inertia.get(
-        route("project.show", { id, application_id }),
-        {},
-        {
-            onError: () => {
-                alert(
-                    "Could not load project. It may not exist or you do not have permission."
-                );
-            },
-        }
-    );
-}
 
 const closeModal = () => {
     emit("hide");

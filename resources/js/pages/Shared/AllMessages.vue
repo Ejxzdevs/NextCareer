@@ -236,12 +236,13 @@ import {
     getInboxApi,
     sendMessageApi,
     getConversationApi,
-} from "../../services/MessageServices";
+} from "@/services/MessageServices";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
 import backBtn from "@/components/UI/BackLink.vue";
+import { getUserID } from "@/utils/authUtils";
 
 const page = usePage();
-const authId = page.props.user.id;
+const authId = getUserID();
 const url = page.url;
 const selected_id = url.match(/\d+/)?.[0];
 
@@ -343,19 +344,19 @@ onMounted(() => {
 
     handleResize();
     window.addEventListener("resize", handleResize);
+
+    Echo.private(`chat.${authId}`).listen("MessageSent", (e) => {
+        const userIdNum = Number(user_id.value);
+        if (
+            e.message.sender_id === userIdNum ||
+            e.message.receiver_id === userIdNum
+        ) {
+            conversations.value.push(e.message);
+            nextTick().then(() => {
+                scrollToBottom();
+            });
+        }
+        loadInbox();
+    });
 });
 </script>
-
-<style>
-/* Custom scrollbar for better styling */
-.scrollbar-thin::-webkit-scrollbar {
-    width: 8px;
-}
-.scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 4px;
-}
-.scrollbar-thin::-webkit-scrollbar-track {
-    background: #f3f4f6;
-}
-</style>

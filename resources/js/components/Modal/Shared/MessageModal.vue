@@ -129,17 +129,14 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { usePage } from "@inertiajs/vue3";
-import {
-    sendMessageApi,
-    getConversationApi,
-} from "../../../services/MessageServices";
-
+import { sendMessageApi, getConversationApi } from "@/services/MessageServices";
+import { getUserID } from "@/utils/authUtils";
 const page = usePage();
 
 // get authenticated user id
-const authId = page.props.user.id;
+const authId = getUserID();
 
 const props = defineProps({
     username: String,
@@ -206,4 +203,19 @@ function openMessageModal() {
 function closeMessageModal() {
     messageModal.value = false;
 }
+
+onMounted(() => {
+    Echo.private(`chat.${authId}`).listen("MessageSent", (e) => {
+        const userIdNum = Number(props.id);
+        if (
+            e.message.sender_id === userIdNum ||
+            e.message.receiver_id === userIdNum
+        ) {
+            conversations.value.push(e.message);
+            nextTick().then(() => {
+                scrollToBottom();
+            });
+        }
+    });
+});
 </script>
