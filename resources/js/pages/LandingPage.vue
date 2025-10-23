@@ -4,7 +4,52 @@
             <Navigational />
         </div>
 
-        <!-- Hero Section -->
+        <div class="relative h-[600px] w-full">
+            <img
+                :src="getImageUrl('/images/hero.jpg')"
+                alt="Remote Work Setup for nextCareer"
+                class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gray-900/70"></div>
+
+            <div
+                class="relative h-full flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-8 z-20"
+            >
+                <h1
+                    class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white mb-6 leading-tight edu-sa-hand-medium"
+                >
+                    nextCareer
+                </h1>
+
+                <p
+                    class="text-xl sm:text-2xl text-blue-100 max-w-3xl mb-8 font-light"
+                >
+                    Your **fully WFH** job portal: The bridge connecting
+                    <strong class="text-white font-semibold"
+                        >top global freelancers</strong
+                    >
+                    with their next client, seamlessly and remotely.
+                </p>
+
+                <div
+                    class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6"
+                >
+                    <Link
+                        :href="route('register')"
+                        class="bg-blue-500 text-white px-8 py-3 rounded-xl font-bold text-lg shadow-xl hover:bg-blue-600 transition duration-300 transform hover:scale-105"
+                    >
+                        I'm a Freelancer, Find Work
+                    </Link>
+                    <Link
+                        :href="route('register')"
+                        class="bg-white text-gray-900 px-8 py-3 rounded-xl font-bold text-lg shadow-xl hover:bg-gray-100 transition duration-300 transform hover:scale-105"
+                    >
+                        I'm a Client, Hire Talent
+                    </Link>
+                </div>
+            </div>
+        </div>
+
         <div class="pt-36 px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h1
