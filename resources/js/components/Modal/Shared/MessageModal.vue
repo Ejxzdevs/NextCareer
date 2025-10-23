@@ -131,7 +131,7 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import { sendMessageApi, getConversationApi } from "@/services/MessageServices";
-import { getUserID } from "@/utils/authUtils";
+import { getUserID } from "@/utils/auth";
 
 // get authenticated user id
 const authId = getUserID();

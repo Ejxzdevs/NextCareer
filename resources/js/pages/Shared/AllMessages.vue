@@ -239,7 +239,7 @@ import {
 } from "@/services/MessageServices";
 import { formatTimeAgo } from "@/utils/datetimeUtils";
 import backBtn from "@/components/UI/BackLink.vue";
-import { getUserID } from "@/utils/authUtils";
+import { getUserID } from "@/utils/auth";
 
 const page = usePage();
 const authId = getUserID();
