@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
@@ -43,6 +44,8 @@ class MessageController extends Controller
             'receiver_id' => $request->receiver_id,
             'message_content' => $request->message_content
         ]);
+
+        event(new MessageSent($message));
 
          return response()->json([
         'success' => true,
