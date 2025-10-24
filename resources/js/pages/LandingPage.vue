@@ -1,10 +1,10 @@
 <template>
-    <div class="h-screen overflow-y-scroll">
-        <div class="absolute top-0 left-0 w-full z-10">
+    <div class="h-screen overflow-y-scroll scroll-pt-14">
+        <div class="sticky top-0 z-10 bg-white">
             <Navigational />
         </div>
 
-        <div class="relative h-[600px] w-full">
+        <div class="relative h-[600px] w-full z-9">
             <img
                 :src="getImageUrl('/images/hero.jpg')"
                 alt="Remote Work Setup for nextCareer"
@@ -442,38 +442,14 @@
                 </div>
             </div>
         </div>
-
-        <!-- CTA Section -->
-        <div class="py-20 bg-blue-600">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl font-bold text-white mb-4">
-                    Ready to Get Started?
-                </h2>
-                <p class="text-xl text-blue-100 mb-8">
-                    Join our community of talented professionals and businesses
-                    today
-                </p>
-                <div class="flex justify-center space-x-4">
-                    <Link
-                        :href="route('register')"
-                        class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300"
-                    >
-                        Sign Up as Freelancer
-                    </Link>
-                    <Link
-                        :href="route('register')"
-                        class="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition duration-300"
-                    >
-                        Hire Talent
-                    </Link>
-                </div>
-            </div>
-        </div>
+        <!-- Footer -->
+        <Footer />
     </div>
 </template>
 
 <script setup>
 import Navigational from "@/components/Layout/Navigational.vue";
+import Footer from "@/components/Layout/Footer.vue";
 
 const getImageUrl = (path) => {
     return path;
