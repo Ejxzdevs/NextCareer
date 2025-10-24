@@ -45,7 +45,7 @@
                 </div>
 
                 <ul
-                    class="max-h-80 overflow-y-auto divide-y divide-gray-100 list-none p-0 m-0"
+                    class="max-h-80 overflow-y-hidden divide-y divide-gray-100 list-none p-0 m-0"
                 >
                     <li v-if="isLoading" class="p-4 text-center text-gray-500">
                         Loading notifications...

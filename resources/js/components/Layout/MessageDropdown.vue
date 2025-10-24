@@ -47,7 +47,7 @@
 
                 <!-- Messages List -->
                 <ul
-                    class="max-h-80 overflow-y-auto divide-y divide-gray-100 list-none p-0 m-0"
+                    class="max-h-80 overflow-hidden divide-y divide-gray-100 list-none p-0 m-0"
                 >
                     <li
                         v-if="userWithLastMessages.length === 0"
@@ -78,7 +78,7 @@
                             <p class="text-sm font-semibold text-blue-500 name">
                                 {{ message.sender }}
                             </p>
-                            <p class="text-xs text-gray-600 truncate">
+                            <p class="text-xs text-gray-600 truncate w-48">
                                 {{ message.text }}
                             </p>
                         </div>
