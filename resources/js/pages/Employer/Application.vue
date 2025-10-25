@@ -178,6 +178,7 @@
                                     @change="updateStatus(application)"
                                     class="text-center cursor-pointer py-2 border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                 >
+                                    <option value="pending">Pending</option>
                                     <option value="viewed">Viewed</option>
                                     <option value="cancelled" disabled>
                                         Cancelled
